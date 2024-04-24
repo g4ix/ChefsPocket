@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,8 +11,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Chef's Recipe",
-      home: const MyHomePage(title: "Chef's Pocket"),
+      title: "Chef's Recipe",   //titolo della pagina
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true, //utilizzo del nuovo design Material 3 per tutti i widget
+      ),
+      home: const MyHomePage(title: "Chef's Pocket"), //pagina iniziale
     );
   }
 }
@@ -31,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title), //titolo della pagina accessibile grazie a "widget" che permette di accedere ad altre classi
       ),
       body: Center(
         child: Column(
