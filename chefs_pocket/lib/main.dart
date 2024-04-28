@@ -1,4 +1,7 @@
+import 'package:chefs_pocket/app_theme.dart';
+import 'package:chefs_pocket/components/bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -11,12 +14,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Chef's Recipe",   //titolo della pagina
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true, //utilizzo del nuovo design Material 3 per tutti i widget
-      ),
+      title: "Chef's Recipe", //titolo della pagina
+      theme: ChefsPocketTheme.light(), //tema della pagina
       home: const MyHomePage(title: "Chef's Pocket"), //pagina iniziale
     );
   }
@@ -32,23 +31,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title), //titolo della pagina accessibile grazie a "widget" che permette di accedere ad altre classi
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Hello world!',
-            ),
-          ],
+        appBar: AppBar(
+          title: Text(
+            widget.title,
+            style: Theme.of(context).textTheme.titleLarge,
+          ), //titolo della pagina accessibile grazie a "widget" che permette di accedere ad altre classi
         ),
-      ),// This trailing comma makes auto-formatting nicer for build methods.
-    );
+        body: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'ciao',
+              ),
+            ],
+          ),
+          // This trailing comma makes auto-formatting nicer for build methods
+        ),
+        bottomNavigationBar: const CustomBottomNavigationBar(
+          activeIconIndex: 0,
+        ));
+
   }
 }

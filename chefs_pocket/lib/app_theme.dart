@@ -6,7 +6,7 @@ class ChefsPocketTheme {
     //titolo grande delle schermate principali: Oggi, Salvati, Crea ricetta, Piano Alimentare, Lista
     titleLarge: GoogleFonts.adamina(
       fontSize: 25,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: const Color(0xFF557F9F),
     ),
     //titoli widget: pasti, note, timer,step
@@ -33,17 +33,22 @@ class ChefsPocketTheme {
     return ThemeData(
       useMaterial3: true,
 
-      primaryColor: Colors.white,
-      hintColor:  Colors.black.withOpacity(0.5), //testo dei form prima di essere compilati
-      scaffoldBackgroundColor: const Color(0xFFFEEE95).withOpacity(0.1),
-      textTheme: lightTextTheme,
-      appBarTheme: const AppBarTheme(
-        color: Color(0xFF557F9F),
-        iconTheme: IconThemeData(
-          color: Colors.white,
+       colorScheme: const ColorScheme(
+          brightness: Brightness.light,
+          background: Color(0xFFFFFDF4), 
+          onBackground: Color(0xFFFFFDF4),
+           primary: Color(0xFF557F9F), 
+          onPrimary: Color(0xFF557F9F),
+           secondary: Color(0xFF557F9F), 
+           onSecondary: Colors.white,
+           error: Colors.red,
+           onError: Colors.white,
+           surface: Colors.white,
+           onSurface: Color(0xFF557F9F),
         ),
-      ),
-      
+      textTheme: lightTextTheme,
+   
+   
     );
   }
 }
