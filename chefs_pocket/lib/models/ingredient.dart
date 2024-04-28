@@ -10,28 +10,28 @@ class Ingredient {
   });
 
   void convertToEuMeasures() {
-      if (measure == "tbsp") {
-        measure = "ml";
-        quantity *= 15;
-      } else if (measure == "tsp") {
-        measure = "ml";
-        quantity *= 5;
-      } else if (measure == "cup") {
-        measure = "ml";
-        quantity *= 240;
-      } else if (measure == "fl oz") {
-        measure = "ml";
-        quantity *= 30;
-      } else if (measure == "gal") {
-        measure = "ml";
-        quantity *= 3840;
-      } else if (measure == "lb") {
-        measure = "g";
-        quantity *= 453.592;
-      } else if (measure == "oz") {
-        measure = "g";
-        quantity *= 28.3495;
-      }
+    if (measure == "tbsp") {
+      measure = "ml";
+      quantity *= 15;
+    } else if (measure == "tsp") {
+      measure = "ml";
+      quantity *= 5;
+    } else if (measure == "cup") {
+      measure = "ml";
+      quantity *= 240;
+    } else if (measure == "fl oz") {
+      measure = "ml";
+      quantity *= 30;
+    } else if (measure == "gal") {
+      measure = "ml";
+      quantity *= 3840;
+    } else if (measure == "lb") {
+      measure = "g";
+      quantity *= 453.592;
+    } else if (measure == "oz") {
+      measure = "g";
+      quantity *= 28.3495;
+    }
   }
 
   void convertToUsMeasures() {
