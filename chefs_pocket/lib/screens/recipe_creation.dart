@@ -1,18 +1,24 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:io';
+
+import 'package:chefs_pocket/models/section.dart';
+import 'package:chefs_pocket/models/recipe.dart';
+import 'package:chefs_pocket/models/recipe_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 import '../models/ingredient.dart';
-import '../models/recipe.dart';
-import '../models/section.dart';
-import '../models/recipe_step.dart';
 
+import '../models/recipe_step.dart';
 
 import '../config.dart';
 import '../manager/recipe_manager.dart'; // Import RecipeManager
 
 class RecipeCreationPage extends StatefulWidget {
+  Recipe recipe = Recipe();
+  Section section = Section();
+  RecipeStep step = RecipeStep();
+
   @override
   _RecipeCreationPageState createState() => _RecipeCreationPageState();
 }
@@ -186,9 +192,9 @@ ElevatedButton(
 SizedBox(height: 8.0),
 ListView.builder(
   shrinkWrap: true,
-  itemCount: section.ingredients.length,
+  itemCount: widget.section.ingredients.length,
   itemBuilder: (context, index2) {
-    final ingredient = section.ingredients[index2];
+    final ingredient = widget.section.ingredients[index2];
     return Row(
       children: [
         Text('${ingredient.quantity} ${ingredient.unit} ${ingredient.name}'),
@@ -196,8 +202,8 @@ ListView.builder(
         IconButton(
           onPressed: () {
             setState(() {
-              section.ingredients.removeAt(index2);
-              recipeManager.removeIngredient(section, ingredient); // Update recipe ingredients
+              widget.section.ingredients.removeAt(index2);
+              recipeManager.removeIngredient( widget.section, ingredient); // Update recipe ingredients
             });
           },
           icon: Icon(Icons.delete),
@@ -225,7 +231,7 @@ ListView.builder(
               Text(step.description),
               if (step.imageUrls != null)
                 Image.file(
-                  File(step.imageUrls!),
+                  File(widget.step.imageUrls[0]!),
                   width: 100.0,
                   height: 100.0,
                   fit: BoxFit.cover,

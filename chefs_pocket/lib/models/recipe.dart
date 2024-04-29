@@ -31,10 +31,21 @@ class Recipe {
     if (!showsEuMeasures) {
       for (var i = 0; i < sections.length; i++) {
         for (var j = 0; j < sections[i].ingredients.length; j++) {
-          sections[i].ingredients[j].convertToEuMeasures();
+          sections[i].ingredients[j].convertToEuunits();
         }
       }
       showsEuMeasures = true;
+    }
+  }
+
+  void convertToUsMeasures() {
+    if (showsEuMeasures) {
+      for (var i = 0; i < sections.length; i++) {
+        for (var j = 0; j < sections[i].ingredients.length; j++) {
+          sections[i].ingredients[j].convertToUsunits();
+        }
+      }
+      showsEuMeasures = false;
     }
   }
 }
