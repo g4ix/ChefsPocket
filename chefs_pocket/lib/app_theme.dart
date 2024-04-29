@@ -5,7 +5,7 @@ class ChefsPocketTheme {
   static TextTheme lightTextTheme = TextTheme(
     //titolo grande delle schermate principali: Oggi, Salvati, Crea ricetta, Piano Alimentare, Lista
     titleLarge: GoogleFonts.adamina(
-      fontSize: 25,
+      fontSize: 40,
       fontWeight: FontWeight.w600,
       color: const Color(0xFF557F9F),
     ),

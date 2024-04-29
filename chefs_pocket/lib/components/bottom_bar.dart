@@ -3,8 +3,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int activeIconIndex;
+  final Function(int) onTap;
 
-  const CustomBottomNavigationBar({super.key, this.activeIconIndex = 0});
+  const CustomBottomNavigationBar({super.key, this.activeIconIndex = 0, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         showSelectedLabels: false,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(
-                activeIconIndex == 0 ? MdiIcons.home : MdiIcons.homeOutline),
+            icon: Icon( activeIconIndex == 0 ? MdiIcons.home : MdiIcons.homeOutline),
             label: "Home",
             backgroundColor: Color(0xFF557F9F),
           ),
@@ -36,9 +36,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             backgroundColor: Color(0xFF557F9F),
           ),
           BottomNavigationBarItem(
-            icon: Icon(activeIconIndex == 3
-                ? MdiIcons.calendar
-                : MdiIcons.calendarBlankOutline),
+            icon: Icon(activeIconIndex == 3 ? MdiIcons.calendar : MdiIcons.calendarBlankOutline),
             label: "Plan",
             backgroundColor: Color(0xFF557F9F),
           ),
@@ -50,7 +48,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
             backgroundColor: Color(0xFF557F9F),
           ),
         ],
-      ),
+        currentIndex: activeIconIndex,
+         onTap: onTap,       
+    ),
     );
   }
 }

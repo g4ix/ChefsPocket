@@ -1,5 +1,6 @@
 import 'package:chefs_pocket/app_theme.dart';
 import 'package:chefs_pocket/components/bottom_bar.dart';
+import 'package:chefs_pocket/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -31,28 +32,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int currentIndex = 0;
+  final List<Widget> _pages = <Widget>[
+    HomeScreen(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.title,
-            style: Theme.of(context).textTheme.titleLarge,
-          ), //titolo della pagina accessibile grazie a "widget" che permette di accedere ad altre classi
+        //titolo della pagina accessibile grazie a "widget" che permette di accedere ad altre classi
+        body: IndexedStack(
+          index: currentIndex,
+          children: _pages
+          ,
         ),
-        body: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'ciao',
-              ),
-            ],
-          ),
-          // This trailing comma makes auto-formatting nicer for build methods
-        ),
-        bottomNavigationBar: const CustomBottomNavigationBar(
-          activeIconIndex: 0,
+        bottomNavigationBar: CustomBottomNavigationBar(
+          activeIconIndex: currentIndex,
+          onTap: (int index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
         ));
 
   }
