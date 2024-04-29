@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               
               decoration: BoxDecoration(
                  image: const DecorationImage(
-                    image: AssetImage("assets/homescreen.jpg"),
+                    image: AssetImage("../assets/homescreen.png"),
                     fit: BoxFit.cover,
                   ),
                 color: Color(0xFFFFFED9),

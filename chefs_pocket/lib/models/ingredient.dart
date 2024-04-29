@@ -1,51 +1,51 @@
 class Ingredient {
   String name = "";
   double quantity = 0.0;
-  String measure = "";
+  String unit = "";
 
   Ingredient({
     this.quantity = 0.0,
-    this.measure = '',
+    this.unit = '',
     this.name = '',
   });
 
-  void convertToEuMeasures() {
-    if (measure == "tbsp") {
-      measure = "ml";
+  void convertToEuunits() {
+    if (unit == "tbsp") {
+      unit = "ml";
       quantity *= 15;
-    } else if (measure == "tsp") {
-      measure = "ml";
+    } else if (unit == "tsp") {
+      unit = "ml";
       quantity *= 5;
-    } else if (measure == "cup") {
-      measure = "ml";
+    } else if (unit == "cup") {
+      unit = "ml";
       quantity *= 240;
-    } else if (measure == "fl oz") {
-      measure = "ml";
+    } else if (unit == "fl oz") {
+      unit = "ml";
       quantity *= 30;
-    } else if (measure == "gal") {
-      measure = "ml";
+    } else if (unit == "gal") {
+      unit = "ml";
       quantity *= 3840;
-    } else if (measure == "lb") {
-      measure = "g";
+    } else if (unit == "lb") {
+      unit = "g";
       quantity *= 453.592;
-    } else if (measure == "oz") {
-      measure = "g";
+    } else if (unit == "oz") {
+      unit = "g";
       quantity *= 28.3495;
     }
   }
 
-  void convertToUsMeasures() {
-    if (measure == "ml") {
-      measure = "tbsp";
+  void convertToUsunits() {
+    if (unit == "ml") {
+      unit = "tbsp";
       quantity /= 15;
-    } else if (measure == "g") {
-      measure = "oz";
+    } else if (unit == "g") {
+      unit = "oz";
       quantity /= 28.3495;
-    } else if (measure == "kg") {
-      measure = "lb";
+    } else if (unit == "kg") {
+      unit = "lb";
       quantity /= 0.453592;
-    } else if (measure == "l") {
-      measure = "gal";
+    } else if (unit == "l") {
+      unit = "gal";
       quantity /= 3840;
     }
   }
