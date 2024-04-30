@@ -12,7 +12,7 @@ import '../models/ingredient.dart';
 import '../models/recipe_step.dart';
 
 import '../config.dart';
-import '../manager/recipe_manager.dart'; // Import RecipeManager
+import '../manager/recipe_manager.dart'; // Import recipe
 import 'package:image_picker/image_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 
@@ -37,7 +37,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   final _selectedTags = <Tag>[];
   bool _useEUUnits = true;
 
-  final recipeManager = RecipeManager(); // Create an instance of RecipeManager
+  final recipe = Recipe(); // Create an instance of recipe
+  final recipeManager = RecipeManager(); // Create an instance of recipe manager
 
   final ImagePicker _picker = ImagePicker();
 
@@ -111,8 +112,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             }
             return null;
           },
-          onChanged: (value) =>
-              recipeManager.setTitle(value), // Update recipe title
+          onChanged: (value) => recipe.setTitle(value), // Update recipe title
         ),
       ],
     );
@@ -323,8 +323,9 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               onPressed: () {
                 Ingredient ingredient =
                     Ingredient(name: '', quantity: 0, unit: 'g');
-                recipeManager.addIngredient(ingredient); // Add new ingredient
-              },
+                setState(() {
+                  recipe.addIngredient(ingredient);
+                });              },
               child: Text('+ Ingrediente'),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
@@ -364,7 +365,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         ElevatedButton(
           onPressed: () {
             setState(() {
-              recipeManager.addStep(RecipeStep(description: ''));
+              recipe.addStep(RecipeStep(description: ''));
             });
           },
           child: Text('Aggiungi step'),
@@ -495,7 +496,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                     return null;
                   },
                   onChanged: (value) =>
-                      recipeManager.setTitle(value), // Update recipe title
+                      recipe.setTitle(value), // Update recipe title
                 ),
 
                 // Immagini
@@ -518,7 +519,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                                     _images.add(image.path);
                                   });
                                   // Update recipe image URL
-                                  recipeManager.setImageUrl(image.path);
+                                  recipe.setImageUrl(image.path);
                                 }
                               },
                               child: Icon(Icons.add),
@@ -557,7 +558,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                         setState(() {
                           _rating = rating;
                         });
-                        recipeManager
+                        recipe
                             .setRating(rating.toInt()); // Update recipe rating
                       },
                     ),
@@ -575,7 +576,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                         setState(() {
                           _portions = value!;
                         });
-                        recipeManager
+                        recipe
                             .setPortions(value!); // Update recipe portions
                       },
                     ),
@@ -593,7 +594,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                     setState(() {
                       _sections.add(section);
                     });
-                    recipeManager.addSection(section); // Update recipe sections
+                    recipe.addSection(section); // Update recipe sections
                   },
                   child: Text('+ Sezione'),
                 ),
@@ -612,7 +613,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                           onPressed: () {
                             setState(() {
                               widget.section.ingredients.removeAt(index2);
-                              recipeManager.removeIngredient(widget.section,
+                              recipe.removeIngredient(widget.section,
                                   ingredient); // Update recipe ingredients
                             });
                           },
@@ -689,7 +690,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                     setState(() {
                       _steps.add(RecipeStep(description: ''));
                     });
-                    recipeManager.addStep(
+                    recipe.addStep(
                         RecipeStep(description: '')); // Update recipe steps
                   },
                   child: Text('+ Step'),
@@ -711,7 +712,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                       onChanged: (value) {
                         setState(() {
                           _selectedHour = value!;
-                          recipeManager.setDuration(Duration(
+                          recipe.setDuration(Duration(
                               hours: value!)); // Update recipe duration
                         });
                       },
@@ -729,7 +730,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                       onChanged: (value) {
                         setState(() {
                           _selectedMinute = value!;
-                          recipeManager.setDuration(Duration(
+                          recipe.setDuration(Duration(
                               minutes: value!)); // Update recipe duration
                         });
                       },
@@ -747,7 +748,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                             onDeleted: () {
                               setState(() {
                                 _selectedTags.remove(tag);
-                                recipeManager.setTags(
+                                recipe.setTags(
                                     _selectedTags); // Update recipe tags
                               });
                             },
@@ -776,7 +777,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                               if (tag != null) {
                                 setState(() {
                                   _selectedTags.add(tag);
-                                  recipeManager.setTags(
+                                  recipe.setTags(
                                       _selectedTags); // Update recipe tags
                                 });
                               }
@@ -795,8 +796,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      final recipe = recipeManager
-                          .recipe; // Get the updated recipe from RecipeManager
+                      final recipe = recipe
+                          .recipe; // Get the updated recipe from recipe
                       recipe.sections =
                           _sections; // Update recipe sections with the current state
                       recipe.steps =
@@ -829,7 +830,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   void _deleteStep(int index) {
     setState(() {
       _steps.removeAt(index);
-      recipeManager.removeStep(_steps[index]); // Update recipe steps
+      recipe.removeStep(_steps[index]); // Update recipe steps
     });
   }
 }

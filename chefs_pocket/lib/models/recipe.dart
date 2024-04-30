@@ -28,6 +28,46 @@ class Recipe {
     this.tags = const [], 
   });
 
+  void setTitle(String title) {
+    this.title = title;
+  }
+
+  void setRating(int rating) {
+    this.rating = rating;
+  }
+
+  void setPortions(int portions) {
+    this.portions = portions;
+  }
+
+  void setTotalTime(Duration totalTime) {
+    this.totalTime = totalTime;
+  }
+
+  void addIngredient(Ingredient ingredient) {
+    ingredients.add(ingredient);
+  }
+
+  void removeIngredient(Ingredient ingredient) {
+    ingredients.remove(ingredient);
+  }
+
+  void addStep(RecipeStep step) {
+    steps.add(step);
+  }
+
+  void removeStep(RecipeStep step) {
+    steps.remove(step);
+  }
+
+  void addTag(Tag tag) {
+    tags.add(tag);
+  }
+
+  void removeTag(Tag tag) {
+    tags.remove(tag);
+  }
+
   void convertToEuMeasures() {
     if (!showsEuMeasures) {
       for (var i = 0; i < ingredients.length; i++) {

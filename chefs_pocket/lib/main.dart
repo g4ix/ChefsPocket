@@ -1,6 +1,7 @@
 import 'package:chefs_pocket/app_theme.dart';
 import 'package:chefs_pocket/components/bottom_bar.dart';
 import 'package:chefs_pocket/models/grocery_list.dart';
+import 'package:chefs_pocket/screens/grocery_list.dart';
 import 'package:chefs_pocket/screens/home_screen.dart';
 import 'package:chefs_pocket/screens/recipe_creation.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
     HomeScreen(),
     // GroceryList(),
     RecipeCreationPage(),
+    GroceryListScreen(),
   ];
   @override
   Widget build(BuildContext context) {
