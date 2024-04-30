@@ -13,10 +13,10 @@ import '../models/recipe_step.dart';
 
 import '../config.dart';
 import '../manager/recipe_manager.dart'; // Import RecipeManager
+import 'package:image_picker/image_picker.dart';
 
 class RecipeCreationPage extends StatefulWidget {
   Recipe recipe = Recipe();
-  Section section = Section();
   RecipeStep step = RecipeStep();
 
   @override
@@ -28,9 +28,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
 
   final _titleController = TextEditingController();
   final _images = <String>[];
-  double _rating = 0.0;
+  double _rating = 0;
   int _portions = 1;
-  final _sections = <Section>[];
   final _steps = <RecipeStep>[];
   int _selectedHour = 0;
   int _selectedMinute = 0;
@@ -39,6 +38,302 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
 
   final recipeManager = RecipeManager(); // Create an instance of RecipeManager
 
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    await _picker.pickImage(source: ImageSource.gallery);
+  }
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Nuova Ricetta'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(15),
+        child: Column(
+          children: <Widget>[
+            buildTitleInput(),
+            buildImageUploadContainer(),
+            SizedBox(height: 16),
+            buildRatingAndPortions(),
+            buildIngredients(),
+            buildProcedure(),
+            buildTotalTime(),
+            buildTags(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildTitleInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Titolo',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        SizedBox(height: 8),
+        TextFormField(
+          decoration: InputDecoration(
+            hintText: 'Inserisci il titolo della ricetta',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Inserisci un titolo';
+            }
+            return null;
+          },
+          onChanged: (value) =>
+              recipeManager.setTitle(value), // Update recipe title
+        ),
+      ],
+    );
+  }
+
+  Widget buildImageUploadContainer() {
+    return GestureDetector(
+      onTap: _pickImage,
+      child: Container(
+        margin: EdgeInsets.only(top: 15),
+        height: 125,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: Color(0xFF557F9F),
+          ),
+        ),
+        child: Center(
+          child: _images.isEmpty
+              ? Icon(Icons.add_a_photo)
+              : Image.file(
+                  File(_images.first),
+                  fit: BoxFit.cover,
+                ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildRatingAndPortions() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Voto', style: Theme.of(context).textTheme.titleMedium,),
+                RatingBar.builder(
+                initialRating: 3,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemPadding: EdgeInsets.symmetric(horizontal: 0.5), // Decrease the itemPadding value to make the stars smaller
+                itemBuilder: (context, _) =>
+                  Icon(Icons.star, color: Color(0xFF557F9F)),
+                onRatingUpdate: (rating) {
+                  setState(() {
+                  this._rating = rating;
+                  });
+                  recipeManager
+                    .setRating(rating.toInt()); // Update recipe rating
+                },
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: 20),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Porzioni'),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Numero di porzioni',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    this._portions = int.parse(value);
+                  });
+                  recipeManager
+                      .setPortions(int.parse(value)); // Update recipe portions
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildIngredients() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Ingredienti:', style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Quantità',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: DropdownButtonFormField(
+                items: euMeasures.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (_) {},
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Ingrediente',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Ingredient ingredient =
+                    Ingredient(name: '', quantity: 0, unit: 'g');
+                recipeManager.addIngredient(ingredient); // Add new ingredient
+              },
+              child: Text('+ Ingrediente'),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildProcedure() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Procedimento:', style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 8),
+        TextFormField(
+          maxLines: 5,
+          decoration: InputDecoration(
+            hintText: 'Descrivi i passaggi della ricetta',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              recipeManager.addStep(RecipeStep(description: ''));
+            });
+          },
+          child: Text('Aggiungi step'),
+        ),
+      ],
+    );
+  }
+
+  Widget buildTotalTime() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Ore',
+              border: OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.number,
+          ),
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Minuti',
+              border: OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.number,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildTags() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Tag:', style: TextStyle(fontWeight: FontWeight.bold)),
+        Wrap(
+          spacing: 8.0,
+          children: List<Widget>.generate(
+            Tag.values.length,
+            (int index) {
+              final tag = Tag.values[index];
+              return ChoiceChip(
+                label: Text(tag.toString()),
+                selected: _selectedTags.contains(tag),
+                onSelected: (bool selected) {
+                  setState(() {
+                    if (selected) {
+                      _selectedTags.add(tag);
+                    } else {
+                      _selectedTags.remove(tag);
+                    }
+                    recipeManager.setTag(tag); // Update recipe tags
+                  });
+                },
+              );
+            },
+          ),
+        ),
+        SizedBox(height: 20),
+      ],
+    );
+  }
+}
+
+/*
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +360,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                     }
                     return null;
                   },
-                  onChanged: (value) => recipeManager.setTitle(value), // Update recipe title
+                  onChanged: (value) =>
+                      recipeManager.setTitle(value), // Update recipe title
                 ),
 
                 // Immagini
@@ -127,7 +423,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                         setState(() {
                           _rating = rating;
                         });
-                        recipeManager.setRating(rating.toInt()); // Update recipe rating
+                        recipeManager
+                            .setRating(rating.toInt()); // Update recipe rating
                       },
                     ),
                     SizedBox(width: 16.0),
@@ -144,252 +441,241 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                         setState(() {
                           _portions = value!;
                         });
-                        recipeManager.setPortions(value!); // Update recipe portions
+                        recipeManager
+                            .setPortions(value!); // Update recipe portions
                       },
                     ),
                   ],
                 ),
 
                 // Ingredienti
-                SizedBox(height: 16.0),
-                Text('Ingredienti'),
+                SizedBox(height: 8.0),
+                ElevatedButton(
+                  onPressed: () {
+                    final section = Section(title: '');
+                    final ingredient =
+                        Ingredient(name: '', quantity: 0, unit: 'g');
+                    section.ingredients.add(ingredient);
+                    setState(() {
+                      _sections.add(section);
+                    });
+                    recipeManager.addSection(section); // Update recipe sections
+                  },
+                  child: Text('+ Sezione'),
+                ),
                 SizedBox(height: 8.0),
                 ListView.builder(
-  shrinkWrap: true,
-  itemCount: _sections.length,
-  itemBuilder: (context, index) {
-    final section = _sections[index];
-    return Row(
-      children: [
-        Text(section.title),
-        Spacer(),
-        IconButton(
-          onPressed: () {
-            setState(() {
-              _sections.removeAt(index);
-              recipeManager.removeSection(section); // Update recipe sections
-            });
-          },
-          icon: Icon(Icons.delete),
-        ),
-      ],
-    );
-  },
-),
-SizedBox(height: 8.0),
-ElevatedButton(
-  onPressed: () {
-    final section = Section(title: '');
-    final ingredient = Ingredient(name: '', quantity: 0, unit: 'g');
-    section.ingredients.add(ingredient);
-    setState(() {
-      _sections.add(section);
-    });
-    recipeManager.addSection(section); // Update recipe sections
-  },
-  child: Text('+ Sezione'),
-),
-SizedBox(height: 8.0),
-ListView.builder(
-  shrinkWrap: true,
-  itemCount: widget.section.ingredients.length,
-  itemBuilder: (context, index2) {
-    final ingredient = widget.section.ingredients[index2];
-    return Row(
-      children: [
-        Text('${ingredient.quantity} ${ingredient.unit} ${ingredient.name}'),
-        Spacer(),
-        IconButton(
-          onPressed: () {
-            setState(() {
-              widget.section.ingredients.removeAt(index2);
-              recipeManager.removeIngredient( widget.section, ingredient); // Update recipe ingredients
-            });
-          },
-          icon: Icon(Icons.delete),
-        ),
-      ],
-    );
-  },
-),
+                  shrinkWrap: true,
+                  itemCount: widget.section.ingredients.length,
+                  itemBuilder: (context, index2) {
+                    final ingredient = widget.section.ingredients[index2];
+                    return Row(
+                      children: [
+                        Text(
+                            '${ingredient.quantity} ${ingredient.unit} ${ingredient.name}'),
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              widget.section.ingredients.removeAt(index2);
+                              recipeManager.removeIngredient(widget.section,
+                                  ingredient); // Update recipe ingredients
+                            });
+                          },
+                          icon: Icon(Icons.delete),
+                        ),
+                      ],
+                    );
+                  },
+                ),
 
 // Procedimento
-SizedBox(height: 16.0),
-Text('Procedimento'),
-SizedBox(height: 8.0),
-ListView.builder(
-  shrinkWrap: true,
-  itemCount: _steps.length,
-  itemBuilder: (context, index) {
-    final step = _steps[index];
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(step.description),
-              if (step.imageUrls != null)
-                Image.file(
-                  File(widget.step.imageUrls[0]!),
-                  width: 100.0,
-                  height: 100.0,
-                  fit: BoxFit.cover,
+                SizedBox(height: 16.0),
+                Text('Procedimento'),
+                SizedBox(height: 8.0),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _steps.length,
+                  itemBuilder: (context, index) {
+                    final step = _steps[index];
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(step.description),
+                              if (step.imageUrls != null)
+                                Image.file(
+                                  File(widget.step.imageUrls[0]!),
+                                  width: 100.0,
+                                  height: 100.0,
+                                  fit: BoxFit.cover,
+                                ),
+                              if (step.timer != null)
+                                Text('Timer: ${step.timer} minuti'),
+                            ],
+                          ),
+                        ),
+                        PopupMenuButton<StepAction>(
+                          onSelected: (action) {
+                            switch (action) {
+                              case StepAction.setTimer:
+                                _setTimerForStep(index);
+                                break;
+                              case StepAction.removeTimer:
+                                _removeTimerForStep(index);
+                                break;
+                              case StepAction.deleteStep:
+                                _deleteStep(index);
+                                break;
+                            }
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: StepAction.setTimer,
+                              child: Text('Imposta timer'),
+                            ),
+                            PopupMenuItem(
+                              value: StepAction.removeTimer,
+                              child: Text('Rimuovi timer'),
+                            ),
+                            PopupMenuItem(
+                              value: StepAction.deleteStep,
+                              child: Text('Elimina step'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
                 ),
-              if (step.timer != null)
-                Text('Timer: ${step.timer} minuti'),
-            ],
-          ),
-        ),
-        PopupMenuButton<StepAction>(
-          onSelected: (action) {
-            switch (action) {
-              case StepAction.setTimer:
-                _setTimerForStep(index);
-                break;
-              case StepAction.removeTimer:
-                _removeTimerForStep(index);
-                break;
-              case StepAction.deleteStep:
-                _deleteStep(index);
-                break;
-            }
-          },
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: StepAction.setTimer,
-              child: Text('Imposta timer'),
-            ),
-            PopupMenuItem(
-              value: StepAction.removeTimer,
-              child: Text('Rimuovi timer'),
-            ),
-            PopupMenuItem(
-              value: StepAction.deleteStep,
-              child: Text('Elimina step'),
-            ),
-          ],
-        ),
-      ],
-    );
-  },
-),
-ElevatedButton(
-  onPressed: () {
-    setState(() {
-      _steps.add(RecipeStep(description: ''));
-    });
-    recipeManager.addStep(RecipeStep(description: '')); // Update recipe steps
-  },
-  child: Text('+ Step'),
-),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _steps.add(RecipeStep(description: ''));
+                    });
+                    recipeManager.addStep(
+                        RecipeStep(description: '')); // Update recipe steps
+                  },
+                  child: Text('+ Step'),
+                ),
 
 // Tempo totale
-SizedBox(height: 16.0),
-Row(
-  children: [
-    DropdownButton<int>(
-      value: _selectedHour,
-      items: [
-        for (int i = 0; i <= 24; i++)
-          DropdownMenuItem(
-            child: Text('$i ore'),
-            value: i,
-          ),
-      ],
-      onChanged: (value) {
-        setState(() {
-          _selectedHour = value!;
-          recipeManager.setDuration(Duration(hours: value!)); // Update recipe duration
-        });
-      },
-    ),
-    SizedBox(width: 16.0),
-    DropdownButton<int>(
-  value: _selectedMinute,
-  items: [
-    for (int i = 0; i <= 60; i++)
-      DropdownMenuItem(
-        child: Text('$i minuti'),
-        value: i,
-      ),
-  ],
-  onChanged: (value) {
-    setState(() {
-      _selectedMinute = value!;
-      recipeManager.setDuration(Duration(minutes: value!)); // Update recipe duration
-    });
-  },
-),
-  ],
-),
+                SizedBox(height: 16.0),
+                Row(
+                  children: [
+                    DropdownButton<int>(
+                      value: _selectedHour,
+                      items: [
+                        for (int i = 0; i <= 24; i++)
+                          DropdownMenuItem(
+                            child: Text('$i ore'),
+                            value: i,
+                          ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedHour = value!;
+                          recipeManager.setDuration(Duration(
+                              hours: value!)); // Update recipe duration
+                        });
+                      },
+                    ),
+                    SizedBox(width: 16.0),
+                    DropdownButton<int>(
+                      value: _selectedMinute,
+                      items: [
+                        for (int i = 0; i <= 60; i++)
+                          DropdownMenuItem(
+                            child: Text('$i minuti'),
+                            value: i,
+                          ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedMinute = value!;
+                          recipeManager.setDuration(Duration(
+                              minutes: value!)); // Update recipe duration
+                        });
+                      },
+                    ),
+                  ],
+                ),
 
 // Tag
-SizedBox(height: 16.0),
-Wrap(
-  spacing: 8.0,
-  children: _selectedTags.map((tag) => Chip(
-    label: Text(tag.name),
-    onDeleted: () {
-      setState(() {
-        _selectedTags.remove(tag);
-        recipeManager.setTags(_selectedTags); // Update recipe tags
-      });
-    },
-  )).toList(),
-),
-ElevatedButton(
-  onPressed: () async {
-    final newTag = await showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Aggiungi tag'),
-        content: TextField(
-          controller: TextEditingController(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, null);
-            },
-            child: Text('Annulla'),
-          ),
-          TextButton(
-            onPressed: () {
-              final tag = Navigator.pop(context) as Tag;
-              if (tag != null) {
-                setState(() {
-                  _selectedTags.add(tag);
-                  recipeManager.setTags(_selectedTags); // Update recipe tags
-                });
-              }
-            },
-            child: Text('Aggiungi'),
-          ),
-        ],
-      ),
-    );
-  },
-  child: Text('Aggiungi tag'),
-),
+                SizedBox(height: 16.0),
+                Wrap(
+                  spacing: 8.0,
+                  children: _selectedTags
+                      .map((tag) => Chip(
+                            label: Text(tag.name),
+                            onDeleted: () {
+                              setState(() {
+                                _selectedTags.remove(tag);
+                                recipeManager.setTags(
+                                    _selectedTags); // Update recipe tags
+                              });
+                            },
+                          ))
+                      .toList(),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final newTag = await showDialog<String>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Aggiungi tag'),
+                        content: TextField(
+                          controller: TextEditingController(),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context, null);
+                            },
+                            child: Text('Annulla'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              final tag = Navigator.pop(context) as Tag;
+                              if (tag != null) {
+                                setState(() {
+                                  _selectedTags.add(tag);
+                                  recipeManager.setTags(
+                                      _selectedTags); // Update recipe tags
+                                });
+                              }
+                            },
+                            child: Text('Aggiungi'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Text('Aggiungi tag'),
+                ),
 
 // Pulsante per salvare la ricetta
-SizedBox(height: 16.0),
-ElevatedButton(
-  onPressed: () {
-    if (_formKey.currentState!.validate()) {
-      final recipe = recipeManager.recipe; // Get the updated recipe from RecipeManager
-      recipe.sections = _sections; // Update recipe sections with the current state
-      recipe.steps = _steps; // Update recipe steps with the current state
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final recipe = recipeManager
+                          .recipe; // Get the updated recipe from RecipeManager
+                      recipe.sections =
+                          _sections; // Update recipe sections with the current state
+                      recipe.steps =
+                          _steps; // Update recipe steps with the current state
 
-      // Save the recipe to your storage mechanism
-      // ...
+                      // Save the recipe to your storage mechanism
+                      // ...
 
-      Navigator.pop(context);
-    }
-  },
-  child: Text('Salva ricetta'),
-),
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text('Salva ricetta'),
+                ),
               ],
             ),
           ),
@@ -414,4 +700,4 @@ ElevatedButton(
   }
 }
 
-enum StepAction { setTimer, removeTimer, deleteStep }
+enum StepAction { setTimer, removeTimer, deleteStep } */

@@ -30,44 +30,13 @@ class RecipeManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addIngredient(Section section, Ingredient ingredient) {
-    // Find the specified section within the recipe's sections list
-    final index = _recipe.sections.indexOf(section);
-
-    // Check if the section exists
-    if (index != -1) {
-      // Add the ingredient to the ingredients list of the found section
-      _recipe.sections[index].ingredients.add(ingredient);
-    } else {
-      // If the section doesn't exist, create a new section with the ingredient
-      _recipe.sections.add(Section(title: "", ingredients: [ingredient]));
-    }
-
-    // Notify listeners about the state change
+  void addIngredient(Ingredient ingredient) {
+    _recipe.ingredients.add(ingredient);
     notifyListeners();
   }
 
-  void removeIngredient(Section section, Ingredient ingredient) {
-    // Find the specified section within the recipe's sections list
-    final index = _recipe.sections.indexOf(section);
-
-    // Check if the section exists
-    if (index != -1) {
-      // Remove the ingredient from the ingredients list of the found section
-      _recipe.sections[index].ingredients.remove(ingredient);
-    }
-
-    // Notify listeners about the state change
-    notifyListeners();
-  }
-
-  void addSection(Section section) {
-    _recipe.sections.add(section);
-    notifyListeners();
-  }
-
-  void removeSection(Section section) {
-    _recipe.sections.remove(section);
+  void removeIngredient(Ingredient ingredient) {
+    _recipe.ingredients.remove(ingredient);
     notifyListeners();
   }
 
@@ -86,8 +55,8 @@ class RecipeManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setTags(List<Tag> tags) {
-    _recipe.tags = tags;
+  void setTag(tag) {
+    _recipe.tags.add(tag);
     notifyListeners();
   }
 }
