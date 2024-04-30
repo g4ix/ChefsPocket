@@ -40,11 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 height: 200,
                 decoration: BoxDecoration(
-                    image: const DecorationImage(
-                      image: AssetImage(
-                          "../assets/homescreen.png"), // così l'immagine è come sfondo della nota
-                      fit: BoxFit.cover,
-                    ),
                     color: Color(0xFFFFFED9),
                     borderRadius: BorderRadius.circular(20.0),
                     boxShadow: [

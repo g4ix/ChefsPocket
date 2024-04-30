@@ -50,7 +50,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
       appBar: AppBar(
         title: Text(
           'Nuova ricetta',
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
