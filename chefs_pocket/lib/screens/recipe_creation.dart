@@ -273,26 +273,26 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             SizedBox(
               width: 70,
               child: DropdownButtonFormField(
-              value: euMeasures[0], // Set the initial value to 'g'
-              items: euMeasures.map((String value) {
-                return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-                );
-              }).toList(),
-              onChanged: (_) {},
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-                focusedBorder: OutlineInputBorder(
-                borderSide:
-                  BorderSide(color: Color(0xFF557F9F), width: 2.0),
+                value: euMeasures[0], // Set the initial value to 'g'
+                items: euMeasures.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (_) {},
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 2.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 2.0),
+                  ),
                 ),
-                enabledBorder: OutlineInputBorder(
-                borderSide:
-                  BorderSide(color: Color(0xFF557F9F), width: 2.0),
-                ),
-              ),
-              isExpanded: false, // Set isExpanded to false
+                isExpanded: false, // Set isExpanded to false
               ),
             ),
             SizedBox(width: 8),
@@ -347,18 +347,48 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 color: Color(0xFF557F9F), // Specify the desired color
               ),
         ),
-        SizedBox(height: 10),
-        TextFormField(
-          maxLines: 5,
-          decoration: InputDecoration(
-            hintText: 'Descrivi i passaggi della ricetta',
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF557F9F), width: 2.0),
+        Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                maxLines: 5,
+                decoration: InputDecoration(
+                  hintText: 'Descrivi i passaggi della ricetta',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 2.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 2.0),
+                  ),
+                ),
+              ),
             ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF557F9F), width: 2.0),
+            GestureDetector(
+              onTap: _pickImage,
+              child: Container(
+              margin: EdgeInsets.only(left: 10),
+              height: 167,
+              width: 125, // Set the desired width
+              decoration: BoxDecoration(
+                color: Color(0xFF557F9F).withOpacity(0.2),
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                color: Color(0xFF557F9F),
+                ),
+              ),
+              child: Center(
+                child: _images.isEmpty
+                  ? Icon(Icons.add_a_photo)
+                  : Image.file(
+                    File(_images.first),
+                    fit: BoxFit.cover,
+                  ),
+              ),
+              ),
             ),
-          ),
+          ],
         ),
         SizedBox(height: 20),
         ElevatedButton(
@@ -376,9 +406,10 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   Widget buildTotalTime() {
     return Row(
       children: [
-        Text('Tempo totale:', style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Color(0xFF557F9F), // Specify the desired color
-              )),
+        Text('Tempo totale:',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Color(0xFF557F9F), // Specify the desired color
+                )),
         SizedBox(width: 10),
         Expanded(
           child: TextFormField(
