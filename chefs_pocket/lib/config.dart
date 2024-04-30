@@ -3,7 +3,6 @@ List<String> euMeasures = [
   "ml",
   "l",
   "kg",
-  "unit",
 ];
 
 List<String> usMeasures = [
@@ -18,10 +17,15 @@ List<String> usMeasures = [
 
 
 enum Tag{
-  dolce,
-  secondo,
-  vegano,
-  bevanda,
-  noGlutine,
-  contorni,
+  Dolce,
+  Primo,
+  Secondo,
+  Vegano,
+  Bevanda,
+  NoGlutine,
+  Contorno,
+  Vegetariano,
+  Carne,
+  Pesce,
+
 }
