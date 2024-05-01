@@ -1,3 +1,4 @@
+import 'package:chefs_pocket/models/day.dart';
 import 'package:chefs_pocket/models/ingredient.dart';
 import 'package:chefs_pocket/models/recipe.dart';
 import 'package:chefs_pocket/models/recipe_step.dart';
@@ -35,7 +36,9 @@ enum Tag {
 List<Recipe> mockRecipies = [
   Recipe(
     title: "Pasta al Pomodoro",
+    imageUrl: "../assets/recipes/pasta_pomodoro.jpg",
     tags: [Tag.Primo],
+    rating: 3,
     ingredients: [
       Ingredient(
         name: "Pasta",
@@ -75,6 +78,8 @@ List<Recipe> mockRecipies = [
   ),
   Recipe(
     title: "Pasta al Pesto",
+    imageUrl: "../assets/recipes/pasta_pesto.jpg",
+    rating: 2,
     tags: [Tag.Primo],
     ingredients: [
       Ingredient(
@@ -110,6 +115,8 @@ List<Recipe> mockRecipies = [
   ),
   Recipe(
     title: "Pasta alla Carbonara",
+    imageUrl: "../assets/recipes/pasta_carbonara.jpg",
+    rating: 4,
     tags: [Tag.Primo],
     ingredients: [
       Ingredient(
@@ -147,5 +154,57 @@ List<Recipe> mockRecipies = [
         description: "Aggiungi le uova e la pancetta",
       ),
     ],
+  ),
+];
+
+List<Day> mockDays = [
+  Day(
+    date: DateTime.now(),
+    lunch: mockRecipies,
+    dinner: mockRecipies,
+    snacks: mockRecipies,
+    breakfast: mockRecipies,
+  ),
+  Day(
+    date: DateTime.now().add(const Duration(days: 1)),
+    lunch: mockRecipies,
+    dinner: mockRecipies,
+    snacks: mockRecipies,
+    breakfast: mockRecipies,
+  ),
+  Day(
+    date: DateTime.now().add(const Duration(days: 2)),
+    lunch: mockRecipies,
+    dinner: mockRecipies,
+    snacks: mockRecipies,
+    breakfast: mockRecipies,
+  ),
+  Day(
+    date: DateTime.now().add(const Duration(days: 3)),
+    lunch: mockRecipies,
+    dinner: mockRecipies,
+    snacks: mockRecipies,
+    breakfast: mockRecipies,
+  ),
+  Day(
+    date: DateTime.now().add(const Duration(days: 4)),
+    lunch: mockRecipies,
+    dinner: mockRecipies,
+    snacks: mockRecipies,
+    breakfast: mockRecipies,
+  ),
+  Day(
+    date: DateTime.now().add(const Duration(days: 5)),
+    lunch: mockRecipies,
+    dinner: mockRecipies,
+    snacks: mockRecipies,
+    breakfast: mockRecipies,
+  ),
+  Day(
+    date: DateTime.now().add(const Duration(days: 6)),
+    lunch: mockRecipies,
+    dinner: mockRecipies,
+    snacks: mockRecipies,
+    breakfast: mockRecipies,
   ),
 ];

@@ -3,6 +3,7 @@ import 'package:chefs_pocket/components/bottom_bar.dart';
 import 'package:chefs_pocket/models/grocery_list.dart';
 import 'package:chefs_pocket/screens/grocery_list.dart';
 import 'package:chefs_pocket/screens/home_screen.dart';
+import 'package:chefs_pocket/screens/mealplanner_screen.dart';
 import 'package:chefs_pocket/screens/recipe_creation.dart';
 import 'package:chefs_pocket/screens/saved.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +39,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int currentIndex = 0;
   final List<Widget> _pages = <Widget>[
+    RecipeCreationPage(),
     HomeScreen(),
     SavedScreen(),
-    RecipeCreationPage(),
+ 
+    MealPlannerScreen(),
     GroceryListScreen(),
   ];
   @override
