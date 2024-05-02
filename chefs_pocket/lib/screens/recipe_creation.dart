@@ -75,11 +75,11 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             buildRatingAndPortions(),
             SizedBox(height: 5),
             buildIngredients(),
-            SizedBox(height: 15),
+            SizedBox(height: 5),
             buildProcedure(),
-            SizedBox(height: 15),
+            SizedBox(height: 5),
             buildTotalTime(),
-            SizedBox(height: 15),
+            SizedBox(height: 5),
             buildTags(),
           ],
         ),
@@ -109,11 +109,10 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+            borderSide: BorderSide(color: Color(0xFF557F9F), width: 2.0),
             borderRadius: BorderRadius.circular(10.0),
           ),
-            hintStyle: Theme.of(context).textTheme.bodyMedium,
-            hintText: 'Inserisci il titolo',
+            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),            hintText: 'Inserisci il titolo',
             
           ),
           validator: (value) {
@@ -132,12 +131,13 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   Widget buildImageUploadContainer() {
     return GestureDetector(
       onTap: _pickImage,
+    
       
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: DottedBorder(
           padding: EdgeInsets.all(0),
-          radius: Radius.circular(5),
+          radius: Radius.circular(10),
           color: Color(0xFF557F9F),
           dashPattern: [5, 5],
           borderType: BorderType.RRect,
@@ -153,9 +153,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               ),
             ),
             child: Center(
-              child: _images.isEmpty
-                  ? Icon(Icons.add_a_photo)
-                  : Image.file(
+              child: _images.isEmpty? Icon(Icons.add_a_photo, color: Color(0xFF557F9F)): Image.file(
                       File(_images.first),
                       fit: BoxFit.cover,
                     ),
@@ -207,57 +205,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
           ),
         ),
         SizedBox(width: 30),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    'Porzioni',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Color(0xFF557F9F), // Specify the desired color
-                        ),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  SizedBox(
-                    width: 50,
-                    height: 40,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      initialValue: '2', // Set the default value to 2
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal:
-                                10), // Adjust the vertical and horizontal padding
-                        alignLabelWithHint:
-                            true, // Align the label with the input field
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          this._portions = int.parse(value);
-                        });
-                        recipeManager.setPortions(
-                            int.parse(value)); // Update recipe portions
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+      
       ],
     );
   }
@@ -276,19 +224,26 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: 90,
+              width: 60,
               child: TextFormField(
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium,
                 decoration: InputDecoration(
                   
-                  hintStyle: Theme.of(context).textTheme.bodyMedium,
-                  hintText: 'Quantità',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                  ),
+                   focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                      borderRadius: BorderRadius.circular(10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                      borderRadius: BorderRadius.circular(10.0),),
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey, fontSize: 14),
+                  hintText: '500',
+                 
                   contentPadding: EdgeInsets.symmetric(vertical: 2), // Decrease the vertical padding
                 ),
               ),
@@ -297,24 +252,29 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             SizedBox(
               width: 70,
               child: DropdownButtonFormField(
+                borderRadius: BorderRadius.circular(10),
                 value: euMeasures[0], // Set the initial value to 'g'
                 items: euMeasures.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value, style: Theme.of(context).textTheme.bodyMedium),
+                    child: Text(value, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey)),
                   );
                 }).toList(),
                 onChanged: (_) {},
                 decoration: InputDecoration(
                   hintStyle: Theme.of(context).textTheme.bodyMedium,
                   contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                      borderRadius: BorderRadius.circular(10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                      borderRadius: BorderRadius.circular(10.0),),
                 ),
                 isExpanded: false, // Set isExpanded to false
               ),
@@ -323,16 +283,19 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             Expanded(
               child: TextFormField(
                 decoration: InputDecoration(
-                  hintStyle: Theme.of(context).textTheme.bodyMedium,
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
                   hintText: 'Ingrediente',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                  ),
+                focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                      borderRadius: BorderRadius.circular(10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                      borderRadius: BorderRadius.circular(10.0),),
                   contentPadding: EdgeInsets.symmetric(
                       horizontal: 10), // Decrease the vertical padding
                 ),
@@ -344,13 +307,66 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+              Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Porzioni',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Color(0xFF557F9F), // Specify the desired color
+                        ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  SizedBox(
+                    width: 50,
+                    height: 35,
+                    child: TextFormField(
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      keyboardType: TextInputType.number,
+                      initialValue: '2', // Set the default value to 2
+                      decoration: InputDecoration(
+                         focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                            ),
+                        enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                        focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF557F9F), width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0)),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 8, horizontal:10), // Adjust the vertical and horizontal padding
+                        alignLabelWithHint:  true, // Align the label with the input field
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          this._portions = int.parse(value);
+                        });
+                        recipeManager.setPortions(
+                            int.parse(value)); // Update recipe portions
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+
             ElevatedButton(
               onPressed: () {
                 Ingredient ingredient =
                     Ingredient(name: '', quantity: 0, unit: 'g');
                 recipeManager.addIngredient(ingredient); // Add new ingredient
               },
-              child: Text('+ Ingrediente'),
+              child: Text('+ Ingrediente', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Color(0xFF557F9F),
@@ -545,371 +561,3 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
 }
 
 
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Nuova ricetta'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Titolo
-                TextFormField(
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    labelText: 'Titolo',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Inserisci un titolo';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) =>
-                      recipeManager.setTitle(value), // Update recipe title
-                ),
-
-                // Immagini
-                SizedBox(height: 16.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _images.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index == _images.length) {
-                            return ElevatedButton(
-                              onPressed: () async {
-                                final image = await ImagePicker().pickImage(
-                                  source: ImageSource.gallery,
-                                );
-                                if (image != null) {
-                                  setState(() {
-                                    _images.add(image.path);
-                                  });
-                                  // Update recipe image URL
-                                  recipeManager.setImageUrl(image.path);
-                                }
-                              },
-                              child: Icon(Icons.add),
-                            );
-                          } else {
-                            return Image.file(
-                              File(_images[index]),
-                              width: 100.0,
-                              height: 100.0,
-                              fit: BoxFit.cover,
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-
-                // Voto
-                SizedBox(height: 16.0),
-                Row(
-                  children: [
-                    RatingBar.builder(
-                      initialRating: _rating,
-                      minRating: 0,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemSize: 32.0,
-                      unratedColor: Colors.grey,
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating) {
-                        setState(() {
-                          _rating = rating;
-                        });
-                        recipeManager
-                            .setRating(rating.toInt()); // Update recipe rating
-                      },
-                    ),
-                    SizedBox(width: 16.0),
-                    DropdownButton<int>(
-                      value: _portions,
-                      items: [
-                        for (int i = 1; i <= 10; i++)
-                          DropdownMenuItem(
-                            child: Text('$i porzioni'),
-                            value: i,
-                          ),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _portions = value!;
-                        });
-                        recipeManager
-                            .setPortions(value!); // Update recipe portions
-                      },
-                    ),
-                  ],
-                ),
-
-                // Ingredienti
-                SizedBox(height: 8.0),
-                ElevatedButton(
-                  onPressed: () {
-                    final section = Section(title: '');
-                    final ingredient =
-                        Ingredient(name: '', quantity: 0, unit: 'g');
-                    section.ingredients.add(ingredient);
-                    setState(() {
-                      _sections.add(section);
-                    });
-                    recipeManager.addSection(section); // Update recipe sections
-                  },
-                  child: Text('+ Sezione'),
-                ),
-                SizedBox(height: 8.0),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: widget.section.ingredients.length,
-                  itemBuilder: (context, index2) {
-                    final ingredient = widget.section.ingredients[index2];
-                    return Row(
-                      children: [
-                        Text(
-                            '${ingredient.quantity} ${ingredient.unit} ${ingredient.name}'),
-                        Spacer(),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              widget.section.ingredients.removeAt(index2);
-                              recipeManager.removeIngredient(widget.section,
-                                  ingredient); // Update recipe ingredients
-                            });
-                          },
-                          icon: Icon(Icons.delete),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-
-// Procedimento
-                SizedBox(height: 16.0),
-                Text('Procedimento'),
-                SizedBox(height: 8.0),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _steps.length,
-                  itemBuilder: (context, index) {
-                    final step = _steps[index];
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(step.description),
-                              if (step.imageUrls != null)
-                                Image.file(
-                                  File(widget.step.imageUrls[0]!),
-                                  width: 100.0,
-                                  height: 100.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              if (step.timer != null)
-                                Text('Timer: ${step.timer} minuti'),
-                            ],
-                          ),
-                        ),
-                        PopupMenuButton<StepAction>(
-                          onSelected: (action) {
-                            switch (action) {
-                              case StepAction.setTimer:
-                                _setTimerForStep(index);
-                                break;
-                              case StepAction.removeTimer:
-                                _removeTimerForStep(index);
-                                break;
-                              case StepAction.deleteStep:
-                                _deleteStep(index);
-                                break;
-                            }
-                          },
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              value: StepAction.setTimer,
-                              child: Text('Imposta timer'),
-                            ),
-                            PopupMenuItem(
-                              value: StepAction.removeTimer,
-                              child: Text('Rimuovi timer'),
-                            ),
-                            PopupMenuItem(
-                              value: StepAction.deleteStep,
-                              child: Text('Elimina step'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _steps.add(RecipeStep(description: ''));
-                    });
-                    recipeManager.addStep(
-                        RecipeStep(description: '')); // Update recipe steps
-                  },
-                  child: Text('+ Step'),
-                ),
-
-// Tempo totale
-                SizedBox(height: 16.0),
-                Row(
-                  children: [
-                    DropdownButton<int>(
-                      value: _selectedHour,
-                      items: [
-                        for (int i = 0; i <= 24; i++)
-                          DropdownMenuItem(
-                            child: Text('$i ore'),
-                            value: i,
-                          ),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedHour = value!;
-                          recipeManager.setDuration(Duration(
-                              hours: value!)); // Update recipe duration
-                        });
-                      },
-                    ),
-                    SizedBox(width: 16.0),
-                    DropdownButton<int>(
-                      value: _selectedMinute,
-                      items: [
-                        for (int i = 0; i <= 60; i++)
-                          DropdownMenuItem(
-                            child: Text('$i minuti'),
-                            value: i,
-                          ),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedMinute = value!;
-                          recipeManager.setDuration(Duration(
-                              minutes: value!)); // Update recipe duration
-                        });
-                      },
-                    ),
-                  ],
-                ),
-
-// Tag
-                SizedBox(height: 16.0),
-                Wrap(
-                  spacing: 8.0,
-                  children: _selectedTags
-                      .map((tag) => Chip(
-                            label: Text(tag.name),
-                            onDeleted: () {
-                              setState(() {
-                                _selectedTags.remove(tag);
-                                recipeManager.setTags(
-                                    _selectedTags); // Update recipe tags
-                              });
-                            },
-                          ))
-                      .toList(),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    final newTag = await showDialog<String>(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text('Aggiungi tag'),
-                        content: TextField(
-                          controller: TextEditingController(),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context, null);
-                            },
-                            child: Text('Annulla'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              final tag = Navigator.pop(context) as Tag;
-                              if (tag != null) {
-                                setState(() {
-                                  _selectedTags.add(tag);
-                                  recipeManager.setTags(
-                                      _selectedTags); // Update recipe tags
-                                });
-                              }
-                            },
-                            child: Text('Aggiungi'),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  child: Text('Aggiungi tag'),
-                ),
-
-// Pulsante per salvare la ricetta
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final recipe = recipeManager
-                          .recipe; // Get the updated recipe from RecipeManager
-                      recipe.sections =
-                          _sections; // Update recipe sections with the current state
-                      recipe.steps =
-                          _steps; // Update recipe steps with the current state
-
-                      // Save the recipe to your storage mechanism
-                      // ...
-
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Text('Salva ricetta'),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _setTimerForStep(int index) {
-    // Implementare la logica per impostare il timer per lo step
-  }
-
-  void _removeTimerForStep(int index) {
-    // Implementare la logica per rimuovere il timer per lo step
-  }
-
-  void _deleteStep(int index) {
-    setState(() {
-      _steps.removeAt(index);
-      recipeManager.removeStep(_steps[index]); // Update recipe steps
-    });
-  }
-}
-
-enum StepAction { setTimer, removeTimer, deleteStep } */
