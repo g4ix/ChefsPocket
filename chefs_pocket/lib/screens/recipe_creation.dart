@@ -35,7 +35,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   final _steps = <RecipeStep>[];
   int _selectedHour = 0;
   int _selectedMinute = 0;
-  final _selectedTags = <Tag>[];
+  final List<Tag> _selectedTags = [];
   bool _useEUUnits = true;
 
   Recipe recipe = Recipe();
@@ -71,15 +71,17 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         child: Column(
           children: <Widget>[
             buildTitleInput(),
+            SizedBox(height: 10),
             buildImageUploadContainer(),
-            buildRatingAndPortions(),
-            SizedBox(height: 5),
-            buildIngredients(),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
+            buildRatingAndToggle(),
+            SizedBox(height: 10),
+            buildIngredientsAndPortions(),
+            SizedBox(height: 10),
             buildProcedure(),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             buildTotalTime(),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             buildTags(),
           ],
         ),
@@ -98,22 +100,25 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               ),
         ),
         TextFormField(
-        
-          decoration:  InputDecoration(
+          decoration: InputDecoration(
             focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-            borderRadius: BorderRadius.circular(10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF557F9F), width: 2.0),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),            hintText: 'Inserisci il titolo',
-            
+              borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+              borderRadius: BorderRadius.circular(
+                  10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF557F9F), width: 2.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            hintStyle: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: Colors.grey),
+            hintText: 'Inserisci il titolo',
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -121,8 +126,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             }
             return null;
           },
-          onChanged: (value) =>
-              recipe.setTitle(value), // Update recipe title
+          onChanged: (value) => recipe.setTitle(value), // Update recipe title
         ),
       ],
     );
@@ -131,8 +135,6 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   Widget buildImageUploadContainer() {
     return GestureDetector(
       onTap: _pickImage,
-    
-      
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: DottedBorder(
@@ -148,12 +150,12 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             decoration: BoxDecoration(
               color: Color(0xFF557F9F).withOpacity(0.2),
               borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Color(0xFF557F9F).withOpacity(0.2)
-              ),
+              border: Border.all(color: Color(0xFF557F9F).withOpacity(0.2)),
             ),
             child: Center(
-              child: _images.isEmpty? Icon(Icons.add_a_photo, color: Color(0xFF557F9F)): Image.file(
+              child: _images.isEmpty
+                  ? Icon(Icons.add_a_photo, color: Color(0xFF557F9F))
+                  : Image.file(
                       File(_images.first),
                       fit: BoxFit.cover,
                     ),
@@ -164,9 +166,9 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
     );
   }
 
-  Widget buildRatingAndPortions() {
+  Widget buildRatingAndToggle() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: Column(
@@ -174,24 +176,27 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             children: [
               Row(
                 children: [
-                  SizedBox(height: 5),
+                  SizedBox(height: 10),
                   Text(
                     'Voto',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: Color(0xFF557F9F), // Specify the desired color
                         ),
                   ),
-                  SizedBox(width: 5),
+                  SizedBox(width: 8),
                   RatingBar.builder(
                     initialRating: 3,
                     minRating: 1,
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
-                    itemSize: 20, // Set the size of the stars
-                    itemPadding: EdgeInsets.symmetric(horizontal:0), // Decrease the itemPadding value to make the stars closer
+                    itemSize: 30, // Set the size of the stars
+                    itemPadding: EdgeInsets.symmetric(
+                        horizontal:
+                            0), // Decrease the itemPadding value to make the stars closer
                     itemBuilder: (context, _) => Icon(Icons.star,
-                        color: Color(0xFF557F9F), size: 10), // Set the size of the stars
+                        color: Color(0xFF557F9F),
+                        size: 10), // Set the size of the stars
                     onRatingUpdate: (rating) {
                       setState(() {
                         this._rating = rating;
@@ -205,21 +210,46 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
           ),
         ),
         SizedBox(width: 30),
-      
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('EU'),
+            Switch(
+              value: _useEUUnits,
+              onChanged: (value) {
+                // logica per cambiare tra EU e US
+                setState(() {
+                  _useEUUnits = value;
+                });
+              },
+              activeTrackColor: Color(0xFF557F9F),
+              activeColor: Colors.white,
+              inactiveTrackColor: Color(0xFF557F9F),
+              inactiveThumbColor: Colors.white,
+              thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                (states) {
+                  return null; // Torna al tuo codice qui
+                },
+              ),
+            ),
+            Text('US'),
+          ],
+        )
       ],
     );
   }
 
-  Widget buildIngredients() {
+  Widget buildIngredientsAndPortions() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Ingredienti:',
+          'Ingredienti',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Color(0xFF557F9F), // Specify the desired color
               ),
         ),
+        SizedBox(height: 5),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -229,22 +259,30 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium,
                 decoration: InputDecoration(
-                  
-                   focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0),),
-                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey, fontSize: 14),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderRadius: BorderRadius.circular(
+                        10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.grey, fontSize: 14),
                   hintText: '500',
-                 
-                  contentPadding: EdgeInsets.symmetric(vertical: 2), // Decrease the vertical padding
+
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: 2), // Decrease the vertical padding
                 ),
               ),
             ),
@@ -257,7 +295,11 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 items: euMeasures.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey)),
+                    child: Text(value,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Colors.grey)),
                   );
                 }).toList(),
                 onChanged: (_) {},
@@ -265,16 +307,21 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                   hintStyle: Theme.of(context).textTheme.bodyMedium,
                   contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
                   focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0),),
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderRadius: BorderRadius.circular(
+                        10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                 ),
                 isExpanded: false, // Set isExpanded to false
               ),
@@ -283,19 +330,27 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             Expanded(
               child: TextFormField(
                 decoration: InputDecoration(
-                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.grey),
                   hintText: 'Ingrediente',
-                focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0),),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderRadius: BorderRadius.circular(
+                        10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   contentPadding: EdgeInsets.symmetric(
                       horizontal: 10), // Decrease the vertical padding
                 ),
@@ -307,66 +362,79 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-              Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Porzioni',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Color(0xFF557F9F), // Specify the desired color
-                        ),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  SizedBox(
-                    width: 50,
-                    height: 35,
-                    child: TextFormField(
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      keyboardType: TextInputType.number,
-                      initialValue: '2', // Set the default value to 2
-                      decoration: InputDecoration(
-                         focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                  Row(
+                    children: [
+                      Text(
+                        'Porzioni',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Color(
+                                  0xFF557F9F), // Specify the desired color
                             ),
-                        enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      SizedBox(
+                        width: 50,
+                        height: 35,
+                        child: TextFormField(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          keyboardType: TextInputType.number,
+                          initialValue: '2', // Set the default value to 2
+                          decoration: InputDecoration(
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF557F9F), width: 1.0),
+                              borderRadius: BorderRadius.circular(
+                                  10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF557F9F), width: 1.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                        focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF557F9F), width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0)),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 8, horizontal:10), // Adjust the vertical and horizontal padding
-                        alignLabelWithHint:  true, // Align the label with the input field
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF557F9F), width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0)),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal:
+                                    10), // Adjust the vertical and horizontal padding
+                            alignLabelWithHint:
+                                true, // Align the label with the input field
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              this._portions = int.parse(value);
+                            });
+                            recipeManager.setPortions(
+                                int.parse(value)); // Update recipe portions
+                          },
+                        ),
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          this._portions = int.parse(value);
-                        });
-                        recipeManager.setPortions(
-                            int.parse(value)); // Update recipe portions
-                      },
-                    ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-
+            ),
             ElevatedButton(
               onPressed: () {
                 Ingredient ingredient =
                     Ingredient(name: '', quantity: 0, unit: 'g');
                 recipeManager.addIngredient(ingredient); // Add new ingredient
               },
-              child: Text('+ Ingrediente', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),),
+              child: Text(
+                '+ Ingrediente',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.white),
+              ),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Color(0xFF557F9F),
@@ -374,8 +442,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 disabledBackgroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                 shape: RoundedRectangleBorder(
-                       borderRadius: BorderRadius.circular(10),
-              ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
           ],
@@ -390,7 +458,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
       children: [
         SizedBox(height: 10),
         Text(
-          'Procedimento:',
+          'Procedimento',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Color(0xFF557F9F), // Specify the desired color
               ),
@@ -401,8 +469,11 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               child: TextFormField(
                 maxLines: 5,
                 decoration: InputDecoration(
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.grey),
                   hintText: 'Descrivi i passaggi della ricetta',
-                  hintStyle: Theme.of(context).textTheme.bodyMedium,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFF557F9F), width: 1.0),
@@ -417,35 +488,37 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             GestureDetector(
               onTap: _pickImage,
               child: Container(
-              margin: EdgeInsets.only(left: 10),
-              height: 167,
-              width: 125, // Set the desired width
-              decoration: BoxDecoration(
-                color: Color(0xFF557F9F).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all( color: Color(0xFF557F9F).withAlpha(20),
+                margin: EdgeInsets.only(left: 10),
+                height: 167,
+                width: 125, // Set the desired width
+                decoration: BoxDecoration(
+                  color: Color(0xFF557F9F).withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: Color(0xFF557F9F).withAlpha(20),
+                  ),
                 ),
-              ),
-              child: DottedBorder(
-                padding: EdgeInsets.all(0),
-                radius: Radius.circular(5),
-                color: Color(0xFF557F9F),
-                dashPattern: [5, 5],
-                borderType: BorderType.RRect,
-                strokeWidth: 2,
-                child: Center(
-                  child: _images.isEmpty? Icon(Icons.add_a_photo): Image.file(
-                      File(_images.first),
-                      fit: BoxFit.cover,
-                    ),
+                child: DottedBorder(
+                  padding: EdgeInsets.all(0),
+                  radius: Radius.circular(5),
+                  color: Color(0xFF557F9F),
+                  dashPattern: [5, 5],
+                  borderType: BorderType.RRect,
+                  strokeWidth: 2,
+                  child: Center(
+                    child: _images.isEmpty
+                        ? Icon(Icons.add_a_photo, color: Color(0xFF557F9F),)
+                        : Image.file(
+                            File(_images.first),
+                            fit: BoxFit.cover,
+                          ),
+                  ),
                 ),
-              ),
               ),
             ),
           ],
         ),
         SizedBox(height: 20),
-        
         ElevatedButton(
           onPressed: () {
             setState(() {
@@ -453,15 +526,17 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             });
           },
           style: ElevatedButton.styleFrom(
-               foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF557F9F),
-                disabledForegroundColor: Color(0xFFF557F9F),
-                disabledBackgroundColor: Colors.white,
-            ),
-          
-          child: Text('Aggiungi step', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white)),
+            foregroundColor: Colors.white,
+            backgroundColor: Color(0xFF557F9F),
+            disabledForegroundColor: Color(0xFFF557F9F),
+            disabledBackgroundColor: Colors.white,
+          ),
+          child: Text('Aggiungi step',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: Colors.white)),
         ),
-      
       ],
     );
   }
@@ -469,7 +544,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   Widget buildTotalTime() {
     return Row(
       children: [
-        Text('Tempo totale:',
+        Text('Tempo totale',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Color(0xFF557F9F), // Specify the desired color
                 )),
@@ -499,65 +574,60 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
 
   Widget buildTags() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Tag:',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Color(0xFF557F9F), // Specifica il colore desiderato
-                )),
-        Wrap(
-          spacing: 8.0,
-          children: List<Widget>.generate(
-            Tag.values.length,
-            (int index) {
-              final tag = Tag.values[index];
-              return Container(
-                margin: EdgeInsets.all(4.0),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Color(0xFF557F9F), // Set border color
-                    width: 1.0, // Set border width
-                  ),
-                  borderRadius: BorderRadius.circular(8.0), // Set border radius
-                ), // Aggiungi margine per creare un bordo attorno al pulsante
-                child: ChoiceChip(
-                  label: Text(
-                    tag.toString().replaceAll('Tag.', ''),
-                    style: TextStyle(
-                      color: _selectedTags.contains(tag)
-                          ? Colors
-                              .white // Imposta il colore del testo su bianco se selezionato
-                          : Color(
-                              0xFF557F9F), // Imposta il colore del testo su blu se non selezionato
-                    ),
-                  ),
-                  selected: _selectedTags.contains(tag),
-                  onSelected: (bool selected) {
-                    setState(() {
-                      if (selected) {
-                        _selectedTags.add(tag);
-                      } else {
-                        _selectedTags.remove(tag);
-                      }
-                      recipeManager.setTag(tag); // Aggiorna i tag della ricetta
-                    });
-                  },
-                  backgroundColor: _selectedTags.contains(tag)
-                      ? Color(
-                          0xFF557F9F) // Imposta il colore di sfondo su blu se selezionato
-                      : Colors
-                          .white, // Imposta il colore di sfondo su bianco se non selezionato
-                  selectedColor:
-                      Color(0xFF557F9F), // Imposta il colore selezionato su blu
-                ),
-              );
-            },
-          ),
-        ),
-        SizedBox(height: 20),
+        buildTitleTag(),
+        buildChoiceChips(),
       ],
     );
   }
+
+  Widget buildTitleTag() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text('Tag',
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Color(0xFF557F9F), // Specifica il colore desiderato
+              )),
+    );
+  }
+
+  Widget buildChoiceChips() {
+    return Wrap(
+      spacing: 4.0, // Spazio tra le chips
+      runSpacing: 4.0, // Spazio tra le righe
+      children: Tag.values.map((tag) {
+        return ChoiceChip(
+          label: Text(
+            tag.toString().replaceAll('Tag.', ''),
+            style: TextStyle(
+              color: _selectedTags.contains(tag)
+                  ? Colors
+                      .white // Imposta il colore del testo su bianco se selezionato
+                  : Color(
+                      0xFF557F9F), // Imposta il colore del testo su blu se non selezionato
+            ),
+          ),
+          selected: _selectedTags.contains(tag),
+          selectedColor: Color(0xFF557F9F),
+          onSelected: (bool selected) {
+            setState(() {
+              if (selected) {
+                _selectedTags.add(tag);
+              } else {
+                _selectedTags.remove(tag);
+              }
+            });
+          },
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Color(0xFF557F9F), // Imposta il colore del bordo
+              width: 1.0, // Imposta la larghezza del bordo
+            ),
+            borderRadius:
+                BorderRadius.circular(8.0), // Imposta il raggio del bordo
+          ),
+        );
+      }).toList(),
+    );
+  }
 }
-
-
