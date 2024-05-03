@@ -8,12 +8,9 @@ class GroceryListScreen extends StatefulWidget {
 }
 
 class _GroceryListScreenState extends State<GroceryListScreen> {
-  Map<String, List<String>> sections = {
-    'Carne e affettati': [],
-    'Frutta e verdura': [],
-    'Latticini': [],
-    'Bevande': [],
-  };
+  List<String> ingredients = [];
+  String note = "Non c'è nulla da ricordare per oggi!";
+  bool _isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +20,30 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
           "Lista 1",
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Color(0xFF557F9F), size: 30),
-          onPressed: () {
-            // implementare la logica per aprire il drawer
-          },
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu, color: Color(0xFF557F9F), size: 30),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.add, color: Color(0xFF557F9F), size: 30),
             onPressed: () {
-              // implementare la logica aggiungere l'item alla lista
-
+              setState(() {
+                _addIngredient();
+              });
             },
           ),
         ],
       ),
+      drawer: buildDrawer(),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: <Widget>[
-          ...sections.entries
-              .map((entry) => buildListSection(entry.key, entry.value))
-              .toList(),
+          buildList(),
           SizedBox(height: 20),
           buildReminder(),
         ],
@@ -52,6 +51,113 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
     );
   }
 
+  Widget buildList() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Ingredienti',
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Color(0xFF557F9F),
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        ...ingredients
+            .map((ingredient) => ListTile(
+                  title: Text(ingredient),
+                  trailing: Checkbox(
+                    shape: CircleBorder(),
+                    value: _isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isChecked = value!;
+                      });
+                    },
+                    activeColor: Color(0xFF557F9F),
+                    checkColor: Colors.white,
+                  ),
+                ))
+            .toList(),
+      ],
+    );
+  }
+
+  void _addIngredient() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String newIngredient = '';
+
+        return AlertDialog(
+          title: Text('Aggiungi ingrediente'),
+          content: TextField(
+            onChanged: (value) {
+              newIngredient = value;
+            },
+          ),
+          actions: [
+            TextButton(
+              child: Text('Annulla'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Aggiungi'),
+              onPressed: () {
+                setState(() {
+                  ingredients.add(newIngredient);
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget buildDrawer() {
+    return Drawer(
+      child: Container(
+        color: Color(0xFFFFFDF4), // Set the background color of the drawer
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xFF557F9F),
+              ),
+              child: Text(
+                'Le tue liste',
+                style: TextStyle(
+                  color: Color(0xFFFFFDF4),
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.list),
+              title: Text('Lista 1'),
+              onTap: () {
+                // Aggiungi la logica per passare alla Lista 1
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.list),
+              title: Text('Lista 2'),
+              onTap: () {
+                // Aggiungi la logica per passare alla Lista 2
+              },
+            ),
+            // Aggiungi più ListTile per ogni lista che hai
+          ],
+        ),
+      ),
+    );
+  }
+
+/** LISTA CON SEZIONI 
   Widget buildListSection(String title, List<String> items) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,26 +210,25 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       ],
     );
   }
+  */
 
   Widget buildReminder() {
-    bool isEditing = false;
-    String note = "Non c'è nulla da ricordare per oggi!";
-
     return Container(
       padding: const EdgeInsets.all(16.0),
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       height: 200,
       decoration: BoxDecoration(
-          color: Color(0xFFFFFED9),
-          borderRadius: BorderRadius.circular(20.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ]),
+        color: Color(0xFFFFFED9),
+        borderRadius: BorderRadius.circular(20.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -134,37 +239,63 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
                 "Da ricordare oggi",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  setState(() {
-                    isEditing = !isEditing;
-                  });
+              GestureDetector(
+                onTap: () {
+                  _editNote();
                 },
+                child: Icon(
+                  Icons.edit,
+                  color: Color(0xFF557F9F),
+                ),
               ),
             ],
           ),
-          isEditing
-              ? TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      note = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF557F9F),
-                      ),
-                    ),
-                  ),
-                )
-              : Text(
-                  note,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+          SizedBox(
+              height: 10), // Aggiungi un po' di spazio tra il titolo e la nota
+          Text(
+            note,
+            style: Theme.of(context).textTheme.bodyMedium,
+          )
         ],
       ),
+    );
+  }
+
+  void _editNote() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String newNote = note;
+        TextEditingController textEditingController =
+            TextEditingController(text: note);
+
+        return AlertDialog(
+          title: Text('Modifica note'),
+          content: TextField(
+            onChanged: (value) {
+              newNote = value;
+            },
+            controller: textEditingController,
+          ),
+          actions: [
+            TextButton(
+              child: Text('Annulla'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Salva'),
+              onPressed: () {
+                setState(() {
+                  note = newNote;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
