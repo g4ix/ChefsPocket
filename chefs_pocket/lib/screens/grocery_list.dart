@@ -1,3 +1,4 @@
+import 'package:chefs_pocket/models/grocery_list.dart';
 import 'package:flutter/material.dart';
 
 class GroceryListScreen extends StatefulWidget {
@@ -8,16 +9,23 @@ class GroceryListScreen extends StatefulWidget {
 }
 
 class _GroceryListScreenState extends State<GroceryListScreen> {
-  List<String> ingredients = [];
   String note = "Non c'è nulla da ricordare per oggi!";
-  bool _isChecked = false;
+  Map<String, bool> ingredientCheckStatus = {};
+  String newListName = '';
+  List<GroceryList> groceryLists = [
+    GroceryList(
+        title: 'Lista della spesa',
+        elements: ['Pomodori', 'Cipolle', 'Pane', 'Latte'],
+        note: 'Comprare il latte')
+  ];
+  int currentListIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Lista 1",
+          groceryLists[currentListIndex].title, // Modifica questa linea
           style: Theme.of(context).textTheme.titleMedium,
         ),
         leading: Builder(
@@ -62,22 +70,22 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
                 fontWeight: FontWeight.bold,
               ),
         ),
-        ...ingredients
-            .map((ingredient) => ListTile(
-                  title: Text(ingredient),
-                  trailing: Checkbox(
-                    shape: CircleBorder(),
-                    value: _isChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _isChecked = value!;
-                      });
-                    },
-                    activeColor: Color(0xFF557F9F),
-                    checkColor: Colors.white,
-                  ),
-                ))
-            .toList(),
+        ...groceryLists[currentListIndex].elements.map((ingredient) {
+          return ListTile(
+            title: Text(ingredient),
+            trailing: Checkbox(
+              shape: CircleBorder(),
+              value: ingredientCheckStatus[ingredient] ?? false,
+              onChanged: (bool? value) {
+                setState(() {
+                  ingredientCheckStatus[ingredient] = value!;
+                });
+              },
+              activeColor: Color(0xFF557F9F),
+              checkColor: Colors.white,
+            ),
+          );
+        }).toList(),
       ],
     );
   }
@@ -87,7 +95,6 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       context: context,
       builder: (BuildContext context) {
         String newIngredient = '';
-
         return AlertDialog(
           title: Text('Aggiungi ingrediente'),
           content: TextField(
@@ -106,7 +113,11 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
               child: Text('Aggiungi'),
               onPressed: () {
                 setState(() {
-                  ingredients.add(newIngredient);
+                  groceryLists[currentListIndex]
+                      .elements
+                      .add(newIngredient); // Modifica questa linea
+                  ingredientCheckStatus[newIngredient] =
+                      false; // Imposta lo stato iniziale del checkbox su false
                 });
                 Navigator.of(context).pop();
               },
@@ -136,18 +147,25 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
                 ),
               ),
             ),
+            ...groceryLists.asMap().entries.map((entry) {
+              int index = entry.key;
+              GroceryList list = entry.value;
+              return ListTile(
+                leading: Icon(Icons.list),
+                title: Text(list.title),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    currentListIndex = index;
+                  });
+                },
+              );
+            }).toList(),
             ListTile(
-              leading: Icon(Icons.list),
-              title: Text('Lista 1'),
+              leading: Icon(Icons.add),
+              title: Text('Nuova lista'),
               onTap: () {
-                // Aggiungi la logica per passare alla Lista 1
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.list),
-              title: Text('Lista 2'),
-              onTap: () {
-                // Aggiungi la logica per passare alla Lista 2
+                _createNewList();
               },
             ),
             // Aggiungi più ListTile per ogni lista che hai
@@ -156,6 +174,129 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       ),
     );
   }
+
+  void _createNewList() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Crea nuova lista'),
+          content: TextField(
+            onChanged: (value) {
+              newListName = value;
+            },
+          ),
+          actions: [
+            TextButton(
+              child: Text('Annulla'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Crea'),
+              onPressed: () {
+                setState(() {
+                  Navigator.of(context).pop();
+                  groceryLists.add(GroceryList(title: newListName, elements: [], note: ''));
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget buildReminder() {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      height: 200,
+      decoration: BoxDecoration(
+        color: Color(0xFFFFFED9),
+        borderRadius: BorderRadius.circular(20.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Da ricordare oggi",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              GestureDetector(
+                onTap: () {
+                  _editNote();
+                },
+                child: Icon(
+                  Icons.edit,
+                  color: Color(0xFF557F9F),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+              height: 10), // Aggiungi un po' di spazio tra il titolo e la nota
+          Text(
+            groceryLists[currentListIndex].note, // Modifica questa linea
+            style: Theme.of(context).textTheme.bodyMedium,
+          )
+        ],
+      ),
+    );
+  }
+
+  void _editNote() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String newNote =
+            groceryLists[currentListIndex].note; // Modifica questa linea
+        TextEditingController textEditingController = TextEditingController(
+            text: groceryLists[currentListIndex].note); // Modifica questa linea
+
+        return AlertDialog(
+          title: Text('Modifica note'),
+          content: TextField(
+            onChanged: (value) {
+              newNote = value;
+            },
+            controller: textEditingController,
+          ),
+          actions: [
+            TextButton(
+              child: Text('Annulla'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Salva'),
+              onPressed: () {
+                setState(() {
+                  groceryLists[currentListIndex].note =
+                      newNote; // Modifica questa linea
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
 
 /** LISTA CON SEZIONI 
   Widget buildListSection(String title, List<String> items) {
@@ -211,91 +352,3 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
     );
   }
   */
-
-  Widget buildReminder() {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      height: 200,
-      decoration: BoxDecoration(
-        color: Color(0xFFFFFED9),
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Da ricordare oggi",
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              GestureDetector(
-                onTap: () {
-                  _editNote();
-                },
-                child: Icon(
-                  Icons.edit,
-                  color: Color(0xFF557F9F),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-              height: 10), // Aggiungi un po' di spazio tra il titolo e la nota
-          Text(
-            note,
-            style: Theme.of(context).textTheme.bodyMedium,
-          )
-        ],
-      ),
-    );
-  }
-
-  void _editNote() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        String newNote = note;
-        TextEditingController textEditingController =
-            TextEditingController(text: note);
-
-        return AlertDialog(
-          title: Text('Modifica note'),
-          content: TextField(
-            onChanged: (value) {
-              newNote = value;
-            },
-            controller: textEditingController,
-          ),
-          actions: [
-            TextButton(
-              child: Text('Annulla'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Salva'),
-              onPressed: () {
-                setState(() {
-                  note = newNote;
-                });
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
