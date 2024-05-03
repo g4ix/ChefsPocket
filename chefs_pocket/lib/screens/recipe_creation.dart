@@ -56,7 +56,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back_ios_new),
           onPressed: () {},
         ),
         actions: [
@@ -99,6 +99,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 color: Color(0xFF557F9F), // Specify the desired color
               ),
         ),
+        SizedBox(height: 5),
         TextFormField(
           decoration: InputDecoration(
             focusedErrorBorder: OutlineInputBorder(
@@ -120,6 +121,9 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 ?.copyWith(color: Colors.grey),
             hintText: 'Inserisci il titolo',
           ),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontSize: 14, // Decrease the font size
+              ),
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Inserisci un titolo';
@@ -334,7 +338,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                       .textTheme
                       .bodyMedium
                       ?.copyWith(color: Colors.grey),
-                  hintText: 'Ingrediente',
+                  hintText: 'Farina',
                   focusedErrorBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFF557F9F), width: 1.0),
@@ -463,6 +467,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 color: Color(0xFF557F9F), // Specify the desired color
               ),
         ),
+        SizedBox(height: 5),
         Row(
           children: [
             Expanded(
@@ -507,7 +512,10 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                   strokeWidth: 2,
                   child: Center(
                     child: _images.isEmpty
-                        ? Icon(Icons.add_a_photo, color: Color(0xFF557F9F),)
+                        ? Icon(
+                            Icons.add_a_photo,
+                            color: Color(0xFF557F9F),
+                          )
                         : Image.file(
                             File(_images.first),
                             fit: BoxFit.cover,
@@ -621,7 +629,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
           shape: RoundedRectangleBorder(
             side: BorderSide(
               color: Color(0xFF557F9F), // Imposta il colore del bordo
-              width: 1.0, // Imposta la larghezza del bordo
+              width: 5.0, // Imposta la larghezza del bordo
             ),
             borderRadius:
                 BorderRadius.circular(8.0), // Imposta il raggio del bordo
