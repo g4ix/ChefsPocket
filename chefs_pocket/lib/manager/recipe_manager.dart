@@ -6,57 +6,24 @@ import '../models/recipe_step.dart';
 import '../config.dart';
 
 class RecipeManager extends ChangeNotifier {
-  Recipe _recipe = Recipe();
+  List<Recipe> _recipes = [];
 
-  Recipe get recipe => _recipe;
+  List<Recipe> get recipe => _recipes;
 
-  void setTitle(String title) {
-    _recipe.title = title;
+ 
+  void addRecipe(Recipe recipe) {
+    _recipes.add(recipe);
     notifyListeners();
   }
 
-  void setImageUrl(String imageUrl) {
-    _recipe.imageUrl = imageUrl;
+  void removeRecipe(Recipe recipe) {
+    _recipes.remove(recipe);
     notifyListeners();
   }
 
-  void setRating(int rating) {
-    _recipe.rating = rating;
-    notifyListeners();
-  }
-
-  void setPortions(int portions) {
-    _recipe.portions = portions;
-    notifyListeners();
-  }
-
-  void addIngredient(Ingredient ingredient) {
-    _recipe.ingredients.add(ingredient);
-    notifyListeners();
-  }
-
-  void removeIngredient(Ingredient ingredient) {
-    _recipe.ingredients.remove(ingredient);
-    notifyListeners();
-  }
-
-  void addStep(RecipeStep step) {
-    _recipe.steps.add(step);
-    notifyListeners();
-  }
-
-  void removeStep(RecipeStep step) {
-    _recipe.steps.remove(step);
-    notifyListeners();
-  }
-
-  void setDuration(Duration duration) {
-    _recipe.totalTime = duration;
-    notifyListeners();
-  }
-
-  void setTag(tag) {
-    _recipe.tags.add(tag);
+  void updateRecipe(Recipe recipe) {
+    final index = _recipes.indexWhere((element) => element.id == recipe.id);
+    _recipes[index] = recipe;
     notifyListeners();
   }
 }

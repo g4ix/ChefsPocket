@@ -8,6 +8,7 @@ List<String> euMeasures = [
   "ml",
   "l",
   "kg",
+ ""
 ];
 
 List<String> usMeasures = [
@@ -18,6 +19,7 @@ List<String> usMeasures = [
   "tbsp",
   "tsp",
   "cup",
+  ""
 ];
 
 enum Tag {

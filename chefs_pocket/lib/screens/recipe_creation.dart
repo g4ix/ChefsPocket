@@ -19,7 +19,6 @@ import '../models/recipe_step.dart';
 
 class RecipeCreationPage extends StatefulWidget {
   Recipe recipe = Recipe();
-  RecipeStep step = RecipeStep();
 
   @override
   _RecipeCreationPageState createState() => _RecipeCreationPageState();
@@ -28,17 +27,20 @@ class RecipeCreationPage extends StatefulWidget {
 class _RecipeCreationPageState extends State<RecipeCreationPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final _titleController = TextEditingController();
+  
+
+  String _titleController = '';
   final _images = <String>[];
   double _rating = 0;
   int _portions = 1;
+  List<Ingredient> _ingredients = [
+    Ingredient(name: '', quantity: 0, unit: ''),
+  ];
   final _steps = <RecipeStep>[];
   int _selectedHour = 0;
   int _selectedMinute = 0;
   final List<Tag> _selectedTags = [];
   bool _useEUUnits = true;
-
-  Recipe recipe = Recipe();
 
   final recipeManager = RecipeManager(); // Create an instance of RecipeManager
 
@@ -47,8 +49,21 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   Future<void> _pickImage() async {
     await _picker.pickImage(source: ImageSource.gallery);
   }
+  late List<TextEditingController> controllers;
+
+ 
 
   Widget build(BuildContext context) {
+    controllers = _ingredients.map((ingredient) {
+      return TextEditingController(text: ingredient.quantity.toString());
+    }).toList();
+    for (int i = 0; i < _ingredients.length; i++) {
+      controllers[i].addListener(() {
+        setState(() {
+          _ingredients[i].quantity = double.parse(controllers[i].text);
+        });
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -57,12 +72,20 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.save),
-            onPressed: () {},
+            onPressed: () {
+              widget.recipe.ingredients = _ingredients;
+              widget.recipe.steps = _steps;
+              recipeManager
+                  .addRecipe(widget.recipe); // Add the recipe to the list
+              Navigator.pop(context);
+            },
           ),
         ],
       ),
@@ -130,7 +153,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             }
             return null;
           },
-          onChanged: (value) => recipe.setTitle(value), // Update recipe title
+          onChanged: (value) =>
+              widget.recipe.setTitle(value), // Update recipe title
         ),
       ],
     );
@@ -194,7 +218,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
-                    itemSize: 30, // Set the size of the stars
+                    itemSize: MediaQuery.of(context).size.width /
+                        15, // Set the size of the stars
                     itemPadding: EdgeInsets.symmetric(
                         horizontal:
                             0), // Decrease the itemPadding value to make the stars closer
@@ -202,10 +227,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                         color: Color(0xFF557F9F),
                         size: 10), // Set the size of the stars
                     onRatingUpdate: (rating) {
-                      setState(() {
-                        this._rating = rating;
-                      });
-                      recipe.setRating(rating.toInt()); // Update recipe rating
+                      widget.recipe
+                          .setRating(rating.toInt()); // Update recipe rating
                     },
                   ),
                 ],
@@ -217,13 +240,24 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('EU'),
+            Text('US', style: Theme.of(context).textTheme.bodyMedium),
             Switch(
               value: _useEUUnits,
               onChanged: (value) {
                 // logica per cambiare tra EU e US
                 setState(() {
                   _useEUUnits = value;
+                  if (_useEUUnits) {
+                    for (int i = 0; i < _ingredients.length; i++) {
+                      _ingredients[i].convertToEuunits();
+                      controllers[i].text = _ingredients[i].quantity.toString();
+                    }
+                  } else {
+                   for (int i = 0; i < _ingredients.length; i++) {
+                      _ingredients[i].convertToUsunits();
+                      controllers[i].text = _ingredients[i].quantity.toString();
+                    }
+                  }
                 });
               },
               activeTrackColor: Color(0xFF557F9F),
@@ -236,7 +270,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 },
               ),
             ),
-            Text('US'),
+            Text('EU', style: Theme.of(context).textTheme.bodyMedium),
           ],
         )
       ],
@@ -254,113 +288,133 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               ),
         ),
         SizedBox(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 60,
-              child: TextFormField(
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium,
-                decoration: InputDecoration(
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                    borderRadius: BorderRadius.circular(
-                        10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.grey, fontSize: 14),
-                  hintText: '500',
-
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: 2), // Decrease the vertical padding
-                ),
-              ),
-            ),
-            SizedBox(width: 8),
-            SizedBox(
-              width: 70,
-              child: DropdownButtonFormField(
-                borderRadius: BorderRadius.circular(10),
-                value: euMeasures[0], // Set the initial value to 'g'
-                items: euMeasures.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value,
-                        style: Theme.of(context)
+        Column(
+          children: _ingredients.map((ingredient) {
+           
+            return Container(
+              margin: EdgeInsets.only(bottom: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 60,
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      decoration: InputDecoration(
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                          borderRadius: BorderRadius.circular(
+                              10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        hintStyle: Theme.of(context)
                             .textTheme
                             .bodyMedium
-                            ?.copyWith(color: Colors.grey)),
-                  );
-                }).toList(),
-                onChanged: (_) {},
-                decoration: InputDecoration(
-                  hintStyle: Theme.of(context).textTheme.bodyMedium,
-                  contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                    borderRadius: BorderRadius.circular(
-                        10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                            ?.copyWith(color: Colors.grey, fontSize: 14),
+                        hintText: '500',
+
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 2), // Decrease the vertical padding
+                      ),
+                      controller: controllers[_ingredients.indexOf(ingredient)],
+                      
+                    ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
+                  SizedBox(width: 8),
+                  SizedBox(
+                    width: 70,
+                    child: DropdownButtonFormField(
+                      borderRadius: BorderRadius.circular(10),
+                      value: ingredient.unit,
+                      items: ((_useEUUnits) ? euMeasures : usMeasures)
+                          .map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(color: Colors.grey)),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          ingredient.unit = value!;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintStyle: Theme.of(context).textTheme.bodyMedium,
+                        contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                          borderRadius: BorderRadius.circular(
+                              10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      isExpanded: false, // Set isExpanded to false
+                    ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          ingredient.name = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Colors.grey),
+                        hintText: 'Farina',
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                          borderRadius: BorderRadius.circular(
+                              10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 10), // Decrease the vertical padding
+                      ),
+                    ),
                   ),
-                ),
-                isExpanded: false, // Set isExpanded to false
+                ],
               ),
-            ),
-            SizedBox(width: 8),
-            Expanded(
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.grey),
-                  hintText: 'Farina',
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                    borderRadius: BorderRadius.circular(
-                        10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(
-                      horizontal: 10), // Decrease the vertical padding
-                ),
-              ),
-            ),
-          ],
+            );
+          }).toList(),
         ),
         SizedBox(height: 15),
         Row(
@@ -416,7 +470,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                             setState(() {
                               this._portions = int.parse(value);
                             });
-                            recipeManager.setPortions(
+                            widget.recipe.setPortions(
                                 int.parse(value)); // Update recipe portions
                           },
                         ),
@@ -428,9 +482,11 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                Ingredient ingredient =
-                    Ingredient(name: '', quantity: 0, unit: 'g');
-                recipeManager.addIngredient(ingredient); // Add new ingredient
+                setState(() {
+                  Ingredient ingredient =
+                      Ingredient(name: '', quantity: 0, unit: '');
+                  _ingredients.add(ingredient);
+                });
               },
               child: Text(
                 '+ Ingrediente',
@@ -469,8 +525,54 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         ),
         SizedBox(height: 5),
         Row(
+          
           children: [
-            Expanded(
+            Container(
+              width: MediaQuery.of(context).size.width/1.8,
+              height: 25,
+            
+              child: TextField(
+                textAlign: TextAlign.left,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.grey),
+                  hintText: 'Titolo',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 50),
+             IconButton(
+                icon: Icon(Icons.timer),
+                onPressed: () {
+                  setState(() {
+               
+                  });
+                },
+            ),
+             IconButton(
+                icon: Icon(Icons.more_horiz),
+                onPressed: () {
+                  setState(() {
+                    widget.recipe.removeStep(widget.recipe.steps.last);
+                  });
+                },
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            
+            Container(
+              width : MediaQuery.of(context).size.width/1.8,
               child: TextFormField(
                 maxLines: 5,
                 decoration: InputDecoration(
@@ -495,7 +597,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               child: Container(
                 margin: EdgeInsets.only(left: 10),
                 height: 167,
-                width: 125, // Set the desired width
+                width: 120,
+                // Set the desired width
                 decoration: BoxDecoration(
                   color: Color(0xFF557F9F).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(5),
@@ -530,20 +633,25 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         ElevatedButton(
           onPressed: () {
             setState(() {
-              recipe.addStep(RecipeStep(description: ''));
+              widget.recipe.addStep(RecipeStep(description: ''));
             });
           },
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Color(0xFF557F9F),
-            disabledForegroundColor: Color(0xFFF557F9F),
-            disabledBackgroundColor: Colors.white,
-          ),
+          
           child: Text('Aggiungi step',
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
                   ?.copyWith(color: Colors.white)),
+          style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Color(0xFF557F9F),
+                disabledForegroundColor: Color(0xFFF557F9F),
+                disabledBackgroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
         ),
       ],
     );
@@ -639,3 +747,4 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
     );
   }
 }
+

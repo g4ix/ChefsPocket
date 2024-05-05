@@ -8,7 +8,7 @@ class Recipe {
   String id = const Uuid().v4(); //id per riconoscere la ricetta
   String title = "";
   String imageUrl = "";
-  int rating = 0;  //da 1 a 5
+  int rating = 0; //da 1 a 5
   int portions = 0;
   List<Ingredient> ingredients = [];
   bool showsEuMeasures = true;
@@ -19,13 +19,13 @@ class Recipe {
   Recipe({
     this.title = "",
     this.imageUrl = "",
-    this.rating = 0,  
-    this.portions = 0,  
-    this.ingredients = const [],
+    this.rating = 0,
+    this.portions = 0,
     this.showsEuMeasures = true,
     this.steps = const [],
     this.totalTime = const Duration(hours: 0, minutes: 0, seconds: 0),
-    this.tags = const [], 
+    this.tags = const [],
+    this.ingredients = const [],
   });
 
   void setTitle(String title) {
@@ -86,4 +86,3 @@ class Recipe {
     }
   }
 }
-
