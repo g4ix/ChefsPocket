@@ -49,21 +49,24 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   Future<void> _pickImage() async {
     await _picker.pickImage(source: ImageSource.gallery);
   }
-  late List<TextEditingController> controllers;
+  Map<Ingredient, TextEditingController> ingredientControllers = {};
 
- 
+@override
+void initState() {
+  super.initState();
+  _ingredients.forEach((ingredient) {
+    final controller = TextEditingController(text: ingredient.quantity.toString());
+    controller.addListener(() {
+      setState(() {
+        ingredient.quantity = double.parse(controller.text);
+      });
+    });
+    ingredientControllers[ingredient] = controller;
+  });
+}
 
   Widget build(BuildContext context) {
-    controllers = _ingredients.map((ingredient) {
-      return TextEditingController(text: ingredient.quantity.toString());
-    }).toList();
-    for (int i = 0; i < _ingredients.length; i++) {
-      controllers[i].addListener(() {
-        setState(() {
-          _ingredients[i].quantity = double.parse(controllers[i].text);
-        });
-      });
-    }
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -250,12 +253,13 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                   if (_useEUUnits) {
                     for (int i = 0; i < _ingredients.length; i++) {
                        _ingredients[i] = _ingredients[i].convertToEuunits();
-                      controllers[i].text = _ingredients[i].quantity.toString();
+                        ingredientControllers[_ingredients[i]]!.text = _ingredients[i].quantity.toString();
                     }
                   } else {
                    for (int i = 0; i < _ingredients.length; i++) {
                        _ingredients[i] =_ingredients[i].convertToUsunits();
-                      controllers[i].text = _ingredients[i].quantity.toString();
+                      ingredientControllers[_ingredients[i]]!.text = _ingredients[i].quantity.toString();
+
                     }
                   }
                 });
@@ -327,7 +331,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 2), // Decrease the vertical padding
                       ),
-                      controller: controllers[_ingredients.indexOf(ingredient)],
+                      controller: ingredientControllers[ingredient],
                       
                     ),
                   ),
@@ -486,6 +490,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                   Ingredient ingredient =
                       Ingredient(name: '', quantity: 0, unit: '');
                   _ingredients.add(ingredient);
+                  ingredientControllers[ingredient] = TextEditingController();
                 });
               },
               child: Text(
