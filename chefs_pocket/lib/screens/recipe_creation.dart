@@ -249,12 +249,12 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                   _useEUUnits = value;
                   if (_useEUUnits) {
                     for (int i = 0; i < _ingredients.length; i++) {
-                      _ingredients[i].convertToEuunits();
+                       _ingredients[i] = _ingredients[i].convertToEuunits();
                       controllers[i].text = _ingredients[i].quantity.toString();
                     }
                   } else {
                    for (int i = 0; i < _ingredients.length; i++) {
-                      _ingredients[i].convertToUsunits();
+                       _ingredients[i] =_ingredients[i].convertToUsunits();
                       controllers[i].text = _ingredients[i].quantity.toString();
                     }
                   }

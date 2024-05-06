@@ -9,44 +9,54 @@ class Ingredient {
     this.name = '',
   });
 
-  void convertToEuunits() {
+  Ingredient convertToEuunits() {
+    String newUnit = unit;
+    double newQuantity = quantity;
     if (unit == "tbsp") {
-      unit = "ml";
-      quantity *= 15;
+      newUnit = "ml";
+      newQuantity = (newQuantity * 15).truncateToDouble();
     } else if (unit == "tsp") {
-      unit = "ml";
-      quantity *= 5;
+      newUnit = "ml";
+      newQuantity = (newQuantity * 5).truncateToDouble();
     } else if (unit == "cup") {
-      unit = "ml";
-      quantity *= 240;
+      newUnit = "ml";
+      newQuantity = (newQuantity * 240).truncateToDouble();
     } else if (unit == "fl oz") {
-      unit = "ml";
-      quantity *= 30;
+      newUnit = "ml";
+      newQuantity =   (newQuantity * 29.5735).truncateToDouble();
     } else if (unit == "gal") {
-      unit = "ml";
-      quantity *= 3840;
+      newUnit = "ml";
+      newQuantity = (newQuantity * 3840).truncateToDouble();
     } else if (unit == "lb") {
-      unit = "g";
-      quantity *= 453.592;
+      newUnit = "g";
+      newQuantity = (newQuantity * 453.592).truncateToDouble();
     } else if (unit == "oz") {
-      unit = "g";
-      quantity *= 28.3495;
+      newUnit = "g";
+      newQuantity = (newQuantity * 28.3495).truncateToDouble();
     }
+    
+    return Ingredient(quantity: newQuantity, unit: newUnit, name: name);
+
   }
 
-  void convertToUsunits() {
+  Ingredient convertToUsunits() {
+    String newUnit = unit;
+    double newQuantity = quantity;
+
     if (unit == "ml") {
-      unit = "tbsp";
-      quantity /= 15;
+      newUnit = "tbsp";
+      newQuantity = (newQuantity / 15).truncateToDouble();
     } else if (unit == "g") {
-      unit = "oz";
-      quantity /= 28.3495;
+      newUnit = "oz";
+      newQuantity = (newQuantity / 28.3495).truncateToDouble();
     } else if (unit == "kg") {
-      unit = "lb";
-      quantity /= 0.453592;
+      newUnit = "lb";
+      newQuantity = (newQuantity / 453.592).truncateToDouble();
     } else if (unit == "l") {
-      unit = "gal";
-      quantity /= 3840;
+      newUnit = "gal";
+      newQuantity = (newQuantity / 3840).truncateToDouble();
     }
+
+    return Ingredient(quantity: newQuantity, unit: newUnit, name: name);
   }
 }
