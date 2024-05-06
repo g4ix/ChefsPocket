@@ -692,7 +692,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
     return Column(
       children: [
         buildTitleTag(),
-        buildChoiceChips(),
+        SizedBox(height: 8),
+        buildFilterChips(),
       ],
     );
   }
@@ -707,12 +708,12 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
     );
   }
 
-  Widget buildChoiceChips() {
+  Widget buildFilterChips() {
     return Wrap(
-      spacing: 4.0, // Spazio tra le chips
-      runSpacing: 4.0, // Spazio tra le righe
+      spacing: 8.0, // Spazio tra le chips
+      runSpacing: 10.0, // Spazio tra le righe
       children: Tag.values.map((tag) {
-        return ChoiceChip(
+        return FilterChip(
           label: Text(
             tag.toString().replaceAll('Tag.', ''),
             style: TextStyle(
@@ -737,7 +738,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
           shape: RoundedRectangleBorder(
             side: BorderSide(
               color: Color(0xFF557F9F), // Imposta il colore del bordo
-              width: 5.0, // Imposta la larghezza del bordo
+              width: 1.0, // Imposta la larghezza del bordo
             ),
             borderRadius:
                 BorderRadius.circular(8.0), // Imposta il raggio del bordo

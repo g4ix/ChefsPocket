@@ -39,9 +39,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int currentIndex = 0;
   final List<Widget> _pages = <Widget>[
-    RecipeCreationPage(),
     HomeScreen(),
     SavedScreen(),
+    RecipeCreationPage(),
     MealPlannerScreen(),
     GroceryListScreen(),
   ];
@@ -51,8 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //titolo della pagina accessibile grazie a "widget" che permette di accedere ad altre classi
         body: IndexedStack(
           index: currentIndex,
-          children: _pages
-          ,
+          children: _pages,
         ),
         bottomNavigationBar: CustomBottomNavigationBar(
           activeIconIndex: currentIndex,
@@ -62,6 +61,5 @@ class _MyHomePageState extends State<MyHomePage> {
             });
           },
         ));
-
   }
 }

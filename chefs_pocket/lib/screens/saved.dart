@@ -112,20 +112,18 @@ class _SavedScreenState extends State<SavedScreen> {
     );
   }
 
-  Widget buildTagFilter() {
+  Widget buildTagFilter(StateSetter setState) {
     return Wrap(
-      spacing: 4.0, // Spazio tra le chips
-      runSpacing: 4.0, // Spazio tra le righe
+      spacing: 8.0,
+      runSpacing: 10.0,
       children: Tag.values.map((tag) {
         return FilterChip(
           label: Text(
             tag.toString().replaceAll('Tag.', ''),
             style: TextStyle(
               color: _selectedFilterTags.contains(tag)
-                  ? Colors
-                      .white // Imposta il colore del testo su bianco se selezionato
-                  : Color(
-                      0xFF557F9F), // Imposta il colore del testo su blu se non selezionato
+                  ? Colors.white
+                  : Color(0xFF557F9F),
             ),
           ),
           selected: _selectedFilterTags.contains(tag),
@@ -141,18 +139,17 @@ class _SavedScreenState extends State<SavedScreen> {
           },
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              color: Color(0xFF557F9F), // Imposta il colore del bordo
-              width: 5.0, // Imposta la larghezza del bordo
+              color: Color(0xFF557F9F),
+              width: 1.0,
             ),
-            borderRadius:
-                BorderRadius.circular(8.0), // Imposta il raggio del bordo
+            borderRadius: BorderRadius.circular(8.0),
           ),
         );
       }).toList(),
     );
   }
 
-  Widget buildRatingFilter() {
+  Widget buildRatingFilter(StateSetter setState) {
     return RatingBar.builder(
       initialRating: 3,
       minRating: 1,
@@ -162,12 +159,14 @@ class _SavedScreenState extends State<SavedScreen> {
       itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
       itemBuilder: (context, _) => Icon(Icons.star, color: Color(0xFF557F9F)),
       onRatingUpdate: (rating) {
-        // Implementa la logica per il filtro della valutazione in stelle
+        setState(() {
+          // Implementa la logica per il filtro della valutazione in stelle
+        });
       },
     );
   }
 
-  Widget buildTimeFilter() {
+  Widget buildTimeFilter(StateSetter setState) {
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(valueIndicatorColor: Colors.white),
       child: Slider(
@@ -189,64 +188,61 @@ class _SavedScreenState extends State<SavedScreen> {
   void showFilterOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: Color(0xFFFFFDF4),
       builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.all(
-              16.0), // Aggiungi spazio intorno al contenuto
-
-          child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start, // Allinea tutto a sinistra
-            children: <Widget>[
-              // Titolo del filtro
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Filtri',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Filtri',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Tag',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF557F9F),
+                          ),
+                    ),
+                  ),
+                  buildTagFilter(setState),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Voto',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF557F9F),
+                          ),
+                    ),
+                  ),
+                  buildRatingFilter(setState),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Durata',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF557F9F),
+                          ),
+                    ),
+                  ),
+                  buildTimeFilter(setState),
+                ],
               ),
-
-              // Filtro per i tag
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Tag',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF557F9F),
-                      ),
-                ),
-              ),
-              buildTagFilter(),
-
-              // Filtro per la valutazione in stelle
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Voto',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF557F9F),
-                      ),
-                ),
-              ),
-              buildRatingFilter(),
-
-              // Filtro per il tempo
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Durata',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF557F9F),
-                      ),
-                ),
-              ),
-              buildTimeFilter(),
-            ],
-          ),
+            );
+          },
         );
       },
     );
