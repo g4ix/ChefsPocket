@@ -51,7 +51,6 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
     await _picker.pickImage(source: ImageSource.gallery);
   }
   Map<Ingredient, TextEditingController> ingredientControllers = {};
-  Map<RecipeStep, TextEditingController> stepControllers = {};
 
 @override
 void initState() {
@@ -66,9 +65,6 @@ void initState() {
     ingredientControllers[ingredient] = controller;
   });
 }
-
-  
-
 
   Widget build(BuildContext context) {
     
@@ -533,41 +529,80 @@ void initState() {
               ),
         ),
         
-        Column(
-          children: _steps.map((step) {
-            return Container(
-              child:  Row(
-              children: [
-              
-              Container(
-                width : MediaQuery.of(context).size.width/1.8,
-                child: TextFormField(
-                maxLines: 5,
+        Row(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width/1.8,
+              height: 25,
+              child: TextField(
+                textAlign: TextAlign.left,
                 decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
                   hintStyle: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: Colors.grey),
-                  hintText: 'Descrivi i passaggi della ricetta',
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.grey),
+                  hintText: 'Titolo',
                   focusedBorder: OutlineInputBorder(
-                  borderSide:
-                    BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
                   ),
                   enabledBorder: OutlineInputBorder(
-                  borderSide:
-                    BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                    borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
                   ),
                 ),
                 onChanged: (value) {
                   setState(() {
-                  step.description = value;
+     
                   });
                 },
+              ),
+            ),
+            SizedBox(width: 50),
+             IconButton(
+                icon: Icon(isTimerSet? Icons.timer : Icons.timer_outlined),
+                onPressed: () {
+                  setState(() {
+                    _addTime();
+                  });
+                },
+            ),
+             IconButton(
+                icon: Icon(Icons.more_horiz),
+                onPressed: () {
+                  setState(() {
+                    widget.recipe.removeStep(widget.recipe.steps.last);
+                  });
+                },
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            
+            Container(
+              width : MediaQuery.of(context).size.width/1.8,
+              child: TextFormField(
+                maxLines: 5,
+                decoration: InputDecoration(
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.grey),
+                  hintText: 'Descrivi i passaggi della ricetta',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                  ),
                 ),
               ),
-              GestureDetector(
-                onTap: _pickImage,
-                child: Container(
+            ),
+            GestureDetector(
+              onTap: _pickImage,
+              child: Container(
                 margin: EdgeInsets.only(left: 10),
                 height: 167,
                 width: 120,
@@ -576,7 +611,7 @@ void initState() {
                   color: Color(0xFF557F9F).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(
-                  color: Color(0xFF557F9F).withAlpha(20),
+                    color: Color(0xFF557F9F).withAlpha(20),
                   ),
                 ),
                 child: DottedBorder(
@@ -587,35 +622,27 @@ void initState() {
                   borderType: BorderType.RRect,
                   strokeWidth: 2,
                   child: Center(
-                  child: _images.isEmpty
-                    ? Icon(
-                      Icons.add_a_photo,
-                      color: Color(0xFF557F9F),
-                      )
-                    : Image.file(
-                      File(_images.first),
-                      fit: BoxFit.cover,
-                      ),
+                    child: _images.isEmpty
+                        ? Icon(
+                            Icons.add_a_photo,
+                            color: Color(0xFF557F9F),
+                          )
+                        : Image.file(
+                            File(_images.first),
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
-                ),
               ),
-              ],
             ),
-            );
-            }).toList(),
-          
-          
-          
+          ],
         ),
+        
         SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
             setState(() {
-              RecipeStep step = RecipeStep(description: '');
-              _steps.add(step);
-              widget.recipe.addStep(step);
-              stepControllers[step] = TextEditingController();
+              widget.recipe.addStep(RecipeStep(description: ''));
             });
           },
           
@@ -634,9 +661,8 @@ void initState() {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-        
         ),
-      ], //fine column
+      ], //fine
     );
   }
 
@@ -728,6 +754,93 @@ void initState() {
           ),
         );
       }).toList(),
+    );
+  }
+  
+
+//pop up per aggiungere il timer allo step
+  void _addTime() {
+    
+     TextEditingController controller = TextEditingController();
+      showDialog(
+      context: context,
+      builder: (context) {
+        TextEditingController hoursController = TextEditingController();
+        TextEditingController minutesController = TextEditingController();
+        TextEditingController secondsController = TextEditingController();
+        return AlertDialog(
+          title: Text('Imposta il Timer'),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Flexible(
+                child: TextField(
+                    controller: hoursController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      hintText: 'ore',
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Colors.grey),
+                    ),
+                  ),
+              ),
+                SizedBox(width: 10),
+              Flexible(
+                child: TextField(
+                  controller: minutesController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: 'min',
+                    hintStyle: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Colors.grey),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+              Flexible(
+                child: TextField(
+                  controller: secondsController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: 'sec',
+                    hintStyle: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Colors.grey),
+                  ),
+                ),
+              ),
+                ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                int hours = int.tryParse(hoursController.text) ?? 0;
+                int minutes = int.tryParse(minutesController.text) ?? 0;
+                int seconds = int.tryParse(secondsController.text) ?? 0;
+                // Assuming that `timer` is a property of type Duration in your RecipeStep class
+                // And `currentStep` is an instance of RecipeStep
+     //  _steps[i].timer = Duration(hours: hours, minutes: minutes, seconds: seconds);
+                setState(() {
+                  isTimerSet = true;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
