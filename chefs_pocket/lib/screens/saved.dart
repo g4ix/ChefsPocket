@@ -1,3 +1,4 @@
+import 'package:chefs_pocket/components/directory_card.dart';
 import 'package:flutter/material.dart';
 import '/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -49,7 +50,8 @@ class _SavedScreenState extends State<SavedScreen> {
         child: Column(
           children: <Widget>[
             buildSearchBar(),
-            //buildSaved()
+            SizedBox(height: 20),
+            buildSaved()
           ],
         ),
       ),
@@ -249,10 +251,48 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 
   Widget buildSaved() {
-    return Column(
-      children: [
-        
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+          ),
+          Container(
+            height: 200, // Imposta l'altezza del container
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemCount: mockDirectories.length + 1,
+              itemBuilder: (context, index) {
+                if (index == mockDirectories.length) {
+                  // Se l'indice corrisponde all'ultimo elemento, restituisci un GestureDetector
+                  return GestureDetector(
+                    onTap: () {
+                      // Aggiungi qui il codice per aggiungere una nuova directory
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '+',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  // Altrimenti, restituisci una DirectoryCard
+                  return DirectoryCard(directory: mockDirectories[index]);
+                }
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

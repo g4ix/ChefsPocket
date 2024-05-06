@@ -99,9 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      RecipeCard(recipe: mockRecipies[0]),
-                      RecipeCard(recipe: mockRecipies[1]),
-                      RecipeCard(recipe: mockRecipies[2]) //dovrà essere una lista di ricette
+                      RecipeCard(recipe: mockRecipes[0]),
+                      RecipeCard(recipe: mockRecipes[1]),
+                      RecipeCard(recipe: mockRecipes[2]) //dovrà essere una lista di ricette
                     ],
                   ),
                 )

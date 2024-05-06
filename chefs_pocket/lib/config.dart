@@ -2,6 +2,7 @@ import 'package:chefs_pocket/models/day.dart';
 import 'package:chefs_pocket/models/ingredient.dart';
 import 'package:chefs_pocket/models/recipe.dart';
 import 'package:chefs_pocket/models/recipe_step.dart';
+import 'package:chefs_pocket/models/directory.dart';
 
 List<String> euMeasures = [
   "g",
@@ -35,7 +36,7 @@ enum Tag {
   Pesce,
 }
 
-List<Recipe> mockRecipies = [
+List<Recipe> mockRecipes = [
   Recipe(
     title: "Pasta al Pomodoro",
     imageUrl: "../assets/recipes/pasta_pomodoro.jpg",
@@ -80,7 +81,7 @@ List<Recipe> mockRecipies = [
   ),
   Recipe(
     title: "Pasta al Pesto",
-    imageUrl: "../assets/recipes/pasta_pesto.jpg",
+    imageUrl: "../assets/Recipes/pasta_pesto.jpg",
     rating: 2,
     tags: [Tag.Primo],
     ingredients: [
@@ -117,7 +118,7 @@ List<Recipe> mockRecipies = [
   ),
   Recipe(
     title: "Pasta alla Carbonara",
-    imageUrl: "../assets/recipes/pasta_carbonara.jpg",
+    imageUrl: "../assets/Recipes/pasta_carbonara.jpg",
     rating: 4,
     tags: [Tag.Primo],
     ingredients: [
@@ -162,51 +163,65 @@ List<Recipe> mockRecipies = [
 List<Day> mockDays = [
   Day(
     date: DateTime.now(),
-    lunch: mockRecipies,
-    dinner: mockRecipies,
-    snacks: mockRecipies,
-    breakfast: mockRecipies,
+    lunch: mockRecipes,
+    dinner: mockRecipes,
+    snacks: mockRecipes,
+    breakfast: mockRecipes,
   ),
   Day(
     date: DateTime.now().add(const Duration(days: 1)),
-    lunch: mockRecipies,
-    dinner: mockRecipies,
-    snacks: mockRecipies,
-    breakfast: mockRecipies,
+    lunch: mockRecipes,
+    dinner: mockRecipes,
+    snacks: mockRecipes,
+    breakfast: mockRecipes,
   ),
   Day(
     date: DateTime.now().add(const Duration(days: 2)),
-    lunch: mockRecipies,
-    dinner: mockRecipies,
-    snacks: mockRecipies,
-    breakfast: mockRecipies,
+    lunch: mockRecipes,
+    dinner: mockRecipes,
+    snacks: mockRecipes,
+    breakfast: mockRecipes,
   ),
   Day(
     date: DateTime.now().add(const Duration(days: 3)),
-    lunch: mockRecipies,
-    dinner: mockRecipies,
-    snacks: mockRecipies,
-    breakfast: mockRecipies,
+    lunch: mockRecipes,
+    dinner: mockRecipes,
+    snacks: mockRecipes,
+    breakfast: mockRecipes,
   ),
   Day(
     date: DateTime.now().add(const Duration(days: 4)),
-    lunch: mockRecipies,
-    dinner: mockRecipies,
-    snacks: mockRecipies,
-    breakfast: mockRecipies,
+    lunch: mockRecipes,
+    dinner: mockRecipes,
+    snacks: mockRecipes,
+    breakfast: mockRecipes,
   ),
   Day(
     date: DateTime.now().add(const Duration(days: 5)),
-    lunch: mockRecipies,
-    dinner: mockRecipies,
-    snacks: mockRecipies,
-    breakfast: mockRecipies,
+    lunch: mockRecipes,
+    dinner: mockRecipes,
+    snacks: mockRecipes,
+    breakfast: mockRecipes,
   ),
   Day(
     date: DateTime.now().add(const Duration(days: 6)),
-    lunch: mockRecipies,
-    dinner: mockRecipies,
-    snacks: mockRecipies,
-    breakfast: mockRecipies,
+    lunch: mockRecipes,
+    dinner: mockRecipes,
+    snacks: mockRecipes,
+    breakfast: mockRecipes,
   ),
+];
+
+List<Directory> mockDirectories = [
+  Directory(
+    name: 'Prova 1',
+    imageUrl: '../assets/recipes/pasta_pomodoro.jpg',
+    recipes: mockRecipes, // Assumendo che mockRecipes sia una lista di oggetti Recipe
+  ),
+  Directory(
+    name: 'Prova 2',
+    imageUrl: '../assets/recipes/pasta_pesto.jpg',
+    recipes: mockRecipes, // Assumendo che mockRecipes sia una lista di oggetti Recipe
+  ),
+  // Aggiungi altre directory mock qui
 ];

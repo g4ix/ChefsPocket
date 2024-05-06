@@ -24,7 +24,7 @@ class _DirectoryCardState extends State<DirectoryCard> {
               alignment: Alignment.bottomCenter,
               child: Container(
                 height:130,
-                width: 240,
+                width: 200,
                 decoration: BoxDecoration(
                   color: Theme.of(context).brightness == Brightness.dark
                       ? Colors.black.withOpacity(0.6)
