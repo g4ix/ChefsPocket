@@ -14,25 +14,25 @@ class Ingredient {
     double newQuantity = quantity;
     if (unit == "tbsp") {
       newUnit = "ml";
-      newQuantity = (newQuantity * 15).truncateToDouble();
+      newQuantity = double.parse((newQuantity * 15).toStringAsFixed(2));   
     } else if (unit == "tsp") {
       newUnit = "ml";
-      newQuantity = (newQuantity * 5).truncateToDouble();
+      newQuantity = double.parse((newQuantity * 5).toStringAsFixed(2) );
     } else if (unit == "cup") {
       newUnit = "ml";
-      newQuantity = (newQuantity * 240).truncateToDouble();
+      newQuantity = double.parse((newQuantity * 240).toStringAsFixed(2));  
     } else if (unit == "fl oz") {
       newUnit = "ml";
-      newQuantity =   (newQuantity * 29.5735).truncateToDouble();
+      newQuantity =   double.parse((newQuantity * 29).toStringAsFixed(2));
     } else if (unit == "gal") {
       newUnit = "ml";
-      newQuantity = (newQuantity * 3840).truncateToDouble();
+      newQuantity = double.parse((newQuantity * 3840).toStringAsFixed(2));
     } else if (unit == "lb") {
       newUnit = "g";
-      newQuantity = (newQuantity * 453.592).truncateToDouble();
+      newQuantity = double.parse((newQuantity * 453).toStringAsFixed(2));
     } else if (unit == "oz") {
       newUnit = "g";
-      newQuantity = (newQuantity * 28.3495).truncateToDouble();
+      newQuantity = double.parse((newQuantity * 28).toStringAsFixed(2));
     }
     
     return Ingredient(quantity: newQuantity, unit: newUnit, name: name);
@@ -45,16 +45,17 @@ class Ingredient {
 
     if (unit == "ml") {
       newUnit = "tbsp";
-      newQuantity = (newQuantity / 15).truncateToDouble();
+      newQuantity = double.parse((newQuantity / 15).toStringAsFixed(2));
     } else if (unit == "g") {
       newUnit = "oz";
-      newQuantity = (newQuantity / 28.3495).truncateToDouble();
+      newQuantity = double.parse((newQuantity / 28.3495).toStringAsFixed(2));
     } else if (unit == "kg") {
       newUnit = "lb";
-      newQuantity = (newQuantity / 453.592).truncateToDouble();
+      newQuantity = double.parse((newQuantity / 453).toStringAsFixed(2));
     } else if (unit == "l") {
       newUnit = "gal";
-      newQuantity = (newQuantity / 3840).truncateToDouble();
+
+      newQuantity = double.parse((newQuantity / 3840).toStringAsFixed(2));
     }
 
     return Ingredient(quantity: newQuantity, unit: newUnit, name: name);
