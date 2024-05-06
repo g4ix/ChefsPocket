@@ -33,10 +33,11 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   final _images = <String>[];
   double _rating = 0;
   int _portions = 1;
+
   List<Ingredient> _ingredients = [
     Ingredient(name: '', quantity: 0, unit: ''),
   ];
-  final _steps = <RecipeStep>[];
+  List<RecipeStep> _steps = [];
   int _selectedHour = 0;
   int _selectedMinute = 0;
   final List<Tag> _selectedTags = [];
@@ -50,6 +51,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
     await _picker.pickImage(source: ImageSource.gallery);
   }
   Map<Ingredient, TextEditingController> ingredientControllers = {};
+  Map<RecipeStep, TextEditingController> stepControllers = {};
 
 @override
 void initState() {
@@ -64,6 +66,9 @@ void initState() {
     ingredientControllers[ingredient] = controller;
   });
 }
+
+  
+
 
   Widget build(BuildContext context) {
     
@@ -487,8 +492,7 @@ void initState() {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  Ingredient ingredient =
-                      Ingredient(name: '', quantity: 0, unit: '');
+                  Ingredient ingredient = Ingredient(name: '', quantity: 0, unit: '');
                   _ingredients.add(ingredient);
                   ingredientControllers[ingredient] = TextEditingController();
                 });
@@ -528,78 +532,42 @@ void initState() {
                 color: Color(0xFF557F9F), // Specify the desired color
               ),
         ),
-        SizedBox(height: 5),
-        Row(
-          
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width/1.8,
-              height: 25,
-            
-              child: TextField(
-                textAlign: TextAlign.left,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.grey),
-                  hintText: 'Titolo',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(width: 50),
-             IconButton(
-                icon: Icon(Icons.timer),
-                onPressed: () {
-                  setState(() {
-               
-                  });
-                },
-            ),
-             IconButton(
-                icon: Icon(Icons.more_horiz),
-                onPressed: () {
-                  setState(() {
-                    widget.recipe.removeStep(widget.recipe.steps.last);
-                  });
-                },
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            
-            Container(
-              width : MediaQuery.of(context).size.width/1.8,
-              child: TextFormField(
+        
+        Column(
+          children: _steps.map((step) {
+            return Container(
+              child:  Row(
+              children: [
+              
+              Container(
+                width : MediaQuery.of(context).size.width/1.8,
+                child: TextFormField(
                 maxLines: 5,
                 decoration: InputDecoration(
                   hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.grey),
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.grey),
                   hintText: 'Descrivi i passaggi della ricetta',
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                  borderSide:
+                    BorderSide(color: Color(0xFF557F9F), width: 1.0),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF557F9F), width: 1.0),
+                  borderSide:
+                    BorderSide(color: Color(0xFF557F9F), width: 1.0),
                   ),
                 ),
+                onChanged: (value) {
+                  setState(() {
+                  step.description = value;
+                  });
+                },
+                ),
               ),
-            ),
-            GestureDetector(
-              onTap: _pickImage,
-              child: Container(
+              GestureDetector(
+                onTap: _pickImage,
+                child: Container(
                 margin: EdgeInsets.only(left: 10),
                 height: 167,
                 width: 120,
@@ -608,7 +576,7 @@ void initState() {
                   color: Color(0xFF557F9F).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(
-                    color: Color(0xFF557F9F).withAlpha(20),
+                  color: Color(0xFF557F9F).withAlpha(20),
                   ),
                 ),
                 child: DottedBorder(
@@ -619,26 +587,35 @@ void initState() {
                   borderType: BorderType.RRect,
                   strokeWidth: 2,
                   child: Center(
-                    child: _images.isEmpty
-                        ? Icon(
-                            Icons.add_a_photo,
-                            color: Color(0xFF557F9F),
-                          )
-                        : Image.file(
-                            File(_images.first),
-                            fit: BoxFit.cover,
-                          ),
+                  child: _images.isEmpty
+                    ? Icon(
+                      Icons.add_a_photo,
+                      color: Color(0xFF557F9F),
+                      )
+                    : Image.file(
+                      File(_images.first),
+                      fit: BoxFit.cover,
+                      ),
                   ),
                 ),
+                ),
               ),
+              ],
             ),
-          ],
+            );
+            }).toList(),
+          
+          
+          
         ),
         SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
             setState(() {
-              widget.recipe.addStep(RecipeStep(description: ''));
+              RecipeStep step = RecipeStep(description: '');
+              _steps.add(step);
+              widget.recipe.addStep(step);
+              stepControllers[step] = TextEditingController();
             });
           },
           
@@ -657,8 +634,9 @@ void initState() {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
+        
         ),
-      ],
+      ], //fine column
     );
   }
 
