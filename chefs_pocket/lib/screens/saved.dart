@@ -251,7 +251,7 @@ class _SavedScreenState extends State<SavedScreen> {
   Widget buildSaved() {
     return Column(
       children: [
-        // Implement the logic to show the saved recipes
+        
       ],
     );
   }
