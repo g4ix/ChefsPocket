@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chefs_pocket/components/directory_card.dart';
 import 'package:chefs_pocket/models/directory.dart';
+import 'package:chefs_pocket/screens/directory_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -385,22 +386,34 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 
   Widget buildSaved() {
-    return GridView.builder(
-        shrinkWrap: true,
-        itemCount: directories.length + 1,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == directories.length) {
-            return buildAddDirectory();
-          } else {
-            return DirectoryCard(directory: directories[index]);
-          }
-        },
-        scrollDirection: Axis.vertical,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-        ));
-  }
+  return GridView.builder(
+      shrinkWrap: true,
+      itemCount: directories.length + 1,
+      itemBuilder: (BuildContext context, int index) {
+        if (index == directories.length) {
+          return buildAddDirectory();
+        } else {
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                builder: (context) => DirectoryPage(directory: directories[index]),
+                ),
+              );
+              });
+            },
+            child: DirectoryCard(directory: directories[index]),
+          );
+        }
+      },
+      scrollDirection: Axis.vertical,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+      ));
+}
 }
