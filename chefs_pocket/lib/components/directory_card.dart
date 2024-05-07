@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../models/directory.dart';
 
@@ -15,44 +16,60 @@ class DirectoryCard extends StatefulWidget {
 class _DirectoryCardState extends State<DirectoryCard> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10), // Lo stesso valore del Card
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 15,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Align(
+            Container(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height:130,
-                width: 200,
+                height: 122,
+                width: 170,
+                margin: const EdgeInsets.all(8.0), // Crea un bordo di 8 pixel
                 decoration: BoxDecoration(
                   color: Theme.of(context).brightness == Brightness.dark
                       ? Colors.black.withOpacity(0.6)
                       : Colors.white.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(5.0),
+                  image: DecorationImage(
+                    image: NetworkImage(widget.directory.imageUrl),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                child: Image(image: NetworkImage(widget.directory.imageUrl), height: double.infinity, width: double.infinity, fit: BoxFit.cover,),
               ),
             ),
             Align(
               alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left:8.0),
-                  child: Column( 
-                    children: [     
-                      Text(
-                        widget.directory.name,
-                        maxLines: 1,
-                        overflow: TextOverflow.visible,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                
-                  ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      widget.directory.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.visible,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
                 ),
               ),
-
-
+            ),
+            SizedBox(height: 5),
           ],
         ),
       ),

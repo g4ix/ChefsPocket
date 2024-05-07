@@ -1,5 +1,13 @@
+import 'dart:io';
+
 import 'package:chefs_pocket/components/directory_card.dart';
+import 'package:chefs_pocket/models/directory.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -13,6 +21,24 @@ class _SavedScreenState extends State<SavedScreen> {
   bool hasFocus = false;
   double _currentSliderValue = 20.0;
   final List<Tag> _selectedFilterTags = [];
+  final ImagePicker _picker = ImagePicker();
+  late Future<PickedFile?> pickedFile = Future.value(null);
+
+  List<Directory> directories = mockDirectories;
+  String title = '';
+  File? image;
+
+  Future getImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        image = File(pickedFile.path);
+      } else {
+        print('Nessuna immagine selezionata.');
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -51,7 +77,7 @@ class _SavedScreenState extends State<SavedScreen> {
           children: <Widget>[
             buildSearchBar(),
             SizedBox(height: 20),
-            buildSaved()
+            buildSaved(),
           ],
         ),
       ),
@@ -250,49 +276,131 @@ class _SavedScreenState extends State<SavedScreen> {
     );
   }
 
-  Widget buildSaved() {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-          ),
-          Container(
-            height: 200, // Imposta l'altezza del container
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              itemCount: mockDirectories.length + 1,
-              itemBuilder: (context, index) {
-                if (index == mockDirectories.length) {
-                  // Se l'indice corrisponde all'ultimo elemento, restituisci un GestureDetector
-                  return GestureDetector(
+  Widget buildAddDirectory() {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
                     onTap: () {
-                      // Aggiungi qui il codice per aggiungere una nuova directory
+                      getImage();
                     },
                     child: Container(
+                      width: double.infinity,
+                      height: 170,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
+                        color: Color(0xFF557F9F).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(
-                        child: Text(
-                          '+',
-                          style: TextStyle(fontSize: 24),
+                      child: DottedBorder(
+                        padding: EdgeInsets.all(0),
+                        radius: Radius.circular(5),
+                        color: Color(0xFF557F9F),
+                        dashPattern: [5, 5],
+                        borderType: BorderType.RRect,
+                        strokeWidth: 2,
+                        child: Center(
+                          child: image != null
+                              ? Image.file(
+                                  image!,
+                                  height:
+                                      MediaQuery.of(context).size.height / 5,
+                                )
+                              : Icon(
+                                  Icons.add_photo_alternate_outlined,
+                                  color: Color(0xFF557F9F),
+                                  size: 30
+                              ),
                         ),
                       ),
                     ),
-                  );
-                } else {
-                  // Altrimenti, restituisci una DirectoryCard
-                  return DirectoryCard(directory: mockDirectories[index]);
-                }
-              },
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    onChanged: (value) {
+                      title = value;
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Inserisci il titolo',
+                      hintStyle: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Annulla'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (title.isNotEmpty && image != null) {
+                      // Creare un nuovo oggetto Directory
+                      Directory newDirectory =
+                          Directory(name: title, imageUrl: image!.path);
+
+                      // Aggiungere la nuova directory a una lista di directory
+                      setState(() {
+                        directories.add(newDirectory);
+                      });
+                      // Chiudi il dialog
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Text('Salva'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: Container(
+        child: DottedBorder(
+          padding: EdgeInsets.all(0),
+          radius: Radius.circular(10),
+          color: Color(0xFF557F9F),
+          dashPattern: [5, 5],
+          borderType: BorderType.RRect,
+          strokeWidth: 2,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFF557F9F).withOpacity(0.2),
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Color(0xFF557F9F).withOpacity(0.2)),
+            ),
+            child: Center(
+              child: Icon(Icons.add, color: Color(0xFF557F9F), size: 30),
             ),
           ),
-        ],
+        ),
       ),
     );
+  }
+
+  Widget buildSaved() {
+    return GridView.builder(
+        shrinkWrap: true,
+        itemCount: directories.length + 1,
+        itemBuilder: (BuildContext context, int index) {
+          if (index == directories.length) {
+            return buildAddDirectory();
+          } else {
+            return DirectoryCard(directory: directories[index]);
+          }
+        },
+        scrollDirection: Axis.vertical,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+        ));
   }
 }
