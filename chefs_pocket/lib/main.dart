@@ -9,9 +9,11 @@ import 'package:chefs_pocket/screens/saved.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  runApp(const MyApp());
+  //funzione per mettere il calendario in italiano
+  initializeDateFormatting().then ((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'dart:html';
-//import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -14,7 +14,7 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> {
   DateTime _selectedDay = DateTime.now();
-
+  
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
@@ -31,24 +31,30 @@ class _CalendarState extends State<Calendar> {
             calendarFormat: widget.showWeek ? CalendarFormat.week : CalendarFormat.month,
             calendarStyle: CalendarStyle(
               selectedDecoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(0.5),
+                color: Theme.of(context).primaryColor,
                 shape: BoxShape.circle,
               ),
               todayDecoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(0.5),
+                border: Border.all(color: Theme.of(context).primaryColor, width: 2),
+                //color: Theme.of(context).primaryColor.withOpacity(0.7),
                 shape: BoxShape.circle,
               ),
               defaultTextStyle: Theme.of(context).textTheme.bodyMedium!,
               todayTextStyle: Theme.of(context).textTheme.bodyMedium!,
               
-              selectedTextStyle: Theme.of(context).textTheme.bodyMedium!,
+              selectedTextStyle: TextStyle(
+                color: Theme.of(context).colorScheme.onSecondary,
+                fontStyle: Theme.of(context).textTheme.bodyMedium?.fontStyle,
+              ),
               weekendTextStyle: Theme.of(context).textTheme.bodyMedium!,
               holidayTextStyle: Theme.of(context).textTheme.bodyMedium!,
             ),
             headerStyle: HeaderStyle(
-              titleTextStyle: Theme.of(context).textTheme.bodyLarge!,
+              titleTextStyle: Theme.of(context).textTheme.titleMedium!,
               formatButtonVisible: false,
-            ),
+              titleCentered: true,  
+              ),
+              
             daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: Theme.of(context).textTheme.bodyMedium!,
               weekendStyle: Theme.of(context).textTheme.bodyMedium!,
