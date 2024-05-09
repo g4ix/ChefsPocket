@@ -1,3 +1,4 @@
+import 'package:chefs_pocket/components/calendar.dart';
 import 'package:flutter/material.dart';
 
 class MealPlannerScreen extends StatefulWidget {
@@ -6,6 +7,8 @@ class MealPlannerScreen extends StatefulWidget {
 }
 
 class _MealPlannerScreenState extends State<MealPlannerScreen> {
+  bool showWeek = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,15 +19,30 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () {},
+            icon: Icon(Icons.calendar_month_outlined),
+            onPressed: () {
+              setState(( ) {
+                showWeek = !showWeek;
+
+              });
+            },
           ),
         ],
       ),
+      body: Container(
+        child:  Calendar( showWeek: showWeek ),
+          
+        ),
+      
     );
   }
 }
+
+
+

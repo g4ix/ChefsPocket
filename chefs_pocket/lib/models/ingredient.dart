@@ -9,55 +9,51 @@ class Ingredient {
     this.name = '',
   });
 
-  Ingredient convertToEuunits() {
-    String newUnit = unit;
-    double newQuantity = quantity;
+  void convertToEuunits() {
+    
     if (unit == "tbsp") {
-      newUnit = "ml";
-      newQuantity = double.parse((newQuantity * 15).toStringAsFixed(2));   
+      unit = "ml";
+      quantity = double.parse((quantity * 15).toStringAsFixed(2));   
     } else if (unit == "tsp") {
-      newUnit = "ml";
-      newQuantity = double.parse((newQuantity * 5).toStringAsFixed(2) );
+      unit = "ml";
+      quantity = double.parse((quantity * 5).toStringAsFixed(2) );
     } else if (unit == "cup") {
-      newUnit = "ml";
-      newQuantity = double.parse((newQuantity * 240).toStringAsFixed(2));  
+      unit = "ml";
+      quantity = double.parse((quantity * 240).toStringAsFixed(2));  
     } else if (unit == "fl oz") {
-      newUnit = "ml";
-      newQuantity =   double.parse((newQuantity * 29).toStringAsFixed(2));
+      unit = "ml";
+      quantity =   double.parse((quantity * 29).toStringAsFixed(2));
     } else if (unit == "gal") {
-      newUnit = "ml";
-      newQuantity = double.parse((newQuantity * 3840).toStringAsFixed(2));
+      unit = "ml";
+      quantity = double.parse((quantity * 3840).toStringAsFixed(2));
     } else if (unit == "lb") {
-      newUnit = "g";
-      newQuantity = double.parse((newQuantity * 453).toStringAsFixed(2));
+      unit = "g";
+      quantity = double.parse((quantity * 453).toStringAsFixed(2));
     } else if (unit == "oz") {
-      newUnit = "g";
-      newQuantity = double.parse((newQuantity * 28).toStringAsFixed(2));
+      unit = "g";
+      quantity = double.parse((quantity * 28).toStringAsFixed(2));
     }
     
-    return Ingredient(quantity: newQuantity, unit: newUnit, name: name);
+    
 
   }
 
-  Ingredient convertToUsunits() {
-    String newUnit = unit;
-    double newQuantity = quantity;
-
+  void convertToUsunits() {
+   
     if (unit == "ml") {
-      newUnit = "tbsp";
-      newQuantity = double.parse((newQuantity / 15).toStringAsFixed(2));
+      unit = "tbsp";
+      quantity = double.parse((quantity / 15).toStringAsFixed(2));
     } else if (unit == "g") {
-      newUnit = "oz";
-      newQuantity = double.parse((newQuantity / 28.3495).toStringAsFixed(2));
+      unit = "oz";
+      quantity = double.parse((quantity / 28.3495).toStringAsFixed(2));
     } else if (unit == "kg") {
-      newUnit = "lb";
-      newQuantity = double.parse((newQuantity / 453).toStringAsFixed(2));
+      unit = "lb";
+      quantity = double.parse((quantity / 453).toStringAsFixed(2));
     } else if (unit == "l") {
-      newUnit = "gal";
+      unit = "gal";
 
-      newQuantity = double.parse((newQuantity / 3840).toStringAsFixed(2));
+      quantity = double.parse((quantity / 3840).toStringAsFixed(2));
     }
 
-    return Ingredient(quantity: newQuantity, unit: newUnit, name: name);
   }
 }
