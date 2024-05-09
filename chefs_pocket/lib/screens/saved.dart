@@ -12,6 +12,10 @@ import 'package:image_picker/image_picker.dart';
 import '/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+// TODO: Aggiungere la directory di default "Tutte le ricette"
+// TODO: Aggiungere la logica per la ricerca delle ricette salvate
+// TODO: Aggiungere la logica per applicare i filtri di ricerca
+
 class SavedScreen extends StatefulWidget {
   @override
   _SavedScreenState createState() => _SavedScreenState();
