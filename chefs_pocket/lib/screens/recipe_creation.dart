@@ -6,10 +6,12 @@ import 'package:chefs_pocket/components/recipe_creation/image_upload_container.d
 import 'package:chefs_pocket/components/recipe_creation/ingredient_input.dart';
 import 'package:chefs_pocket/components/recipe_creation/ingredient_portion_section.dart';
 import 'package:chefs_pocket/components/recipe_creation/rating_and_toggle.dart';
+import 'package:chefs_pocket/components/recipe_creation/set_total_time.dart';
 import 'package:chefs_pocket/components/recipe_creation/title_input_section.dart';
 import 'package:chefs_pocket/models/recipe.dart';
 import 'package:chefs_pocket/models/recipe_step.dart';
 import 'package:chefs_pocket/models/section.dart';
+import 'package:chefs_pocket/screens/recipe_screen.dart';
 
 //import dotted border
 import 'package:dotted_border/dotted_border.dart';
@@ -24,7 +26,6 @@ import '../models/recipe_step.dart';
 
 class RecipeCreationPage extends StatefulWidget {
   Recipe recipe = Recipe();
-  
 
   @override
   _RecipeCreationPageState createState() => _RecipeCreationPageState();
@@ -93,9 +94,11 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             onPressed: () {
               widget.recipe.ingredients = _ingredients;
               widget.recipe.steps = _steps;
+              widget.recipe.tags = _selectedTags;
+              print(widget.recipe);
               recipeManager
                   .addRecipe(widget.recipe); // Add the recipe to the list
-              Navigator.pop(context);
+              //Navigator.pop(RecipeScreen(widget.recipe));
             },
           ),
         ],
@@ -120,7 +123,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                     }
                   } else {
                     for (int i = 0; i < _ingredients.length; i++) {
-                     _ingredients[i].convertToUsunits();
+                      _ingredients[i].convertToUsunits();
                       ingredientControllers[_ingredients[i]]!.text =
                           _ingredients[i].quantity.toString();
                     }
@@ -128,8 +131,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 });
               },
               onRatingUpdate: (rating) {
-                      widget.recipe.setRating(rating.toInt()); // Update recipe rating
-                    },
+                widget.recipe.setRating(rating.toInt()); // Update recipe rating
+              },
               useEuUnits: _useEUUnits,
             ),
             SizedBox(height: 10),
@@ -148,7 +151,24 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             SizedBox(height: 10),
             buildProcedure(),
             SizedBox(height: 10),
-            buildTotalTime(),
+            SetTotalTime(
+              onChangedHour: (value) {
+                setState(() {
+                  _selectedHour = int.parse(value);
+                  widget.recipe.setTotalTime(Duration(
+                      hours: _selectedHour,
+                      minutes: _selectedMinute)); // Update recipe total time
+                });
+              },
+              onChangedMinutes: (value) {
+                setState(() {
+                  _selectedMinute = int.parse(value);
+                  widget.recipe.setTotalTime(Duration(
+                      hours: _selectedHour,
+                      minutes: _selectedMinute)); // Update recipe total time
+                });
+              },
+            ),
             SizedBox(height: 10),
             buildTags(),
           ],
@@ -203,8 +223,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                   ),
                   SizedBox(width: 50),
                   IconButton(
-                    icon: Icon(step.isTimerSet ? Icons.timer
-                        : Icons.timer_outlined),
+                    icon: Icon(
+                        step.isTimerSet ? Icons.timer : Icons.timer_outlined),
                     onPressed: () {
                       setState(() {
                         _addTime(step);
@@ -285,60 +305,34 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
           );
         }),
         SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              _steps.add(RecipeStep());
-            });
-          },
-          child: Text('Aggiungi step',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: Colors.white)),
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Color(0xFF557F9F),
-            disabledForegroundColor: Color(0xFFF557F9F),
-            disabledBackgroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _steps.add(RecipeStep());
+                });
+              },
+              child: Text('Aggiungi step',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Color(0xFF557F9F),
+                disabledForegroundColor: Color(0xFFF557F9F),
+                disabledBackgroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ], //fine
-    );
-  }
-
-  Widget buildTotalTime() {
-    return Row(
-      children: [
-        Text('Tempo totale',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Color(0xFF557F9F), // Specify the desired color
-                )),
-        SizedBox(width: 10),
-        Expanded(
-          child: TextFormField(
-            decoration: InputDecoration(
-              labelText: 'Ore',
-              border: OutlineInputBorder(),
-            ),
-            keyboardType: TextInputType.number,
-          ),
-        ),
-        SizedBox(width: 10),
-        Expanded(
-          child: TextFormField(
-            decoration: InputDecoration(
-              labelText: 'Minuti',
-              border: OutlineInputBorder(),
-            ),
-            keyboardType: TextInputType.number,
-          ),
-        ),
-      ],
     );
   }
 
@@ -468,7 +462,6 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             ),
             TextButton(
               child: Text('Salva'),
-
               onPressed: () {
                 int hours = int.tryParse(hoursController.text) ?? 0;
                 int minutes = int.tryParse(minutesController.text) ?? 0;
@@ -477,7 +470,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 // And `currentStep` is an instance of RecipeStep
                 //  _steps[i].timer = Duration(hours: hours, minutes: minutes, seconds: seconds);
                 setState(() {
-                  step.timer = Duration(hours: hours, minutes: minutes, seconds: seconds);
+                  step.timer = Duration(
+                      hours: hours, minutes: minutes, seconds: seconds);
                   step.isTimerSet = true;
                 });
                 Navigator.of(context).pop();
