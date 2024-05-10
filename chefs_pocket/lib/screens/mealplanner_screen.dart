@@ -35,9 +35,51 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
           ),
         ],
       ),
-      body: Container(
-        child:  Calendar( showWeek: showWeek ),
-          
+      body: Column(
+        children: [ Calendar( showWeek: showWeek ),
+        Container(
+          height: 80,
+          child: ListView(
+            padding: const EdgeInsets.all(10),
+            scrollDirection: Axis.horizontal,
+            children: [
+              ClipOval(
+                child: Image.network(
+                  'assets/background/colazione.jpeg',
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.contain,
+                ),
+              ),
+                ClipOval(
+                child: Image.network(
+                  'assets/background/pranzo.jpeg',
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.contain,
+                )
+                ),
+                ClipOval(
+                child: Image.network(
+                  'assets/background/merenda.jpeg',
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.contain,
+                )
+                
+              ),
+              ClipOval(
+                child: Image.network(
+                  'assets/background/cena.jpeg',
+                  width: 80,
+                  height: 80,
+                  
+                  fit: BoxFit.contain,
+                )),
+            ],
+          ),
+        )
+               ], 
         ),
       
     );
