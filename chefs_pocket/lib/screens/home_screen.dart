@@ -23,12 +23,12 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Expanded(
         child: Container(
           decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("../assets/background/homescreen.png"),
-              fit: BoxFit.none,
-              alignment: Alignment.bottomCenter,
-              scale: 2,
-            ),
+            //image: DecorationImage(
+            //  image: AssetImage("../assets/background/homescreen.png"),
+            //  fit: BoxFit.none,
+            //  alignment: Alignment.bottomCenter,
+            //  scale: 2,
+            //),
           ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -97,14 +97,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   height: 200,
                   child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      RecipeCard(recipe: mockRecipes[0]),
-                      RecipeCard(recipe: mockRecipes[1]),
-                      RecipeCard(recipe: mockRecipes[2]) //dovrà essere una lista di ricette
-                    ],
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    SizedBox(width: 12),
+                    RecipeCard(recipe: mockRecipes[0]),
+                    SizedBox(width: 12),
+                    RecipeCard(recipe: mockRecipes[1]),
+                    SizedBox(width: 12),
+                    RecipeCard(recipe: mockRecipes[2]), //dovrà essere una lista di ricette
+                    SizedBox(width: 12),
+                  ],
                   ),
-                )
+                ),
               ],
             ),
           ),
