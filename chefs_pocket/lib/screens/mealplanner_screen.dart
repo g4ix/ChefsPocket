@@ -1,5 +1,12 @@
 import 'package:chefs_pocket/components/calendar.dart';
+import 'package:chefs_pocket/components/meal_planner/clipoval_with_text.dart';
+import 'package:chefs_pocket/components/meal_planner/meal_row.dart';
+import 'package:chefs_pocket/components/recipe_card.dart';
+import 'package:chefs_pocket/components/recipe_saved_element.dart';
+import 'package:chefs_pocket/config.dart';
 import 'package:flutter/material.dart';
+
+import '../config.dart';
 
 class MealPlannerScreen extends StatefulWidget {
   @override
@@ -27,64 +34,52 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
           IconButton(
             icon: Icon(Icons.calendar_month_outlined),
             onPressed: () {
-              setState(( ) {
+              setState(() {
                 showWeek = !showWeek;
-
               });
             },
           ),
         ],
       ),
       body: Column(
-        children: [ Calendar( showWeek: showWeek ),
-        Container(
-          height: 80,
-          child: ListView(
-            padding: const EdgeInsets.all(10),
-            scrollDirection: Axis.horizontal,
-            children: [
-              ClipOval(
-                child: Image.network(
-                  'assets/background/colazione.jpeg',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.contain,
-                ),
-              ),
-                ClipOval(
-                child: Image.network(
-                  'assets/background/pranzo.jpeg',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.contain,
-                )
-                ),
-                ClipOval(
-                child: Image.network(
-                  'assets/background/merenda.jpeg',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.contain,
-                )
-                
-              ),
-              ClipOval(
-                child: Image.network(
-                  'assets/background/cena.jpeg',
-                  width: 80,
-                  height: 80,
-                  
-                  fit: BoxFit.contain,
-                )),
-            ],
+        children: [
+          Calendar(showWeek: showWeek),
+          Container(
+            height: 150,
+            child: MealRow(),
           ),
-        )
-               ], 
+          Expanded(
+            // height: MediaQuery.of(context).size.height - 450,
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisExtent: 200,
+                mainAxisSpacing: 5,
+                crossAxisSpacing: 5,
+                crossAxisCount: 2, // number of items per row
+              ),
+              scrollDirection: Axis.vertical,
+              itemCount: mockDays[1].lunch.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                    width: 100,
+                    child: RecipeCard(
+                        recipe: mockDays[1].lunch[
+                            index])); //ricette del pranzo di mockday presente in config
+              },
+            ),
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed action here
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
         ),
-      
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        child: const Icon(Icons.edit, color: Colors.white),
+      )
     );
   }
 }
-
-
-

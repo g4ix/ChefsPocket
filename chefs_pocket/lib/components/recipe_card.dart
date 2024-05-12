@@ -18,7 +18,11 @@ class _RecipeCardState extends State<RecipeCard> {
   Widget build(BuildContext context) {
     // Secondo me serve dell'ombra o comunque qualcosa che faccia da divisorio perchè 
     // altrimenti non si pervepisce bene il bordo della card
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Container(
+      width: width * 0.6, // 80% of screen width
+      height: height * 0.5,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -35,6 +39,7 @@ class _RecipeCardState extends State<RecipeCard> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
+          
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
@@ -47,9 +52,9 @@ class _RecipeCardState extends State<RecipeCard> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Align(
-                alignment: Alignment.bottomCenter,
+                alignment: Alignment.bottomLeft,
                 child: Container(
-                  height: 122,
+                  height: 130,
                   width: double.infinity,
                   margin: const EdgeInsets.all(8.0), // Crea un bordo di 8 pixel
                   decoration: BoxDecoration(
@@ -69,6 +74,7 @@ class _RecipeCardState extends State<RecipeCard> {
             Padding(
               padding: EdgeInsets.only(left: 8.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(widget.recipe.title,
                       maxLines: 1,
