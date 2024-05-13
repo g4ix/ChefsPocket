@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../models/directory.dart';
+import '../../models/directory.dart';
 
 class DirectoryCard extends StatefulWidget {
   final Directory directory;

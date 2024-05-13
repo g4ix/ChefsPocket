@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../models/recipe.dart';
+import '../../models/recipe.dart';
 
 class RecipeSavedElement extends StatefulWidget {
   final Recipe recipe;

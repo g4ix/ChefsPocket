@@ -6,16 +6,13 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class HomeScreen extends StatefulWidget {
   static int index = 0;
-  static List<String> meals = ['Breakfast', 'Lunch', 'Snack', 'Dinner'];
+  static List<String> meals = ['Colazione', 'Pranzo', 'Merenda', 'Cena'];
   @override
   _HomeScreenState createState() => _HomeScreenState();
 
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //prova per poter vedere il widget card
-  
-  //fine prova
 
   @override
   Widget build(BuildContext context) {

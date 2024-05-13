@@ -1,5 +1,3 @@
-import 'package:chefs_pocket/models/ingredient.dart';
-
 class GroceryList {
   String title = "";
   List<String> elements = []; 

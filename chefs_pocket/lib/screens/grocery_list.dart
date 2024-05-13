@@ -73,16 +73,20 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
         ...groceryLists[currentListIndex].elements.map((ingredient) {
           return ListTile(
             title: Text(ingredient),
-            trailing: Checkbox(
-              shape: CircleBorder(),
-              value: ingredientCheckStatus[ingredient] ?? false,
-              onChanged: (bool? value) {
-                setState(() {
-                  ingredientCheckStatus[ingredient] = value!;
-                });
-              },
-              activeColor: Color(0xFF557F9F),
-              checkColor: Colors.white,
+            trailing: Transform.scale(
+              scale:
+                  1.3, // Modifica questo valore per cambiare la dimensione del checkbox
+              child: Checkbox(
+                shape: CircleBorder(),
+                value: ingredientCheckStatus[ingredient] ?? false,
+                onChanged: (bool? value) {
+                  setState(() {
+                    ingredientCheckStatus[ingredient] = value!;
+                  });
+                },
+                activeColor: Color(0xFF557F9F),
+                checkColor: Colors.white,
+              ),
             ),
           );
         }).toList(),
@@ -109,19 +113,22 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(
-              child: Text('Aggiungi'),
-              onPressed: () {
-                setState(() {
-                  groceryLists[currentListIndex]
-                      .elements
-                      .add(newIngredient); // Modifica questa linea
-                  ingredientCheckStatus[newIngredient] =
-                      false; // Imposta lo stato iniziale del checkbox su false
-                });
-                Navigator.of(context).pop();
-              },
-            ),
+            ElevatedButton(
+                child: Text('Aggiungi'),
+                onPressed: () {
+                  setState(() {
+                    groceryLists[currentListIndex]
+                        .elements
+                        .add(newIngredient); // Modifica questa linea
+                    ingredientCheckStatus[newIngredient] =
+                        false; // Imposta lo stato iniziale del checkbox su false
+                  });
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF557F9F),
+                  foregroundColor: Color(0xFFFFFDF4),
+                )),
           ],
         );
       },
@@ -198,7 +205,8 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
               onPressed: () {
                 setState(() {
                   Navigator.of(context).pop();
-                  groceryLists.add(GroceryList(title: newListName, elements: [], note: ''));
+                  groceryLists.add(
+                      GroceryList(title: newListName, elements: [], note: ''));
                 });
               },
             ),

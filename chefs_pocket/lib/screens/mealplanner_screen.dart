@@ -2,7 +2,7 @@ import 'package:chefs_pocket/components/calendar.dart';
 import 'package:chefs_pocket/components/meal_planner/clipoval_with_text.dart';
 import 'package:chefs_pocket/components/meal_planner/meal_row.dart';
 import 'package:chefs_pocket/components/recipe_card.dart';
-import 'package:chefs_pocket/components/recipe_saved_element.dart';
+import 'package:chefs_pocket/components/saved/recipe_saved_element.dart';
 import 'package:chefs_pocket/config.dart';
 import 'package:flutter/material.dart';
 

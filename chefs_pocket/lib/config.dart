@@ -606,6 +606,19 @@ List<Recipe> mexicanRecipes = [
   ),
 ];
 
+List<Recipe> allSavedRecipes = [
+  ...italianRecipes,
+  ...mexicanRecipes,
+  ...mockRecipes
+  // Altre ricette possono essere aggiunte qui
+];
+
+Directory savedRecipesDirectory = Directory(
+  name: 'Ricette Salvate',
+  imageUrl: '../assets/directories/saved_recipes.jpg',
+  recipes: allSavedRecipes,
+);
+
 // Organizzazione delle ricette nelle directory
 List<Directory> mockDirectories = [
   Directory(
@@ -620,3 +633,4 @@ List<Directory> mockDirectories = [
   ),
   // Altre directory possono essere aggiunte qui
 ];
+

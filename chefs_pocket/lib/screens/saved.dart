@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chefs_pocket/components/directory_card.dart';
+import 'package:chefs_pocket/components/saved/directory_card.dart';
 import 'package:chefs_pocket/models/directory.dart';
 import 'package:chefs_pocket/screens/directory_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:chefs_pocket/models/recipe.dart';
 
 import '/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-// TODO: Aggiungere la directory di default "Tutte le ricette"
 // TODO: Aggiungere la logica per la ricerca delle ricette salvate
 // TODO: Aggiungere la logica per applicare i filtri di ricerca
 
@@ -29,7 +29,9 @@ class _SavedScreenState extends State<SavedScreen> {
   final ImagePicker _picker = ImagePicker();
   late Future<PickedFile?> pickedFile = Future.value(null);
 
+  Directory allSavedRecipesDir = savedRecipesDirectory;
   List<Directory> directories = mockDirectories;
+
   String title = '';
   File? image;
 
@@ -90,6 +92,7 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 
   Widget buildSearchBar() {
+    List<Recipe> allRecipes = allSavedRecipesDir.recipes;
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -117,10 +120,10 @@ class _SavedScreenState extends State<SavedScreen> {
               ),
               focusNode: myFocusNode,
               decoration: InputDecoration(
-                hintText: hasFocus ? '' : "Ingredienti, ricette...",
+                hintText: hasFocus ? '' : "Cerca una ricetta",
                 hintStyle: TextStyle(
                   fontFamily: "Montserrat",
-                  color: Color(0xFFFFFDF4),
+                  color: Color(0xFFFFFDF4).withOpacity(0.5),
                   fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
                   fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
                 ),
@@ -128,6 +131,9 @@ class _SavedScreenState extends State<SavedScreen> {
                     color: Color(0xFFFFFDF4)), // Set the icon color to yellow
                 border: InputBorder.none,
               ),
+              onChanged: (value) => {
+                // Implementa la logica per la ricerca delle ricette
+              },
             ),
           ),
           IconButton(
@@ -316,11 +322,8 @@ class _SavedScreenState extends State<SavedScreen> {
                                   height:
                                       MediaQuery.of(context).size.height / 5,
                                 )
-                              : Icon(
-                                  Icons.add_photo_alternate_outlined,
-                                  color: Color(0xFF557F9F),
-                                  size: 30
-                              ),
+                              : Icon(Icons.add_photo_alternate_outlined,
+                                  color: Color(0xFF557F9F), size: 30),
                         ),
                       ),
                     ),
@@ -360,6 +363,10 @@ class _SavedScreenState extends State<SavedScreen> {
                     }
                   },
                   child: Text('Salva'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF557F9F),
+                    foregroundColor: Color(0xFFFFFDF4),
+                  )
                 ),
               ],
             );
@@ -390,34 +397,50 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 
   Widget buildSaved() {
-  return GridView.builder(
-      shrinkWrap: true,
-      itemCount: directories.length + 1,
-      itemBuilder: (BuildContext context, int index) {
-        if (index == directories.length) {
-          return buildAddDirectory();
-        } else {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                builder: (context) => DirectoryPage(directory: directories[index]),
-                ),
-              );
-              });
-            },
-            child: DirectoryCard(directory: directories[index]),
-          );
-        }
-      },
-      scrollDirection: Axis.vertical,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-      ));
-}
+    return GridView.builder(
+        shrinkWrap: true,
+        itemCount: directories.length + 2,
+        itemBuilder: (BuildContext context, int index) {
+          if (index == directories.length + 1) {
+            return buildAddDirectory();
+          } else if (index == directories.length) {
+            // Render AllSavedRecipesDir
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DirectoryPage(directory: allSavedRecipesDir)),
+                  );
+                });
+              },
+              child: DirectoryCard(directory: allSavedRecipesDir),
+            );
+          } else {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DirectoryPage(directory: directories[index]),
+                    ),
+                  );
+                });
+              },
+              child: DirectoryCard(directory: directories[index]),
+            );
+          }
+        },
+        scrollDirection: Axis.vertical,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+        ));
+  }
 }
