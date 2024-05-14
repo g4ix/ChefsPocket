@@ -1,3 +1,5 @@
+import 'package:chefs_pocket/config.dart';
+import 'package:chefs_pocket/screens/recipe_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../models/recipe.dart';
@@ -22,102 +24,113 @@ class _RecipeCardState extends State<RecipeCard> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return Container(
-      width: width * 0.6, // 80% of screen width
-      height: height * 0.5,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 0.1,
-            blurRadius: 5,
-            offset: Offset(0, 1), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+    return InkWell(
+       onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => RecipeViewer()),
+        );
+      },
+      child: Container(
+        width: width * 0.6, // 80% of screen width
+        height: height * 0.5,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 0.1,
+              blurRadius: 5,
+              offset: Offset(0, 1), // changes position of shadow
+            ),
+          ],
         ),
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  height: 130,
-                  width: 240,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.black.withOpacity(0.6)
-                        : Colors.white.withOpacity(0.6),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Container(
-                      height: 130,
-                      width: double.infinity,
-                      margin:
-                          const EdgeInsets.all(8.0), // Crea un bordo di 8 pixel
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.black.withOpacity(0.6)
-                            : Colors.white.withOpacity(0.6),
-                        borderRadius: BorderRadius.circular(5.0),
-                        image: DecorationImage(
-                          image: NetworkImage(widget.recipe.imageUrl),
-                          fit: BoxFit.cover,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: 130,
+                    width: 240,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black.withOpacity(0.6)
+                          : Colors.white.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Container(
+                        height: 130,
+                        width: double.infinity,
+                        margin:
+                            const EdgeInsets.all(8.0), // Crea un bordo di 8 pixel
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black.withOpacity(0.6)
+                              : Colors.white.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(5.0),
+                          image: DecorationImage(
+                            image: NetworkImage(widget.recipe.imageUrl),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 2),
-                Padding(
-                  padding: EdgeInsets.only(left: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(widget.recipe.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.visible,
-                          style: Theme.of(context).textTheme.bodyLarge),
-                      SizedBox(height: 3),
-                      RatingBarIndicator(
-                        rating: widget.recipe.rating.toDouble(),
-                        itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: Color(0xFF557F9F),
+                  SizedBox(height: 2),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(widget.recipe.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.visible,
+                            style: Theme.of(context).textTheme.bodyLarge),
+                        SizedBox(height: 3),
+                        RatingBarIndicator(
+                          rating: widget.recipe.rating.toDouble(),
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Color(0xFF557F9F),
+                          ),
+                          itemCount: 5,
+                          itemSize: 20.0,
+                          direction: Axis.horizontal,
                         ),
-                        itemCount: 5,
-                        itemSize: 20.0,
-                        direction: Axis.horizontal,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            if (widget.modModify)
-              Positioned(
-                top: 0,
-                right: 0,
-                child: IconButton(
-                  iconSize: height * 0.02,
-                  icon: Icon(Icons.close, color: Colors.white,),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Theme.of(context).colorScheme.primary),
-                       
-                  
-                  ),
-                  onPressed: () {
-                    // Aggiungi qui la logica per eliminare la card
-                  },
-                ),
+                ],
               ),
-          ],
+              if (widget.modModify)  //bottone per eliminare la ricetta dalla lista
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: IconButton(
+                    iconSize: height * 0.02,
+                    icon: Icon(Icons.close, color: Colors.white,),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.primary),
+                         
+                    
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        // Remove the recipe from the list
+                        mockDays[1].lunch.remove(widget.recipe);
+                      });
+                    },
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

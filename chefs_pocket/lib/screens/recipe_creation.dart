@@ -11,7 +11,8 @@ import 'package:chefs_pocket/components/recipe_creation/title_input_section.dart
 import 'package:chefs_pocket/models/recipe.dart';
 import 'package:chefs_pocket/models/recipe_step.dart';
 import 'package:chefs_pocket/models/section.dart';
-import 'package:chefs_pocket/screens/recipe_screen.dart';
+import 'package:chefs_pocket/screens/recipe_viewer.dart';
+
 
 //import dotted border
 import 'package:dotted_border/dotted_border.dart';
@@ -98,7 +99,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               print(widget.recipe);
               recipeManager
                   .addRecipe(widget.recipe); // Add the recipe to the list
-              //Navigator.pop(RecipeScreen(widget.recipe));
+              //Navigator.pop(RecipeViewer(widget.recipe));
             },
           ),
         ],

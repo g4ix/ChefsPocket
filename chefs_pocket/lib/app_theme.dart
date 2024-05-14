@@ -36,6 +36,7 @@ class ChefsPocketTheme {
        colorScheme: const ColorScheme(
           brightness: Brightness.light,
           background: Color(0xFFFFFDF4), 
+          tertiary: Color(0xFFFFFED9),
           onBackground: Color(0xFFFFFDF4),
            primary: Color(0xFF557F9F), 
           onPrimary: Color(0xFF557F9F),
