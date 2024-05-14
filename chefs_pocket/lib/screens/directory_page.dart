@@ -67,10 +67,15 @@ class _DirectoryPageState extends State<DirectoryPage> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 2.0),
-                  child: RecipeSavedElement(
-                    recipe: widget.directory.recipes[index],
+                return GestureDetector(
+                  onTap: () {
+                    // Open recipe page
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.0),
+                    child: RecipeSavedElement(
+                      recipe: widget.directory.recipes[index],
+                    ),
                   ),
                 );
               },

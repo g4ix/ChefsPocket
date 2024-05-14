@@ -26,11 +26,14 @@ class _SavedScreenState extends State<SavedScreen> {
   bool hasFocus = false;
   double _currentSliderValue = 20.0;
   final List<Tag> _selectedFilterTags = [];
-  final ImagePicker _picker = ImagePicker();
   late Future<PickedFile?> pickedFile = Future.value(null);
 
   Directory allSavedRecipesDir = savedRecipesDirectory;
   List<Directory> directories = mockDirectories;
+
+  final TextEditingController _searchController = TextEditingController();
+
+  var _overlayController = OverlayPortalController();
 
   String title = '';
   File? image;
@@ -42,10 +45,11 @@ class _SavedScreenState extends State<SavedScreen> {
       if (pickedFile != null) {
         image = File(pickedFile.path);
       } else {
-        print('Nessuna immagine selezionata.');
+
       }
     });
   }
+
 
   @override
   void initState() {
@@ -55,11 +59,23 @@ class _SavedScreenState extends State<SavedScreen> {
         hasFocus = myFocusNode.hasFocus;
       });
     });
+    // Aggiungi un listener al controller
+    _searchController.addListener(() {
+      setState(() {
+        // Filtra l'elenco di ricette ogni volta che il testo cambia
+        allSavedRecipes = allSavedRecipesDir.recipes
+            .where((recipe) => recipe.title
+                .toLowerCase()
+                .contains(_searchController.text.toLowerCase()))
+            .toList();
+      });
+    });
   }
 
   @override
   void dispose() {
     myFocusNode.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -92,62 +108,85 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 
   Widget buildSearchBar() {
-    List<Recipe> allRecipes = allSavedRecipesDir.recipes;
-    return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        color: Color(0xFF557F9F), // Set the background color to blue
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              style: TextStyle(
-                fontFamily: "Montserrat",
-                color: Color(0xFFFFFDF4),
-                fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
-                fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          margin: const EdgeInsets.symmetric(vertical: 8.0),
+          decoration: BoxDecoration(
+            color: Color(0xFF557F9F), // Set the background color to blue
+            borderRadius: BorderRadius.circular(20.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: Offset(0, 3),
               ),
-              focusNode: myFocusNode,
-              decoration: InputDecoration(
-                hintText: hasFocus ? '' : "Cerca una ricetta",
-                hintStyle: TextStyle(
-                  fontFamily: "Montserrat",
-                  color: Color(0xFFFFFDF4).withOpacity(0.5),
-                  fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
-                  fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
+            ],
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  style: TextStyle(
+                    fontFamily: "Montserrat",
+                    color: Color(0xFFFFFDF4),
+                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+                    fontWeight:
+                        Theme.of(context).textTheme.bodyLarge?.fontWeight,
+                  ),
+                  focusNode: myFocusNode,
+                  controller: _searchController, 
+                  decoration: InputDecoration(
+                    hintText: hasFocus ? '' : "Cerca una ricetta",
+                    hintStyle: TextStyle(
+                      fontFamily: "Montserrat",
+                      color: Color(0xFFFFFDF4).withOpacity(0.5),
+                      fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+                      fontWeight:
+                          Theme.of(context).textTheme.bodyLarge?.fontWeight,
+                    ),
+                    prefixIcon: Icon(Icons.search, color: Color(0xFFFFFDF4)),
+                    border: InputBorder.none,
+                  ),                
                 ),
-                prefixIcon: Icon(Icons.search,
-                    color: Color(0xFFFFFDF4)), // Set the icon color to yellow
-                border: InputBorder.none,
               ),
-              onChanged: (value) => {
-                // Implementa la logica per la ricerca delle ricette
-              },
-            ),
+              IconButton(
+                icon: Icon(Icons.filter_list, color: Color(0xFFFFFDF4)),
+                onPressed: () {
+                  setState(() {
+                    // Implementare la logica per mostrare i filtri
+                    showFilterOptions(context);
+                  });
+                },
+              ),
+            ],
           ),
-          IconButton(
-            icon: Icon(Icons.filter_list,
-                color: Color(0xFFFFFDF4)), // Set the icon color to yellow
-            onPressed: () {
-              setState(() {
-                // Implement the logic to open the filter drawer
-                showFilterOptions(context);
-              });
+        ),
+        
+        if (_searchController.text.isNotEmpty)
+          ListView.builder(
+            shrinkWrap:
+                true, // Questo permette al ListView di funzionare all'interno di un Column
+            itemCount: allSavedRecipes.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  ListTile(
+                    title: Text(allSavedRecipes[index].title),
+                    onTap: () {
+                      // Implementa la logica per aprire la pagina della ricetta
+                    },
+                  ),
+                  Divider(
+                      color: Color(0xFF557F9F).withOpacity(
+                          0.5)), // Aggiungi una linea blu tra ogni ListTile
+                ],
+              );
             },
           ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -213,7 +252,7 @@ class _SavedScreenState extends State<SavedScreen> {
         min: 0,
         max: 100,
         divisions: 5,
-        label: '${_currentSliderValue.round()} min',
+        label: '< ${_currentSliderValue.round()} min',
         onChanged: (double value) {
           setState(() {
             _currentSliderValue = value;
@@ -348,26 +387,25 @@ class _SavedScreenState extends State<SavedScreen> {
                   child: Text('Annulla'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    if (title.isNotEmpty && image != null) {
-                      // Creare un nuovo oggetto Directory
-                      Directory newDirectory =
-                          Directory(name: title, imageUrl: image!.path);
+                    onPressed: () {
+                      if (title.isNotEmpty && image != null) {
+                        // Creare un nuovo oggetto Directory
+                        Directory newDirectory =
+                            Directory(name: title, imageUrl: image!.path);
 
-                      // Aggiungere la nuova directory a una lista di directory
-                      setState(() {
-                        directories.add(newDirectory);
-                      });
-                      // Chiudi il dialog
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: Text('Salva'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF557F9F),
-                    foregroundColor: Color(0xFFFFFDF4),
-                  )
-                ),
+                        // Aggiungere la nuova directory a una lista di directory
+                        setState(() {
+                          directories.add(newDirectory);
+                        });
+                        // Chiudi il dialog
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: Text('Salva'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF557F9F),
+                      foregroundColor: Color(0xFFFFFDF4),
+                    )),
               ],
             );
           },
