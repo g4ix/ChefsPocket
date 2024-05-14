@@ -108,7 +108,8 @@ List<Recipe> mockRecipes = [
     title: "Pasta alla Carbonara",
     imageUrl: "../assets/Recipes/pasta_carbonara.jpg",
     rating: 4,
-    tags: [Tag.Primo],
+    totalTime: Duration(minutes: 30),
+    tags: [Tag.Primo, Tag.Carne],
     ingredients: [
       Ingredient(
         name: "Pasta",
@@ -125,10 +126,32 @@ List<Recipe> mockRecipes = [
         quantity: 50,
         unit: "g",
       ),
+      Ingredient(
+        name: "Formaggio",
+        quantity: 20,
+        unit: "g",),
+      Ingredient(
+        name: "Pepe",
+        quantity: 5,
+        unit: "g",
+      ),
+      Ingredient(
+        name: "Sale",
+        quantity: 5,
+        unit: "g",),
+      Ingredient(
+        name: "Olio",
+        quantity: 20,
+        unit: "ml",),
+      Ingredient(
+        name: "Acqua",
+        quantity: 200,
+        unit: "ml",)
     ],
     steps: [
       RecipeStep(
         title: "Preparazione",
+        imageUrls: ['../assets/recipes/pasta_carbonara.jpg', '../assets/recipes/pasta_carbonara.jpg'],
         description: "Metti a bollire l'acqua",
         timer: const Duration(minutes: 10),
       ),

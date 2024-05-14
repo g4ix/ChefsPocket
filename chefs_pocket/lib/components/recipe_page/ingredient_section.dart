@@ -81,49 +81,56 @@ class _IngredientSectionState extends State<IngredientSection> {
                 ),
               ],
             ),
-            Text('Ingredienti', style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.primary)),
+            Text('Ingredienti',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(color: Theme.of(context).colorScheme.primary)),
             Container(
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                padding: EdgeInsets.all(0),
-                shrinkWrap: true,
-                itemCount: recipe.ingredients.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.circle,
-                          size: 10,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ), // Use a circle icon for the dot
-                        Text(
-                          recipe.ingredients[index].quantity.toString() +
-                              " " +
-                              recipe.ingredients[index].unit.toString() +
-                              " " +
-                              recipe.ingredients[index].name,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ), // Display the array element
-                      ],
-                    ),
-                  );
-                },
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: ListView.builder(
+                  padding: EdgeInsets.all(0),
+                  shrinkWrap: true,
+                  itemCount: recipe.ingredients.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            size: 10,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ), // Use a circle icon for the dot
+                          Text(
+                            recipe.ingredients[index].quantity.toString() +
+                                " " +
+                                recipe.ingredients[index].unit.toString() +
+                                " " +
+                                recipe.ingredients[index].name,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ), // Display the array element
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-            Text('Tags:' , style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.primary)),
+            
+            Text('Tags:',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(color: Theme.of(context).colorScheme.primary)),
             Container(
               height: MediaQuery.of(context).size.height * 0.1,
               width: MediaQuery.of(context).size.width,
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 3 / 2,
+                  maxCrossAxisExtent: 100,
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20,
                 ),
@@ -132,7 +139,7 @@ class _IngredientSectionState extends State<IngredientSection> {
                     side: BorderSide(
                         color: Theme.of(context).colorScheme.primary, width: 1),
                     label: Text(recipe.tags[index].name),
-                    onSelected: (bool selected) {  },
+                    onSelected: (bool selected) {},
                     disabledColor: null,
                     labelStyle: Theme.of(context)
                         .textTheme
@@ -146,12 +153,9 @@ class _IngredientSectionState extends State<IngredientSection> {
                 itemCount: recipe.tags.length,
               ),
             ),
-
             ElevatedButton(
               onPressed: () {
-                setState(() {
-               
-                });
+                setState(() {});
               },
               child: Text(
                 'Aggiungi alla spesa',
@@ -170,7 +174,8 @@ class _IngredientSectionState extends State<IngredientSection> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-            )
+            ),
+            
           ],
         ),
 
