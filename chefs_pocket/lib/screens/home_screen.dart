@@ -97,11 +97,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   scrollDirection: Axis.horizontal,
                   children: [
                     SizedBox(width: 12),
-                    RecipeCard(recipe: mockRecipes[0]),
+                    RecipeCard(recipe: mockRecipes[0], modModify: false,),
                     SizedBox(width: 12),
-                    RecipeCard(recipe: mockRecipes[1]),
+                    RecipeCard(recipe: mockRecipes[1], modModify: false,),
                     SizedBox(width: 12),
-                    RecipeCard(recipe: mockRecipes[2]), //dovrà essere una lista di ricette
+                    RecipeCard(recipe: mockRecipes[2], modModify: false,), //dovrà essere una lista di ricette
                     SizedBox(width: 12),
                   ],
                   ),

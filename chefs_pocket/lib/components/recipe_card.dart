@@ -4,8 +4,9 @@ import '../models/recipe.dart';
 
 class RecipeCard extends StatefulWidget {
   final Recipe recipe;
+  final bool modModify;
 
-  const RecipeCard({required this.recipe});
+  const RecipeCard({required this.recipe, required this.modModify});
 
   @override
   State<RecipeCard> createState() {
@@ -16,10 +17,11 @@ class RecipeCard extends StatefulWidget {
 class _RecipeCardState extends State<RecipeCard> {
   @override
   Widget build(BuildContext context) {
-    // Secondo me serve dell'ombra o comunque qualcosa che faccia da divisorio perchè 
+    // Secondo me serve dell'ombra o comunque qualcosa che faccia da divisorio perchè
     // altrimenti non si pervepisce bene il bordo della card
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
     return Container(
       width: width * 0.6, // 80% of screen width
       height: height * 0.5,
@@ -33,70 +35,91 @@ class _RecipeCardState extends State<RecipeCard> {
           ),
         ],
       ),
-      child:
-    Card(
+      child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Column(
-          
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              height: 130,
-              width: 240,
-              decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.black.withOpacity(0.6)
-                    : Colors.white.withOpacity(0.6),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
                   height: 130,
-                  width: double.infinity,
-                  margin: const EdgeInsets.all(8.0), // Crea un bordo di 8 pixel
+                  width: 240,
                   decoration: BoxDecoration(
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Colors.black.withOpacity(0.6)
                         : Colors.white.withOpacity(0.6),
-                    borderRadius: BorderRadius.circular(5.0),
-                    image: DecorationImage(
-                      image: NetworkImage(widget.recipe.imageUrl),
-                      fit: BoxFit.cover,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      height: 130,
+                      width: double.infinity,
+                      margin:
+                          const EdgeInsets.all(8.0), // Crea un bordo di 8 pixel
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black.withOpacity(0.6)
+                            : Colors.white.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(5.0),
+                        image: DecorationImage(
+                          image: NetworkImage(widget.recipe.imageUrl),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(height: 2),
-            Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(widget.recipe.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.visible,
-                      style: Theme.of(context).textTheme.bodyLarge),
-                  SizedBox(height: 3),
-                  RatingBarIndicator(
-                    rating: widget.recipe.rating.toDouble(),
-                    itemBuilder: (context, index) => Icon(
-                      Icons.star,
-                      color: Color(0xFF557F9F),
-                    ),
-                    itemCount: 5,
-                    itemSize: 20.0,
-                    direction: Axis.horizontal,
+                SizedBox(height: 2),
+                Padding(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.recipe.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.visible,
+                          style: Theme.of(context).textTheme.bodyLarge),
+                      SizedBox(height: 3),
+                      RatingBarIndicator(
+                        rating: widget.recipe.rating.toDouble(),
+                        itemBuilder: (context, index) => Icon(
+                          Icons.star,
+                          color: Color(0xFF557F9F),
+                        ),
+                        itemCount: 5,
+                        itemSize: 20.0,
+                        direction: Axis.horizontal,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+            if (widget.modModify)
+              Positioned(
+                top: 0,
+                right: 0,
+                child: IconButton(
+                  iconSize: height * 0.02,
+                  icon: Icon(Icons.close, color: Colors.white,),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).colorScheme.primary),
+                       
+                  
+                  ),
+                  onPressed: () {
+                    // Aggiungi qui la logica per eliminare la card
+                  },
+                ),
+              ),
           ],
         ),
-    ),
+      ),
     );
   }
 }
