@@ -1,5 +1,7 @@
+import 'package:chefs_pocket/components/recipe_creation/set_portions.dart';
 import 'package:chefs_pocket/config.dart';
 import 'package:chefs_pocket/models/ingredient.dart';
+import 'package:chefs_pocket/models/recipe.dart';
 import 'package:flutter/material.dart';
 
 import 'ingredient_input.dart';
@@ -9,12 +11,14 @@ class IngredientPortionSection extends StatefulWidget {
   Map<Ingredient, TextEditingController> ingredientControllers;
   bool useEuUnits;
   Function onPortionChange;
+  Recipe recipe;
 
   IngredientPortionSection(
       {required this.ingredients,
       required this.ingredientControllers,
       required this.useEuUnits,
-      required this.onPortionChange});
+      required this.onPortionChange,
+      required this.recipe});
 
   @override
   _IngredientPortionSectionState createState() =>
@@ -50,54 +54,9 @@ class _IngredientPortionSectionState extends State<IngredientPortionSection> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Porzioni',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Color(
-                                  0xFF557F9F), // Specify the desired color
-                            ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      SizedBox(
-                        width: 50,
-                        height: 35,
-                        child: TextFormField(
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          keyboardType: TextInputType.number,
-                          initialValue: '2', // Set the default value to 2
-                          decoration: InputDecoration(
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFF557F9F), width: 1.0),
-                              borderRadius: BorderRadius.circular(
-                                  10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFF557F9F), width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFF557F9F), width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal:
-                                    10), // Adjust the vertical and horizontal padding
-                            alignLabelWithHint:
-                                true, // Align the label with the input field
-                          ),
-                          onChanged: (value) {
-                            widget.onPortionChange(value);
-                          },
-                        ),
-                      ),
-                    ],
+                 SetPortion(
+                    onChangedPortion: widget.onPortionChange,
+                    recipe: Recipe(portions: 2),
                   ),
                 ],
               ),

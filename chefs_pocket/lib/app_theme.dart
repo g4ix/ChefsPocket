@@ -27,6 +27,11 @@ class ChefsPocketTheme {
       fontWeight: FontWeight.w400,
       color: Colors.black,
     ),
+    headlineMedium: GoogleFonts.adamina(
+      fontSize: 24,
+      fontWeight: FontWeight.w500,
+      color: Color(0xFFFFFED9),
+    ),
   );
 
   static ThemeData light(){

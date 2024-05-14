@@ -1,5 +1,5 @@
 import 'package:chefs_pocket/config.dart';
-import 'package:chefs_pocket/screens/recipe_viewer.dart';
+import 'package:chefs_pocket/screens/recipe_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../models/recipe.dart';
@@ -25,7 +25,7 @@ class _RecipeCardState extends State<RecipeCard> {
     double height = MediaQuery.of(context).size.height;
 
     return InkWell(
-       onTap: () {
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => RecipeViewer()),
@@ -54,8 +54,8 @@ class _RecipeCardState extends State<RecipeCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    height: 130,
-                    width: 240,
+                    width: width * 0.59, // 80% of screen width
+                    height: height * 0.15,
                     decoration: BoxDecoration(
                       color: Theme.of(context).brightness == Brightness.dark
                           ? Colors.black.withOpacity(0.6)
@@ -65,10 +65,10 @@ class _RecipeCardState extends State<RecipeCard> {
                     child: Align(
                       alignment: Alignment.bottomLeft,
                       child: Container(
-                        height: 130,
+                        height: height * 0.5, // 20% of screen height
                         width: double.infinity,
-                        margin:
-                            const EdgeInsets.all(8.0), // Crea un bordo di 8 pixel
+                        margin: const EdgeInsets.all(
+                            8.0), // Crea un bordo di 8 pixel
                         decoration: BoxDecoration(
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.black.withOpacity(0.6)
@@ -83,43 +83,48 @@ class _RecipeCardState extends State<RecipeCard> {
                     ),
                   ),
                   SizedBox(height: 2),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(widget.recipe.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.visible,
-                            style: Theme.of(context).textTheme.bodyLarge),
-                        SizedBox(height: 3),
-                        RatingBarIndicator(
-                          rating: widget.recipe.rating.toDouble(),
-                          itemBuilder: (context, index) => Icon(
-                            Icons.star,
-                            color: Color(0xFF557F9F),
+                  Container(
+                    width: width * 0.59, // 80% of screen width
+
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(widget.recipe.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyLarge),
+                          RatingBarIndicator(
+                            rating: widget.recipe.rating.toDouble(),
+                            itemBuilder: (context, index) => Icon(
+                              Icons.star,
+                              color: Color(0xFF557F9F),
+                            ),
+                            itemCount: 5,
+                            itemSize: 20.0,
+                            direction: Axis.horizontal,
                           ),
-                          itemCount: 5,
-                          itemSize: 20.0,
-                          direction: Axis.horizontal,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
-              if (widget.modModify)  //bottone per eliminare la ricetta dalla lista
+              if (widget
+                  .modModify) //bottone per eliminare la ricetta dalla lista
                 Positioned(
                   top: 0,
                   right: 0,
                   child: IconButton(
                     iconSize: height * 0.02,
-                    icon: Icon(Icons.close, color: Colors.white,),
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Theme.of(context).colorScheme.primary),
-                         
-                    
                     ),
                     onPressed: () {
                       setState(() {

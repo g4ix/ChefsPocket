@@ -11,7 +11,7 @@ import 'package:chefs_pocket/components/recipe_creation/title_input_section.dart
 import 'package:chefs_pocket/models/recipe.dart';
 import 'package:chefs_pocket/models/recipe_step.dart';
 import 'package:chefs_pocket/models/section.dart';
-import 'package:chefs_pocket/screens/recipe_viewer.dart';
+import 'package:chefs_pocket/screens/recipe_page.dart';
 
 
 //import dotted border
@@ -141,6 +141,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               ingredients: _ingredients,
               ingredientControllers: ingredientControllers,
               useEuUnits: _useEUUnits,
+              recipe: widget.recipe,
               onPortionChange: (value) {
                 setState(() {
                   this._portions = int.parse(value);
