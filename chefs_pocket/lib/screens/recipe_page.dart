@@ -2,6 +2,7 @@ import 'package:chefs_pocket/components/bottom_bar.dart';
 import 'package:chefs_pocket/components/recipe_page/ingredient_section.dart';
 import 'package:chefs_pocket/components/recipe_page/step_section.dart';
 import 'package:chefs_pocket/config.dart';
+import 'package:chefs_pocket/models/grocery_list.dart';
 import 'package:chefs_pocket/models/recipe.dart';
 import 'package:chefs_pocket/screens/grocery_list.dart';
 import 'package:chefs_pocket/screens/home_screen.dart';

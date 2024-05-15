@@ -86,7 +86,11 @@ class _IngredientSectionState extends State<IngredientSection> {
                 ),
               ],
             ),
-            Text('Ingredienti', style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.primary)),
+            Text('Ingredienti',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(color: Theme.of(context).colorScheme.primary)),
             Container(
               height: MediaQuery.of(context).size.height * 0.3,
               width: MediaQuery.of(context).size.width,
@@ -127,8 +131,7 @@ class _IngredientSectionState extends State<IngredientSection> {
               width: MediaQuery.of(context).size.width,
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 3 / 2,
+                  maxCrossAxisExtent: 100,
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20,
                 ),
@@ -151,12 +154,9 @@ class _IngredientSectionState extends State<IngredientSection> {
                 itemCount: widget.recipe.tags.length,
               ),
             ),
-
             ElevatedButton(
               onPressed: () {
-                setState(() {
-               
-                });
+                setState(() {});
               },
               child: Text(
                 'Aggiungi alla spesa',
@@ -175,7 +175,8 @@ class _IngredientSectionState extends State<IngredientSection> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-            )
+            ),
+            
           ],
         ),
 
