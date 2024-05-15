@@ -4,6 +4,7 @@ import 'package:chefs_pocket/components/saved/directory_card.dart';
 import 'package:chefs_pocket/models/directory.dart';
 import 'package:chefs_pocket/screens/directory_page.dart';
 import 'package:chefs_pocket/models/recipe.dart';
+import 'package:chefs_pocket/components/saved/recipe_saved_element.dart';
 import 'package:chefs_pocket/screens/recipe_page.dart';
 
 import 'package:flutter/material.dart';
@@ -34,6 +35,9 @@ class _SavedScreenState extends State<SavedScreen> {
   Directory allSavedRecipesDir = savedRecipesDirectory;
   List<Directory> directories = mockDirectories;
 
+  List<Recipe> currentRecipes = [];
+  bool filtersApplied = false;
+
   final TextEditingController _searchController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -51,30 +55,45 @@ class _SavedScreenState extends State<SavedScreen> {
     });
   }
 
-  List<Recipe> applyFilters(List<Recipe> recipes, List<Tag> selectedTags, double rating, int time_minutes) {
-  return recipes.where((recipe) {
-    // Filtra per tag
-    if (!selectedTags.every((tag) => recipe.tags.contains(tag))) {
-      return false;
+  void applyFilters(List<Recipe> recipes, List<Tag> selectedTags, double rating,
+      int time_minutes) {
+    List<Recipe> filteredRecipes = recipes.where((recipe) {
+      // Filtra per tag
+      if (!selectedTags.every((tag) => recipe.tags.contains(tag))) {
+        return false;
+      }
+
+      // Filtra per voto
+      if (recipe.rating < rating) {
+        return false;
+      }
+
+      Duration timeDuration = Duration(minutes: time_minutes);
+
+      int hours = timeDuration.inHours;
+      int minutes = timeDuration.inMinutes.remainder(60);
+      // Filtra per tempo
+      if (recipe.totalTime > Duration(hours: hours, minutes: minutes)) {
+        return false;
+      }
+
+      return true;
+    }).toList();
+
+    if (filteredRecipes.isEmpty) {
+      // Mostra un messaggio di errore se non ci sono ricette che soddisfano i filtri
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Nessuna ricetta trovata'),
+        ),
+      );
+    } else {
+      setState(() {
+        currentRecipes = filteredRecipes;
+        filtersApplied = true;
+      });
     }
-
-    // Filtra per voto
-    if (recipe.rating < rating) {
-      return false;
-    }
-
-  Duration timeDuration = Duration(minutes: time_minutes);
-
-    int hours = timeDuration.inHours;
-    int minutes = timeDuration.inMinutes.remainder(60);
-    // Filtra per tempo
-    if (recipe.totalTime > Duration(hours: hours, minutes: minutes)) {
-      return false;
-    }
-
-    return true;
-  }).toList();
-}
+  }
 
   @override
   void initState() {
@@ -96,7 +115,6 @@ class _SavedScreenState extends State<SavedScreen> {
 
         if (_formKey.currentState!.validate()) {
           _formKey.currentState!.save();
-          allSavedRecipes = applyFilters(allSavedRecipes, _selectedFilterTags, _rating, _time);
         }
       });
     });
@@ -409,6 +427,10 @@ class _SavedScreenState extends State<SavedScreen> {
                       ElevatedButton(
                         onPressed: () {
                           // Implementa la logica per applicare i filtri
+                          applyFilters(allSavedRecipes, _selectedFilterTags,
+                              _rating, _time);
+
+                          Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF557F9F),
@@ -538,50 +560,73 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 
   Widget buildSaved() {
-    return GridView.builder(
+    if (filtersApplied) {
+      return ListView.builder(
         shrinkWrap: true,
-        itemCount: directories.length + 2,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == directories.length + 1) {
-            return buildAddDirectory();
-          } else if (index == directories.length) {
-            // Render AllSavedRecipesDir
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            DirectoryPage(directory: allSavedRecipesDir)),
-                  );
-                });
-              },
-              child: DirectoryCard(directory: allSavedRecipesDir),
+        itemCount: currentRecipes.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+        onTap: () {
+          setState(() {
+            Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+            RecipePage(recipe: currentRecipes[index]),
+          ),
             );
-          } else {
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          DirectoryPage(directory: directories[index]),
-                    ),
-                  );
-                });
-              },
-              child: DirectoryCard(directory: directories[index]),
-            );
-          }
+          });
         },
-        scrollDirection: Axis.vertical,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-        ));
+        child: RecipeSavedElement(recipe: currentRecipes[index]),
+          );
+        },
+      );
+    } else {
+      return GridView.builder(
+          shrinkWrap: true,
+          itemCount: directories.length + 2,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == directories.length + 1) {
+              return buildAddDirectory();
+            } else if (index == directories.length) {
+              // Render AllSavedRecipesDir
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DirectoryPage(directory: allSavedRecipesDir)),
+                    );
+                  });
+                },
+                child: DirectoryCard(directory: allSavedRecipesDir),
+              );
+            } else {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DirectoryPage(directory: directories[index]),
+                      ),
+                    );
+                  });
+                },
+                child: DirectoryCard(directory: directories[index]),
+              );
+            }
+          },
+          scrollDirection: Axis.vertical,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 1,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+          ));
+    }
   }
 }
