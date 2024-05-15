@@ -7,8 +7,10 @@ import '../models/recipe.dart';
 class RecipeCard extends StatefulWidget {
   final Recipe recipe;
   final bool modModify;
+  final Function(Recipe)? onRemoveRecipe;
 
-  const RecipeCard({required this.recipe, required this.modModify});
+  const RecipeCard(
+      {required this.recipe, required this.modModify, this.onRemoveRecipe});
 
   @override
   State<RecipeCard> createState() {
@@ -28,7 +30,8 @@ class _RecipeCardState extends State<RecipeCard> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => RecipePage(recipe: widget.recipe)),
+          MaterialPageRoute(
+              builder: (context) => RecipePage(recipe: widget.recipe)),
         );
       },
       child: Container(
@@ -127,10 +130,8 @@ class _RecipeCardState extends State<RecipeCard> {
                           Theme.of(context).colorScheme.primary),
                     ),
                     onPressed: () {
-                      setState(() {
-                        // Remove the recipe from the list
-                        mockDays[1].lunch.remove(widget.recipe);
-                      });
+                      if (widget.onRemoveRecipe != null)
+                        widget.onRemoveRecipe!(widget.recipe);
                     },
                   ),
                 ),

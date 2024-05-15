@@ -4,8 +4,12 @@ import 'package:chefs_pocket/components/meal_planner/meal_row.dart';
 import 'package:chefs_pocket/components/recipe_card.dart';
 import 'package:chefs_pocket/components/saved/recipe_saved_element.dart';
 import 'package:chefs_pocket/config.dart';
+import 'package:chefs_pocket/manager/planner_manager.dart';
+import 'package:chefs_pocket/models/day.dart';
+import 'package:chefs_pocket/models/recipe.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../config.dart';
 
@@ -17,19 +21,35 @@ class MealPlannerScreen extends StatefulWidget {
 class _MealPlannerScreenState extends State<MealPlannerScreen> {
   bool showWeek = true;
   bool modModify = false;
+  DateTime selectedDay = DateTime.now();
+  Day selectedMeals = Day();
+  List<Recipe> toShow = [];
+
+  @override
+  void initState() {
+    super.initState();
+    var plannerManager = Provider.of<PlannerManager>(context, listen: false);
+    selectedMeals = plannerManager.days.firstWhere(
+        (element) =>
+            element.date?.day == DateTime.now().day &&
+            element.date?.month == DateTime.now().month &&
+            element.date?.year == DateTime.now().year, orElse: () {
+      return Day();
+    });
+    toShow = selectedMeals.breakfast;
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-            onTap: () => setState(() => showWeek = true),
-
+      onTap: () => setState(() => showWeek = true),
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.background,
             title: Text(
               'Piano Alimentare',
               style: Theme.of(context).textTheme.titleMedium,
-            ),   
+            ),
             // leading: IconButton(                       //icona per tornare indietro: SERVE???
             //   icon: Icon(Icons.arrow_back_ios_new),
             //   onPressed: () {
@@ -49,11 +69,46 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
           ),
           body: Column(
             children: [
-              Calendar(showWeek: showWeek), //calendario
+              Calendar(
+                  showWeek: showWeek,
+                  onDaySelection: (DateTime date) {
+                    var plannerManager =
+                        Provider.of<PlannerManager>(context, listen: false);
+                    setState(() {
+                      selectedMeals = plannerManager.days.firstWhere(
+                          (element) =>
+                              element.date?.day == date.day &&
+                              element.date?.month == date.month &&
+                              element.date?.year == date.year, orElse: () {
+                        return Day();
+                      });
+                      toShow = selectedMeals.breakfast;
+                      
+                    });
+                  }), //calendario
               Container(
                 //container per la riga dei pasti
                 height: 150,
-                child: MealRow(),
+                child: MealRow((String meal) {
+                  setState(() {
+                    switch (meal) {
+                      case 'Colazione':
+                        toShow = selectedMeals.breakfast;
+                        break;
+                      case 'Pranzo':
+                        toShow = selectedMeals.lunch;
+                        break;
+                      case 'Merenda':
+                        toShow = selectedMeals.snacks;
+                        break;
+                      case 'Cena':
+                        toShow = selectedMeals.dinner;
+                        break;
+                      default:
+                        toShow = selectedMeals.breakfast;
+                    }
+                  });
+                }),
               ),
               Expanded(
                 //container per le ricette
@@ -67,10 +122,10 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                   ),
                   scrollDirection: Axis.vertical,
                   itemCount: modModify
-                      ? (mockDays[1].lunch.length + 1)
-                      : mockDays[1].lunch.length,
+                      ? (toShow.length + 1)
+                      : toShow.length,
                   itemBuilder: (BuildContext context, int index) {
-                    if (index == mockDays[1].lunch.length && modModify) {
+                    if (index == toShow.length && modModify) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -101,8 +156,18 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                       return Container(
                         width: 100,
                         child: RecipeCard(
-                            recipe: mockDays[1].lunch[index],
-                            modModify: modModify),
+                            recipe: toShow[index],
+                            modModify: modModify,
+                            onRemoveRecipe: (Recipe toRemove) {
+                              setState(() {
+                                var plannerManager = Provider.of<PlannerManager>(context, listen: false);
+                                int index = toShow.indexWhere((element) => element == toRemove);
+                                // manca un modo di capire se è selezionato il pranzo o la cena ecc.
+                                // si potrebbe creare una variabile mealSelected che contiene il pasto selezionato
+                                // e aggiornarla attravero MealRow 
+                                plannerManager.deleteRecipeBreakfast(index, selectedMeals.date!);
+                              });
+                            }),
                       );
                     }
                     //ricette del pranzo di mockday presente in config

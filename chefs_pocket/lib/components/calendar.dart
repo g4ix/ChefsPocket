@@ -4,7 +4,10 @@ import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatefulWidget {
   final bool showWeek;
-  const Calendar({Key? key, required this.showWeek}) : super(key: key);
+
+  final Function(DateTime) onDaySelection;
+  Calendar({Key? key, required this.showWeek, required this.onDaySelection})
+      : super(key: key);
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -12,7 +15,6 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> {
   DateTime _selectedDay = DateTime.now();
-
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
@@ -24,6 +26,7 @@ class _CalendarState extends State<Calendar> {
       onDaySelected: (selectedDay, focusedDay) {
         setState(() {
           _selectedDay = selectedDay;
+          widget.onDaySelection(selectedDay);
         });
       },
       calendarFormat:
