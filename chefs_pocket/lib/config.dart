@@ -129,7 +129,8 @@ List<Recipe> mockRecipes = [
       Ingredient(
         name: "Formaggio",
         quantity: 20,
-        unit: "g",),
+        unit: "g",
+      ),
       Ingredient(
         name: "Pepe",
         quantity: 5,
@@ -138,20 +139,26 @@ List<Recipe> mockRecipes = [
       Ingredient(
         name: "Sale",
         quantity: 5,
-        unit: "g",),
+        unit: "g",
+      ),
       Ingredient(
         name: "Olio",
         quantity: 20,
-        unit: "ml",),
+        unit: "ml",
+      ),
       Ingredient(
         name: "Acqua",
         quantity: 200,
-        unit: "ml",)
+        unit: "ml",
+      )
     ],
     steps: [
       RecipeStep(
         title: "Preparazione",
-        imageUrls: ['../assets/recipes/pasta_carbonara.jpg', '../assets/recipes/pasta_carbonara.jpg'],
+        imageUrls: [
+          '../assets/recipes/pasta_carbonara.jpg',
+          '../assets/recipes/pasta_carbonara.jpg'
+        ],
         description: "Metti a bollire l'acqua",
         timer: const Duration(minutes: 10),
       ),
@@ -656,4 +663,3 @@ List<Directory> mockDirectories = [
   ),
   // Altre directory possono essere aggiunte qui
 ];
-

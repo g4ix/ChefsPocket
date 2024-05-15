@@ -1,9 +1,19 @@
+import 'package:chefs_pocket/config.dart';
 import 'package:chefs_pocket/models/day.dart';
 import 'package:chefs_pocket/models/recipe.dart';
 import 'package:flutter/material.dart';
 
 class PlannerManager extends ChangeNotifier {
-  final List<Day> _days = <Day>[];
+  final List<Day> _days = <Day>[
+    Day(
+        date: DateTime.now(),
+        breakfast: [mockRecipes[0]],
+        lunch: [mockRecipes[1]],
+        dinner: [mockRecipes[2]],
+        snacks: [mockRecipes[2]]),
+    mockDays[1],
+    mockDays[2],
+  ];
 
   List<Day> get days => List.unmodifiable(_days);
 
@@ -88,10 +98,10 @@ class PlannerManager extends ChangeNotifier {
       _days.add(Day(date: date, snacks: [item]));
       notifyListeners();
       return;
-    }else{
+    } else {
       _days[indexDay].snacks.add(item);
       notifyListeners();
-    }    
+    }
   }
 
   //non so se mancano funzioni per aggiungere o togliere direttamente date
