@@ -28,7 +28,7 @@ class _RecipeCardState extends State<RecipeCard> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => RecipeViewer()),
+          MaterialPageRoute(builder: (context) => RecipePage(recipe: widget.recipe)),
         );
       },
       child: Container(

@@ -3,24 +3,24 @@ import 'package:flutter/material.dart';
 
 class GroceryManager extends ChangeNotifier {
 
-  final List<Ingredient> _ingredient = <Ingredient>[];
+  final List<Ingredient> _ingredients = <Ingredient>[];
 
-  List<Ingredient> get ingredient => List.unmodifiable(_ingredient);
+  List<Ingredient> get ingredient => List.unmodifiable(_ingredients);
   
  
   
   void deleteItem(int index){
-    _ingredient.removeAt(index);
+    _ingredients.removeAt(index);
     notifyListeners();
   }
 
   void addItem(Ingredient item){
-    _ingredient.add(item);
+    _ingredients.add(item);
     notifyListeners();
   }
 
   void updateItem(Ingredient item, int index){
-    _ingredient[index] = item;
+    _ingredients[index] = item;
     notifyListeners();
   }
 

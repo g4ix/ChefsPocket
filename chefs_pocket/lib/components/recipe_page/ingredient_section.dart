@@ -6,13 +6,18 @@ import 'package:chefs_pocket/models/recipe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 class IngredientSection extends StatefulWidget {
+  final Recipe recipe;
+
+  const IngredientSection({required this.recipe});
+
   @override
   _IngredientSectionState createState() => _IngredientSectionState();
 }
 
 class _IngredientSectionState extends State<IngredientSection> {
-  Recipe recipe = mockRecipes[2];
+  
   Map<Ingredient, TextEditingController> ingredientControllers = {};
   @override
   Widget build(BuildContext context) {
@@ -29,39 +34,39 @@ class _IngredientSectionState extends State<IngredientSection> {
                 SetPortion(
                     onChangedPortion: (value) {
                       setState(() {
-                        recipe.portions = int.parse(value);
+                        widget.recipe.portions = int.parse(value);
                       });
                       // Update recipe portions
                     },
-                    recipe: recipe),
+                    recipe: widget.recipe),
                 Row(
                   //controllare la logica del toggle
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('US', style: Theme.of(context).textTheme.bodyMedium),
                     Switch(
-                      value: recipe.showsEuMeasures,
+                      value: widget.recipe.showsEuMeasures,
                       onChanged: (value) {
                         setState(() {
-                          recipe.showsEuMeasures = value;
-                          if (recipe.showsEuMeasures) {
+                          widget.recipe.showsEuMeasures = value;
+                          if (widget.recipe.showsEuMeasures) {
                             for (int i = 0;
-                                i < recipe.ingredients.length;
+                                i < widget.recipe.ingredients.length;
                                 i++) {
-                              recipe.ingredients[i].convertToEuunits();
+                              widget.recipe.ingredients[i].convertToEuunits();
 
-                              ingredientControllers[recipe.ingredients[i]]!
+                              ingredientControllers[widget.recipe.ingredients[i]]!
                                       .text =
-                                  recipe.ingredients[i].quantity.toString();
+                                  widget.recipe.ingredients[i].quantity.toString();
                             }
                           } else {
                             for (int i = 0;
-                                i < recipe.ingredients.length;
+                                i < widget.recipe.ingredients.length;
                                 i++) {
-                              recipe.ingredients[i].convertToUsunits();
-                              ingredientControllers[recipe.ingredients[i]]!
+                              widget.recipe.ingredients[i].convertToUsunits();
+                              ingredientControllers[widget.recipe.ingredients[i]]!
                                       .text =
-                                  recipe.ingredients[i].quantity.toString();
+                                  widget.recipe.ingredients[i].quantity.toString();
                             }
                           }
                         });
@@ -88,7 +93,7 @@ class _IngredientSectionState extends State<IngredientSection> {
               child: ListView.builder(
                 padding: EdgeInsets.all(0),
                 shrinkWrap: true,
-                itemCount: recipe.ingredients.length,
+                itemCount: widget.recipe.ingredients.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -103,11 +108,11 @@ class _IngredientSectionState extends State<IngredientSection> {
                           width: 20,
                         ), // Use a circle icon for the dot
                         Text(
-                          recipe.ingredients[index].quantity.toString() +
+                          widget.recipe.ingredients[index].quantity.toString() +
                               " " +
-                              recipe.ingredients[index].unit.toString() +
+                              widget.recipe.ingredients[index].unit.toString() +
                               " " +
-                              recipe.ingredients[index].name,
+                              widget.recipe.ingredients[index].name,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ), // Display the array element
                       ],
@@ -131,7 +136,7 @@ class _IngredientSectionState extends State<IngredientSection> {
                   return FilterChip(
                     side: BorderSide(
                         color: Theme.of(context).colorScheme.primary, width: 1),
-                    label: Text(recipe.tags[index].name),
+                    label: Text(widget.recipe.tags[index].name),
                     onSelected: (bool selected) {  },
                     disabledColor: null,
                     labelStyle: Theme.of(context)
@@ -143,7 +148,7 @@ class _IngredientSectionState extends State<IngredientSection> {
                         borderRadius: BorderRadius.circular(20.0)),
                   );
                 },
-                itemCount: recipe.tags.length,
+                itemCount: widget.recipe.tags.length,
               ),
             ),
 

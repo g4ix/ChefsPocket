@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:chefs_pocket/components/saved/directory_card.dart';
 import 'package:chefs_pocket/models/directory.dart';
 import 'package:chefs_pocket/screens/directory_page.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:chefs_pocket/models/recipe.dart';
+import 'package:chefs_pocket/screens/recipe_page.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:chefs_pocket/models/recipe.dart';
 
 import '/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -24,8 +24,11 @@ class SavedScreen extends StatefulWidget {
 class _SavedScreenState extends State<SavedScreen> {
   FocusNode myFocusNode = FocusNode();
   bool hasFocus = false;
-  double _currentSliderValue = 20.0;
+
   final List<Tag> _selectedFilterTags = [];
+  double _rating = 0.0;
+  int _time = 20;
+
   late Future<PickedFile?> pickedFile = Future.value(null);
 
   Directory allSavedRecipesDir = savedRecipesDirectory;
@@ -33,7 +36,7 @@ class _SavedScreenState extends State<SavedScreen> {
 
   final TextEditingController _searchController = TextEditingController();
 
-  var _overlayController = OverlayPortalController();
+  final _formKey = GlobalKey<FormState>();
 
   String title = '';
   File? image;
@@ -44,12 +47,34 @@ class _SavedScreenState extends State<SavedScreen> {
     setState(() {
       if (pickedFile != null) {
         image = File(pickedFile.path);
-      } else {
-
-      }
+      } else {}
     });
   }
 
+  List<Recipe> applyFilters(List<Recipe> recipes, List<Tag> selectedTags, double rating, int time_minutes) {
+  return recipes.where((recipe) {
+    // Filtra per tag
+    if (!selectedTags.every((tag) => recipe.tags.contains(tag))) {
+      return false;
+    }
+
+    // Filtra per voto
+    if (recipe.rating < rating) {
+      return false;
+    }
+
+  Duration timeDuration = Duration(minutes: time_minutes);
+
+    int hours = timeDuration.inHours;
+    int minutes = timeDuration.inMinutes.remainder(60);
+    // Filtra per tempo
+    if (recipe.totalTime > Duration(hours: hours, minutes: minutes)) {
+      return false;
+    }
+
+    return true;
+  }).toList();
+}
 
   @override
   void initState() {
@@ -68,6 +93,11 @@ class _SavedScreenState extends State<SavedScreen> {
                 .toLowerCase()
                 .contains(_searchController.text.toLowerCase()))
             .toList();
+
+        if (_formKey.currentState!.validate()) {
+          _formKey.currentState!.save();
+          allSavedRecipes = applyFilters(allSavedRecipes, _selectedFilterTags, _rating, _time);
+        }
       });
     });
   }
@@ -84,25 +114,41 @@ class _SavedScreenState extends State<SavedScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Salvati",
+          "Ricette Salvate",
           style: Theme.of(context).textTheme.titleMedium,
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: Color(0xFF557F9F)),
+          icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xFF557F9F)),
           onPressed: () {
             // implementare la logica per aprire il drawer
           },
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: <Widget>[
-            buildSearchBar(),
-            SizedBox(height: 20),
-            buildSaved(),
-          ],
-        ),
+      body: Stack(
+        children: <Widget>[
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height *
+                      0.1), // Sposta il widget verso il basso del 10% dell'altezza dello schermo
+              child: buildSaved(),
+            ),
+          ),
+          if (_searchController.text.isNotEmpty)
+            Positioned.fill(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.black.withOpacity(0.4),
+              ),
+            ),
+          Padding(
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
+            child: Center(child: buildSearchBar()),
+          ),
+        ],
       ),
     );
   }
@@ -111,17 +157,18 @@ class _SavedScreenState extends State<SavedScreen> {
     return Column(
       children: [
         Container(
+          width: MediaQuery.of(context).size.width * 0.9,
           padding: const EdgeInsets.all(10),
           margin: const EdgeInsets.symmetric(vertical: 8.0),
           decoration: BoxDecoration(
-            color: Color(0xFF557F9F), // Set the background color to blue
+            color: const Color(0xFF557F9F), // Set the background color to blue
             borderRadius: BorderRadius.circular(20.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 1,
                 blurRadius: 5,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -131,32 +178,44 @@ class _SavedScreenState extends State<SavedScreen> {
                 child: TextField(
                   style: TextStyle(
                     fontFamily: "Montserrat",
-                    color: Color(0xFFFFFDF4),
+                    color: const Color(0xFFFFFDF4),
                     fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
                     fontWeight:
                         Theme.of(context).textTheme.bodyLarge?.fontWeight,
                   ),
                   focusNode: myFocusNode,
-                  controller: _searchController, 
+                  controller: _searchController,
                   decoration: InputDecoration(
                     hintText: hasFocus ? '' : "Cerca una ricetta",
                     hintStyle: TextStyle(
                       fontFamily: "Montserrat",
-                      color: Color(0xFFFFFDF4).withOpacity(0.5),
+                      color: const Color(0xFFFFFDF4).withOpacity(0.5),
                       fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
                       fontWeight:
                           Theme.of(context).textTheme.bodyLarge?.fontWeight,
                     ),
-                    prefixIcon: Icon(Icons.search, color: Color(0xFFFFFDF4)),
+                    prefixIcon:
+                        const Icon(Icons.search, color: Color(0xFFFFFDF4)),
                     border: InputBorder.none,
-                  ),                
+                  ),
                 ),
               ),
+              Visibility(
+                visible: _searchController.text.isNotEmpty,
+                child: IconButton(
+                  icon: const Icon(Icons.clear, color: Color(0xFFFFFDF4)),
+                  onPressed: () {
+                    _searchController.clear();
+                  },
+                ),
+              ),
+              const SizedBox(width: 3),
               IconButton(
-                icon: Icon(Icons.filter_list, color: Color(0xFFFFFDF4)),
+                icon: const Icon(Icons.filter_list, color: Color(0xFFFFFDF4)),
                 onPressed: () {
                   setState(() {
                     // Implementare la logica per mostrare i filtri
+                    _searchController.clear();
                     showFilterOptions(context);
                   });
                 },
@@ -164,27 +223,39 @@ class _SavedScreenState extends State<SavedScreen> {
             ],
           ),
         ),
-        
         if (_searchController.text.isNotEmpty)
-          ListView.builder(
-            shrinkWrap:
-                true, // Questo permette al ListView di funzionare all'interno di un Column
-            itemCount: allSavedRecipes.length,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  ListTile(
-                    title: Text(allSavedRecipes[index].title),
-                    onTap: () {
-                      // Implementa la logica per aprire la pagina della ricetta
-                    },
-                  ),
-                  Divider(
-                      color: Color(0xFF557F9F).withOpacity(
-                          0.5)), // Aggiungi una linea blu tra ogni ListTile
-                ],
-              );
-            },
+          Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFFDF4),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ListView.builder(
+              shrinkWrap:
+                  true, // Questo permette al ListView di funzionare all'interno di un Column
+              itemCount: allSavedRecipes.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    ListTile(
+                      title: Text(allSavedRecipes[index].title),
+                      onTap: () {
+                        // Implementa la logica per aprire la pagina della ricetta
+                        //Navigator.push(
+                        //  context,
+                        //  MaterialPageRoute(
+                        //    builder: (context) =>
+                        //        RecipeViewer(recipe: allSavedRecipes[index]),
+                        //  ),
+                        //);
+                      },
+                    ),
+                    Divider(
+                        color: const Color(0xFF557F9F).withOpacity(
+                            0.5)), // Aggiungi una linea blu tra ogni ListTile
+                  ],
+                );
+              },
+            ),
           ),
       ],
     );
@@ -201,11 +272,11 @@ class _SavedScreenState extends State<SavedScreen> {
             style: TextStyle(
               color: _selectedFilterTags.contains(tag)
                   ? Colors.white
-                  : Color(0xFF557F9F),
+                  : const Color(0xFF557F9F),
             ),
           ),
           selected: _selectedFilterTags.contains(tag),
-          selectedColor: Color(0xFF557F9F),
+          selectedColor: const Color(0xFF557F9F),
           onSelected: (bool selected) {
             setState(() {
               if (selected) {
@@ -216,7 +287,7 @@ class _SavedScreenState extends State<SavedScreen> {
             });
           },
           shape: RoundedRectangleBorder(
-            side: BorderSide(
+            side: const BorderSide(
               color: Color(0xFF557F9F),
               width: 1.0,
             ),
@@ -234,11 +305,13 @@ class _SavedScreenState extends State<SavedScreen> {
       direction: Axis.horizontal,
       allowHalfRating: true,
       itemCount: 5,
-      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-      itemBuilder: (context, _) => Icon(Icons.star, color: Color(0xFF557F9F)),
-      onRatingUpdate: (rating) {
+      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+      itemBuilder: (context, _) =>
+          const Icon(Icons.star, color: Color(0xFF557F9F)),
+      onRatingUpdate: (new_rating) {
         setState(() {
           // Implementa la logica per il filtro della valutazione in stelle
+          _rating = new_rating;
         });
       },
     );
@@ -248,14 +321,14 @@ class _SavedScreenState extends State<SavedScreen> {
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(valueIndicatorColor: Colors.white),
       child: Slider(
-        value: _currentSliderValue,
+        value: _time.toDouble(),
         min: 0,
         max: 100,
         divisions: 5,
-        label: '< ${_currentSliderValue.round()} min',
-        onChanged: (double value) {
+        label: '< ${_time} min',
+        onChanged: (value) {
           setState(() {
-            _currentSliderValue = value;
+            _time = value.toInt();
           });
           // Implementa la logica per il filtro del tempo
         },
@@ -266,7 +339,7 @@ class _SavedScreenState extends State<SavedScreen> {
   void showFilterOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Color(0xFFFFFDF4),
+      backgroundColor: const Color(0xFFFFFDF4),
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
@@ -288,35 +361,64 @@ class _SavedScreenState extends State<SavedScreen> {
                       'Tag',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF557F9F),
+                            color: const Color(0xFF557F9F),
                           ),
                     ),
                   ),
                   buildTagFilter(setState),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Voto',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF557F9F),
+                            color: const Color(0xFF557F9F),
                           ),
                     ),
                   ),
                   buildRatingFilter(setState),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Durata',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF557F9F),
+                            color: const Color(0xFF557F9F),
                           ),
                     ),
                   ),
                   buildTimeFilter(setState),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text(
+                          'Annulla',
+                          style: TextStyle(
+                            color: Color(0xFF557F9F),
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Implementa la logica per applicare i filtri
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF557F9F),
+                          foregroundColor: const Color(0xFFFFFDF4),
+                        ),
+                        child: const Text('Applica',
+                            style: TextStyle(fontSize: 18)),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             );
@@ -344,13 +446,13 @@ class _SavedScreenState extends State<SavedScreen> {
                       width: double.infinity,
                       height: 170,
                       decoration: BoxDecoration(
-                        color: Color(0xFF557F9F).withOpacity(0.2),
+                        color: const Color(0xFF557F9F).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: DottedBorder(
-                        padding: EdgeInsets.all(0),
-                        radius: Radius.circular(5),
-                        color: Color(0xFF557F9F),
+                        padding: const EdgeInsets.all(0),
+                        radius: const Radius.circular(5),
+                        color: const Color(0xFF557F9F),
                         dashPattern: [5, 5],
                         borderType: BorderType.RRect,
                         strokeWidth: 2,
@@ -361,13 +463,13 @@ class _SavedScreenState extends State<SavedScreen> {
                                   height:
                                       MediaQuery.of(context).size.height / 5,
                                 )
-                              : Icon(Icons.add_photo_alternate_outlined,
+                              : const Icon(Icons.add_photo_alternate_outlined,
                                   color: Color(0xFF557F9F), size: 30),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   TextField(
                     onChanged: (value) {
                       title = value;
@@ -384,7 +486,7 @@ class _SavedScreenState extends State<SavedScreen> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('Annulla'),
+                  child: const Text('Annulla'),
                 ),
                 ElevatedButton(
                     onPressed: () {
@@ -401,11 +503,11 @@ class _SavedScreenState extends State<SavedScreen> {
                         Navigator.of(context).pop();
                       }
                     },
-                    child: Text('Salva'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF557F9F),
-                      foregroundColor: Color(0xFFFFFDF4),
-                    )),
+                      backgroundColor: const Color(0xFF557F9F),
+                      foregroundColor: const Color(0xFFFFFDF4),
+                    ),
+                    child: const Text('Salva')),
               ],
             );
           },
@@ -413,19 +515,20 @@ class _SavedScreenState extends State<SavedScreen> {
       },
       child: Container(
         child: DottedBorder(
-          padding: EdgeInsets.all(0),
-          radius: Radius.circular(10),
-          color: Color(0xFF557F9F),
+          padding: const EdgeInsets.all(0),
+          radius: const Radius.circular(10),
+          color: const Color(0xFF557F9F),
           dashPattern: [5, 5],
           borderType: BorderType.RRect,
           strokeWidth: 2,
           child: Container(
             decoration: BoxDecoration(
-              color: Color(0xFF557F9F).withOpacity(0.2),
+              color: const Color(0xFF557F9F).withOpacity(0.2),
               borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: Color(0xFF557F9F).withOpacity(0.2)),
+              border:
+                  Border.all(color: const Color(0xFF557F9F).withOpacity(0.2)),
             ),
-            child: Center(
+            child: const Center(
               child: Icon(Icons.add, color: Color(0xFF557F9F), size: 30),
             ),
           ),
@@ -474,7 +577,7 @@ class _SavedScreenState extends State<SavedScreen> {
           }
         },
         scrollDirection: Axis.vertical,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1,
           crossAxisSpacing: 12,

@@ -11,14 +11,17 @@ import 'package:chefs_pocket/screens/saved.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class RecipeViewer extends StatefulWidget {
+class RecipePage extends StatefulWidget {
+
+  final Recipe recipe;
+
+  RecipePage({required this.recipe});
+
   @override
-  _RecipeViewerState createState() => _RecipeViewerState();
+  _RecipePageState createState() => _RecipePageState();
 }
 
-class _RecipeViewerState extends State<RecipeViewer> {
-
-  Recipe recipe = mockRecipes[2];
+class _RecipePageState extends State<RecipePage> {
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class _RecipeViewerState extends State<RecipeViewer> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
-                      recipe.imageUrl,
+                      widget.recipe.imageUrl,
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.5,
                       fit: BoxFit.cover,
@@ -80,7 +83,7 @@ class _RecipeViewerState extends State<RecipeViewer> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            recipe.title,
+                            widget.recipe.title,
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineMedium
@@ -98,7 +101,7 @@ class _RecipeViewerState extends State<RecipeViewer> {
                             overflow: TextOverflow.visible,
                           ),
                           RatingBarIndicator(
-                            rating: recipe.rating.toDouble(),
+                            rating: widget.recipe.rating.toDouble(),
                             itemBuilder: (context, index) => Icon(
                               Icons.star,
                               color: Theme.of(context).colorScheme.tertiary,
@@ -153,8 +156,8 @@ class _RecipeViewerState extends State<RecipeViewer> {
                           child: TabBarView(
                             //controller: _model.tabBarController,
                             children: [
-                              IngredientSection(),
-                              StepSection(),
+                              IngredientSection(recipe: widget.recipe),
+                              StepSection(recipe: widget.recipe),
                             ],
                           ),
                         ),

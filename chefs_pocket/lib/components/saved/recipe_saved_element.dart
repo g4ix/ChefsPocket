@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../models/recipe.dart';
+import '../../screens/recipe_page.dart';
 
 class RecipeSavedElement extends StatefulWidget {
   final Recipe recipe;
@@ -19,6 +20,13 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
     return GestureDetector(
       onTap: () {
         // Open the specific recipe page
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                RecipePage(recipe: widget.recipe),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0), // Add the desired padding value

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:chefs_pocket/models/recipe.dart';
 
 class StepSection extends StatefulWidget {
+
+  final Recipe recipe;
+
+  const StepSection({required this.recipe});
+
   @override
   _StepSectionState createState() => _StepSectionState();
 }
