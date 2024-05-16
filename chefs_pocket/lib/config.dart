@@ -55,11 +55,17 @@ List<Recipe> mockRecipes = [
     ],
     steps: [
       RecipeStep(
+        imageUrls: [
+          '../assets/recipes/pentola.jpg',
+          '../assets/recipes/pasta.jpg'
+        ],
         title: "Preparazione",
-        description: "Metti a bollire l'acqua",
+        description: "Per preparare gli spaghetti al pomodoro cominciate dalla preparazione della salsa. In una padella versate l'olio extravergine d'oliva insieme allo spicchio d'aglio sbucciato e diviso a metà 1, così potrete eliminare l'anima per rendere il profumo più delicato. Dopo 2 minuti di cottura a fiamma viva, unite i pomodori pelati 2 e aggiustate di sale 3.",
         timer: const Duration(minutes: 10),
       ),
-      RecipeStep(title: "Preparazione", description: "Aggiungi la pasta"),
+      RecipeStep(
+        imageUrls: ['../assets/recipes/pasta.jpg', '../assets/recipes/sugo.jpg'],
+        title: "Preparazione", description: "Aggiungi la pasta"),
       RecipeStep(
         title: "Preparazione",
         description: "Scola la pasta",
@@ -89,6 +95,10 @@ List<Recipe> mockRecipes = [
     ],
     steps: [
       RecipeStep(
+         imageUrls: [
+          '../assets/recipes/pentola.jpg',
+          '../assets/recipes/pasta.jpg'
+        ],
         title: "Preparazione",
         description: "Metti a bollire l'acqua",
         timer: const Duration(minutes: 10),
@@ -157,15 +167,19 @@ List<Recipe> mockRecipes = [
         title: "Preparazione",
         imageUrls: [
           '../assets/recipes/pasta_carbonara.jpg',
-          '../assets/recipes/pasta_carbonara.jpg'
+          '../assets/recipes/pasta.jpg'
         ],
         description: "Metti a bollire l'acqua",
         timer: const Duration(minutes: 10),
       ),
       RecipeStep(title: "Preparazione", description: "Aggiungi la pasta"),
       RecipeStep(
+         imageUrls: [
+          '../assets/recipes/pentola.jpg',
+          '../assets/recipes/pasta.jpg'
+        ],
         title: "Preparazione",
-        description: "Scola la pasta",
+        description: "Scola la pasta, ",
       ),
       RecipeStep(
         title: "Preparazione",

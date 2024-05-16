@@ -23,7 +23,7 @@ class _AddRecipeSquareState extends State<AddRecipeSquare> {
             return AlertDialog(
               title: Text('Seleziona una Ricetta'),
               content: Container(
-                height: double.maxFinite ,
+                height: double.maxFinite,
                 width: double.maxFinite,
                 child: ListView.builder(
                     itemCount: allSavedRecipes.length,
@@ -35,10 +35,12 @@ class _AddRecipeSquareState extends State<AddRecipeSquare> {
                         },
                         child: Container(
                           height: MediaQuery.of(context).size.height * 0.22,
-                    width: MediaQuery.of(context).size.width * 0.8,
+                          width: MediaQuery.of(context).size.width * 0.8,
                           child: RecipeCard(
                             recipe: allSavedRecipes[index],
                             modModify: false,
+                            modAdd: true,
+                           // addRecipe: allSavedRecipes[index],
                           ),
                         ),
                       );

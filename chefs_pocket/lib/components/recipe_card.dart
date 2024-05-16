@@ -7,11 +7,16 @@ import '../models/recipe.dart';
 class RecipeCard extends StatefulWidget {
   final Recipe recipe;
   final bool modModify;
+  final bool modAdd;
   final Function(Recipe)? onRemoveRecipe;
-
+  final Function()? addRecipe;
 
   const RecipeCard(
-      {required this.recipe, required this.modModify, this.onRemoveRecipe});
+      {required this.recipe,
+      required this.modModify,
+      this.onRemoveRecipe,
+      this.modAdd = false,
+      this.addRecipe});
 
   @override
   State<RecipeCard> createState() {
@@ -29,11 +34,15 @@ class _RecipeCardState extends State<RecipeCard> {
 
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => RecipePage(recipe: widget.recipe)),
-        );
+        if (widget.modAdd) {
+          widget.addRecipe;
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => RecipePage(recipe: widget.recipe)),
+          );
+        }
       },
       child: Container(
         width: width * 0.6, // 80% of screen width
