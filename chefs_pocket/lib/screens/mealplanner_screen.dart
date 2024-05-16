@@ -1,4 +1,5 @@
 import 'package:chefs_pocket/components/calendar.dart';
+import 'package:chefs_pocket/components/meal_planner/add_recipe_square.dart';
 import 'package:chefs_pocket/components/meal_planner/clipoval_with_text.dart';
 import 'package:chefs_pocket/components/meal_planner/meal_row.dart';
 import 'package:chefs_pocket/components/recipe_card.dart';
@@ -83,7 +84,6 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                         return Day();
                       });
                       toShow = selectedMeals.breakfast;
-                      
                     });
                   }), //calendario
               Container(
@@ -121,34 +121,22 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                     // number of items per row
                   ),
                   scrollDirection: Axis.vertical,
-                  itemCount: modModify
-                      ? (toShow.length + 1)
-                      : toShow.length,
+                  itemCount: modModify ? (toShow.length + 1) : toShow.length,
                   itemBuilder: (BuildContext context, int index) {
                     if (index == toShow.length && modModify) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          child: DottedBorder(
-                            padding: EdgeInsets.all(0),
-                            radius: Radius.circular(10),
-                            color: Color(0xFF557F9F),
-                            dashPattern: [5, 5],
-                            borderType: BorderType.RRect,
-                            strokeWidth: 2,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Color(0xFF557F9F).withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                    color: Color(0xFF557F9F).withOpacity(0.2)),
-                              ),
-                              child: Center(
-                                child: Icon(Icons.add,
-                                    color: Color(0xFF557F9F), size: 30),
-                              ),
-                            ),
-                          ),
+                        child: AddRecipeSquare(
+                          addRecipeToMeal: (Recipe recipe) {
+                            setState(() {
+                              var plannerManager =
+                                  Provider.of<PlannerManager>(context,
+                                      listen: false);
+                              plannerManager.addRecipeBreakfast(
+                                  recipe, selectedMeals.date!);
+                              toShow = selectedMeals.breakfast;
+                            });
+                          },
                         ),
                       ); // Replace with your widget
                     } else {
@@ -160,12 +148,16 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                             modModify: modModify,
                             onRemoveRecipe: (Recipe toRemove) {
                               setState(() {
-                                var plannerManager = Provider.of<PlannerManager>(context, listen: false);
-                                int index = toShow.indexWhere((element) => element == toRemove);
+                                var plannerManager =
+                                    Provider.of<PlannerManager>(context,
+                                        listen: false);
+                                int index = toShow.indexWhere(
+                                    (element) => element == toRemove);
                                 // manca un modo di capire se è selezionato il pranzo o la cena ecc.
                                 // si potrebbe creare una variabile mealSelected che contiene il pasto selezionato
-                                // e aggiornarla attravero MealRow 
-                                plannerManager.deleteRecipeBreakfast(index, selectedMeals.date!);
+                                // e aggiornarla attravero MealRow
+                                plannerManager.deleteRecipeBreakfast(
+                                    index, selectedMeals.date!);
                               });
                             }),
                       );

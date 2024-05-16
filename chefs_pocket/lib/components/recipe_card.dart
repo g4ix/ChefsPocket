@@ -9,6 +9,7 @@ class RecipeCard extends StatefulWidget {
   final bool modModify;
   final Function(Recipe)? onRemoveRecipe;
 
+
   const RecipeCard(
       {required this.recipe, required this.modModify, this.onRemoveRecipe});
 
