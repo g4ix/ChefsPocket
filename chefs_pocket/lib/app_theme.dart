@@ -23,7 +23,7 @@ class ChefsPocketTheme {
     ),
     //corpo note, descrizioni, ingredienti
     bodyMedium: GoogleFonts.montserrat(
-      fontSize: 14,
+      fontSize: 16,
       fontWeight: FontWeight.w400,
       color: Colors.black,
     ),

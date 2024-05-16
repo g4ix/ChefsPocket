@@ -34,7 +34,7 @@ List<Recipe> mockRecipes = [
   Recipe(
     title: "Pasta al Pomodoro",
     imageUrl: "../assets/recipes/pasta_pomodoro.jpg",
-    tags: [Tag.Primo],
+    tags: [Tag.Primo, Tag.Vegetariano],
     rating: 3,
     ingredients: [
       Ingredient(

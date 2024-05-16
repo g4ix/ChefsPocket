@@ -21,7 +21,7 @@ class StepCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(recipe.steps[pos].title,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Color(0xFF557F9F), // Specify the desired color
                       )),
               recipe.steps[pos].imageUrls!.length == 0
@@ -48,8 +48,8 @@ class StepCard extends StatelessWidget {
               ),
               SizedBox(height: 16), // Add spacing between the images and text
               Text(
-                'Per preparare la pasta per la pizza abbiamo scelto di impastare il tutto a mano, ma se preferite utilizzare l\'impastatrice potrete seguire lo stesso procedimento, utilizzando il gancio a velocità medio bassa. Come prima cosa versate le due farine in una ciotola, sbriciolate il lievito all\'interno e versate un po\' della dose di acqua. La temperatura ideale dell\'acqua è di 25°.',
-                style: Theme.of(context).textTheme.bodySmall,
+                recipe.steps[pos].description,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           ),

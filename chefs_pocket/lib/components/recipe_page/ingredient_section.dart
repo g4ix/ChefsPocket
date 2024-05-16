@@ -86,10 +86,10 @@ class _IngredientSectionState extends State<IngredientSection> {
                 ),
               ],
             ),
-            Text('Ingredienti',
+            Text('Cosa ti serve:',
                 style: Theme.of(context)
                     .textTheme
-                    .bodyLarge
+                    .titleMedium
                     ?.copyWith(color: Theme.of(context).colorScheme.primary)),
             Container(
               height: MediaQuery.of(context).size.height * 0.3,
@@ -125,35 +125,37 @@ class _IngredientSectionState extends State<IngredientSection> {
                 },
               ),
             ),
-            Text('Tags:' , style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.primary)),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.1,
-              width: MediaQuery.of(context).size.width,
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 100,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return FilterChip(
-                    side: BorderSide(
-                        color: Theme.of(context).colorScheme.primary, width: 1),
-                    label: Text(widget.recipe.tags[index].name),
-                    onSelected: (bool selected) {  },
-                    disabledColor: null,
-                    labelStyle: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(
-                            color: Theme.of(context).colorScheme.primary),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                  );
-                },
-                itemCount: widget.recipe.tags.length,
-              ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Tags:' , style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.primary)),
             ),
+            Container(
+              child: Wrap(
+                  children: widget.recipe.tags.map((tag) {
+                    return  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FilterChip(
+                      side: BorderSide(
+                          color: Theme.of(context).colorScheme.primary, width: 1),
+                      label: Text(tag.name),
+                      onSelected: (bool selected) {  },
+                      disabledColor: null,
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(
+                              color: Theme.of(context).colorScheme.primary),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                                       
+                                      ),
+                    );
+                  }).toList(),
+               
+              ),
+              
+            ),
+            SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 setState(() {});

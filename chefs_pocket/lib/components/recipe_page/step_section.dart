@@ -15,7 +15,7 @@ class StepSection extends StatefulWidget {
 }
 
 class _StepSectionState extends State<StepSection> {
-  Recipe recipe = mockRecipes[2];
+  
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -25,19 +25,20 @@ class _StepSectionState extends State<StepSection> {
           child: Column(
             children: [
               Text(
-                  "Tempo totale ${recipe.totalTime.inHours}:${(recipe.totalTime.inMinutes % 60).toString().padLeft(2, '0')} h",
+                  "Tempo totale ${widget.recipe.totalTime.inHours}:${(widget.recipe.totalTime.inMinutes % 60).toString().padLeft(2, '0')} h",
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Color(0xFF557F9F), // Specify the desired color
                       )),
 
               //for each step in the recipe, create a step_Card
-              Expanded(
+              Container(
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: recipe.steps.length,
+                  itemCount: widget.recipe.steps.length,
                   itemBuilder: (context, index) {
                     return StepCard(
-                      recipe: recipe,
+                      recipe: widget.recipe,
                       pos: index,
                     );
                   },
@@ -49,7 +50,7 @@ class _StepSectionState extends State<StepSection> {
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(35.0),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(

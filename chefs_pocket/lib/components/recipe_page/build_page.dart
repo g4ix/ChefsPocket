@@ -30,7 +30,9 @@ class BuildPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   step.title,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Color(0xFF557F9F), // Specify the desired color
+                      )
                 ),
               ),
             ),
@@ -39,10 +41,10 @@ class BuildPage extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: Text(
               step.description,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
         ),
@@ -54,7 +56,7 @@ class BuildPage extends StatelessWidget {
               onPressed: () {
                 
               },
-              child: Text('Timer'),
+              child: Text('Timer', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Color(0xFF557F9F),
