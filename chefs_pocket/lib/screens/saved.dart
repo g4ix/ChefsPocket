@@ -555,8 +555,6 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 
   Widget buildFilteredRecipes() {
-    // TODO: sistemare l'overflow a destra
-    print(activeFilters);
     return Column(
       children: [
             Wrap(
