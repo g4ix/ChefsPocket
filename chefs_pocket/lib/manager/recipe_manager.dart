@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
-import '../models/ingredient.dart';
-import '../models/section.dart';
-import '../models/recipe_step.dart';
 import '../config.dart';
 
 class RecipeManager extends ChangeNotifier {
-  List<Recipe> _recipes = [];
+  List<Recipe> _recipes = allSavedRecipes;
 
   List<Recipe> get recipe => _recipes;
 

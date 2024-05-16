@@ -12,7 +12,11 @@ import 'package:chefs_pocket/models/recipe.dart';
 import 'package:chefs_pocket/models/recipe_step.dart';
 import 'package:chefs_pocket/models/section.dart';
 import 'package:chefs_pocket/screens/recipe_page.dart';
-
+import 'package:chefs_pocket/manager/directory_manager.dart';
+import 'package:chefs_pocket/config.dart';
+import '../manager/recipe_manager.dart'; // Import RecipeManager
+import '../models/ingredient.dart';
+import '../models/directory.dart';
 
 //import dotted border
 import 'package:dotted_border/dotted_border.dart';
@@ -20,10 +24,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../config.dart';
-import '../manager/recipe_manager.dart'; // Import RecipeManager
-import '../models/ingredient.dart';
-import '../models/recipe_step.dart';
 
 class RecipeCreationPage extends StatefulWidget {
   Recipe recipe = Recipe();
@@ -40,10 +40,10 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   double _rating = 0;
   int _portions = 1;
 
-  List<Ingredient> _ingredients = [
+  final List<Ingredient> _ingredients = [
     Ingredient(name: '', quantity: 0, unit: ''),
   ];
-  List<RecipeStep> _steps = [
+  final List<RecipeStep> _steps = [
     RecipeStep(title: '', description: ''),
   ];
   int _selectedHour = 0;
@@ -51,7 +51,10 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   final List<Tag> _selectedTags = [];
   bool _useEUUnits = true;
 
+  final Directory _recipes = savedRecipesDirectory;
+
   final recipeManager = RecipeManager(); // Create an instance of RecipeManager
+  final directoryManager = DirectoryManager(); // Create an instance of DirectoryManager
 
   final ImagePicker _picker = ImagePicker();
 
@@ -76,6 +79,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -99,6 +103,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               print(widget.recipe);
               recipeManager
                   .addRecipe(widget.recipe); // Add the recipe to the list
+              directoryManager.addRecipeToDirectory(_recipes, widget.recipe);
               //Navigator.pop(RecipeViewer(widget.recipe));
             },
           ),
