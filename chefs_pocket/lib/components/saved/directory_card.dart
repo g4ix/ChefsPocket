@@ -4,8 +4,18 @@ import '../../models/directory.dart';
 
 class DirectoryCard extends StatefulWidget {
   final Directory directory;
+  final bool modModify;
+  final bool modAdd;
+  //final Function()? addDirectory;
+  //final Function(Directory)? onRemoveDirectory;
 
-  const DirectoryCard({required this.directory});
+  const DirectoryCard(
+      {required this.directory,
+      required this.modModify,
+      this.modAdd = false,
+      //this.addDirectory,
+      //this.onRemoveDirectory
+      });
 
   @override
   State<DirectoryCard> createState() {
@@ -32,44 +42,64 @@ class _DirectoryCardState extends State<DirectoryCard> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 122,
-                width: 170,
-                margin: const EdgeInsets.all(8.0), // Crea un bordo di 8 pixel
-                decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.black.withOpacity(0.6)
-                      : Colors.white.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(5.0),
-                  image: DecorationImage(
-                    image: NetworkImage(widget.directory.imageUrl),
-                    fit: BoxFit.cover,
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 122,
+                    width: 170,
+                    margin:
+                        const EdgeInsets.all(8.0), // Crea un bordo di 8 pixel
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black.withOpacity(0.6)
+                          : Colors.white.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(5.0),
+                      image: DecorationImage(
+                        image: NetworkImage(widget.directory.imageUrl),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Column(
-                  children: [
-                    Text(
-                      widget.directory.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.visible,
-                      style: Theme.of(context).textTheme.bodyLarge,
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          widget.directory.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.visible,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
+                ),
+                SizedBox(height: 5),
+              ],
+            ),
+            if (widget.modModify && widget.directory.name != "Ricette Salvate")
+              Positioned(
+                top: 0,
+                right: 0,
+                child: IconButton(
+                  icon: Icon(Icons.close, color: Colors.white),
+                 style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.primary),
+                    ),
+                    onPressed: () {
+                      // Logica per rimuovere la directory
+                    },
                 ),
               ),
-            ),
-            SizedBox(height: 5),
           ],
         ),
       ),

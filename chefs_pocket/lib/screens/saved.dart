@@ -23,6 +23,7 @@ class SavedScreen extends StatefulWidget {
 class _SavedScreenState extends State<SavedScreen> {
   FocusNode myFocusNode = FocusNode();
   bool hasFocus = false;
+  bool modModify = false;
 
   final List<Tag> _selectedFilterTags = [];
   double _rating = 0.0;
@@ -40,8 +41,6 @@ class _SavedScreenState extends State<SavedScreen> {
   List<dynamic> activeFilters = [];
 
   final TextEditingController _searchController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
 
   String title = '';
   File? image;
@@ -138,6 +137,14 @@ class _SavedScreenState extends State<SavedScreen> {
       ),
       body: Stack(
         children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("../assets/background/saved_background.png"),
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
           SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Padding(
@@ -161,6 +168,19 @@ class _SavedScreenState extends State<SavedScreen> {
             child: Center(child: buildSearchBar()),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+              setState(() {
+                modModify = !modModify;
+              });
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            child:
+                Icon(modModify ? Icons.check : Icons.edit, color: Colors.white),
       ),
     );
   }
@@ -557,91 +577,91 @@ class _SavedScreenState extends State<SavedScreen> {
   Widget buildFilteredRecipes() {
     return Column(
       children: [
-            Wrap(
-              alignment: WrapAlignment.start,
-              direction: Axis.horizontal,
-              spacing: 8.0,
-              runSpacing: 10.0,
-              children: [
-                if (activeFilters[0] is List<Tag> &&
-                    (activeFilters[0] as List<Tag>).isNotEmpty)
-                  ...activeFilters[0].map((tag) {
-                    return Chip(
-                      backgroundColor: const Color(0xFFFFFDF4),
-                      labelStyle: const TextStyle(color: Color(0xFF557F9F)),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: const BorderSide(
-                          color: Color(0xFF557F9F),
-                        ),
-                      ),
-                      label: Text(tag.toString().split('.').last),
-                      deleteIcon: Icon(Icons.close, color: Color(0xFF557F9F)),
-                      onDeleted: () {
-                        setState(() {
-                          activeFilters[0].remove(tag);
-                          applyFilters(allSavedRecipes, activeFilters[0],
-                              activeFilters[1], activeFilters[2]);
-                        });
-                      },
-                    );
-                  }),
-                if (activeFilters[1] != null) 
-                  Chip(
-                    backgroundColor: const Color(0xFFFFFDF4),
-                    labelStyle: const TextStyle(color: Color(0xFF557F9F)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(
-                        color: Color(0xFF557F9F),
-                      ),
+        Wrap(
+          alignment: WrapAlignment.start,
+          direction: Axis.horizontal,
+          spacing: 8.0,
+          runSpacing: 10.0,
+          children: [
+            if (activeFilters[0] is List<Tag> &&
+                (activeFilters[0] as List<Tag>).isNotEmpty)
+              ...activeFilters[0].map((tag) {
+                return Chip(
+                  backgroundColor: const Color(0xFFFFFDF4),
+                  labelStyle: const TextStyle(color: Color(0xFF557F9F)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: const BorderSide(
+                      color: Color(0xFF557F9F),
                     ),
-                    label: Wrap(
-                      children: [
-                        Icon(Icons.star, color: Color(0xFF557F9F)),
-                        SizedBox(width: 3),
-                        Text(activeFilters[1].toString()),
-                      ],
-                    ),
-                    deleteIcon: Icon(Icons.close, color: Color(0xFF557F9F)),
-                    onDeleted: () {
-                      setState(() {
-                        activeFilters[1] =
-                            null; // Se toglie il filtro alle stelle allora mostro le ricette con qualunque valutazione
-                        applyFilters(allSavedRecipes, activeFilters[0],
-                            activeFilters[1], activeFilters[2]);
-                      });
-                    },
                   ),
-                if (activeFilters[2] != MAX_COOKING_TIME)
-                  Chip(
-                    backgroundColor: const Color(0xFFFFFDF4),
-                    labelStyle: const TextStyle(color: Color(0xFF557F9F)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(
-                        color: Color(0xFF557F9F),
-                      ),
-                    ),
-                    label: Wrap(
-                      children: [
-                        Icon(Icons.timer, color: Color(0xFF557F9F)),
-                        SizedBox(width: 3),
-                        Text(
-                            '${activeFilters[2].inHours}h ${activeFilters[2].inMinutes.remainder(60)}m'),
-                      ],
-                    ),
-                    deleteIcon: Icon(Icons.close, color: Color(0xFF557F9F)),
-                    onDeleted: () {
-                      setState(() {
-                        activeFilters[2] =
-                            MAX_COOKING_TIME; // Se toglie il filtro al tempo allora imposto il tempo massimo
-                        applyFilters(allSavedRecipes, activeFilters[0],
-                            activeFilters[1], activeFilters[2]);
-                      });
-                    },
+                  label: Text(tag.toString().split('.').last),
+                  deleteIcon: Icon(Icons.close, color: Color(0xFF557F9F)),
+                  onDeleted: () {
+                    setState(() {
+                      activeFilters[0].remove(tag);
+                      applyFilters(allSavedRecipes, activeFilters[0],
+                          activeFilters[1], activeFilters[2]);
+                    });
+                  },
+                );
+              }),
+            if (activeFilters[1] != null)
+              Chip(
+                backgroundColor: const Color(0xFFFFFDF4),
+                labelStyle: const TextStyle(color: Color(0xFF557F9F)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: const BorderSide(
+                    color: Color(0xFF557F9F),
                   ),
-              ], 
+                ),
+                label: Wrap(
+                  children: [
+                    Icon(Icons.star, color: Color(0xFF557F9F)),
+                    SizedBox(width: 3),
+                    Text(activeFilters[1].toString()),
+                  ],
+                ),
+                deleteIcon: Icon(Icons.close, color: Color(0xFF557F9F)),
+                onDeleted: () {
+                  setState(() {
+                    activeFilters[1] =
+                        null; // Se toglie il filtro alle stelle allora mostro le ricette con qualunque valutazione
+                    applyFilters(allSavedRecipes, activeFilters[0],
+                        activeFilters[1], activeFilters[2]);
+                  });
+                },
+              ),
+            if (activeFilters[2] != MAX_COOKING_TIME)
+              Chip(
+                backgroundColor: const Color(0xFFFFFDF4),
+                labelStyle: const TextStyle(color: Color(0xFF557F9F)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: const BorderSide(
+                    color: Color(0xFF557F9F),
+                  ),
+                ),
+                label: Wrap(
+                  children: [
+                    Icon(Icons.timer, color: Color(0xFF557F9F)),
+                    SizedBox(width: 3),
+                    Text(
+                        '${activeFilters[2].inHours}h ${activeFilters[2].inMinutes.remainder(60)}m'),
+                  ],
+                ),
+                deleteIcon: Icon(Icons.close, color: Color(0xFF557F9F)),
+                onDeleted: () {
+                  setState(() {
+                    activeFilters[2] =
+                        MAX_COOKING_TIME; // Se toglie il filtro al tempo allora imposto il tempo massimo
+                    applyFilters(allSavedRecipes, activeFilters[0],
+                        activeFilters[1], activeFilters[2]);
+                  });
+                },
+              ),
+          ],
         ),
         TextButton(
           child: Text('Cancella filtri'),
@@ -680,9 +700,9 @@ class _SavedScreenState extends State<SavedScreen> {
   Widget buildDirectories() {
     return GridView.builder(
         shrinkWrap: true,
-        itemCount: directories.length + 2,
+        itemCount:  modModify ? (directories.length + 2) : (directories.length + 1),
         itemBuilder: (BuildContext context, int index) {
-          if (index == directories.length + 1) {
+          if (index == directories.length + 1 && modModify) {
             return buildAddDirectory();
           } else if (index == directories.length) {
             // Render AllSavedRecipesDir
@@ -697,7 +717,8 @@ class _SavedScreenState extends State<SavedScreen> {
                   );
                 });
               },
-              child: DirectoryCard(directory: allSavedRecipesDir),
+              child: DirectoryCard(
+                  directory: allSavedRecipesDir, modModify: modModify),
             );
           } else {
             return GestureDetector(
@@ -712,7 +733,8 @@ class _SavedScreenState extends State<SavedScreen> {
                   );
                 });
               },
-              child: DirectoryCard(directory: directories[index]),
+              child: DirectoryCard(
+                  directory: directories[index], modModify: modModify),
             );
           }
         },

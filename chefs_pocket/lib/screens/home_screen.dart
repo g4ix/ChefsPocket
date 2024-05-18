@@ -53,13 +53,14 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Expanded(
         child: Container(
           decoration: const BoxDecoration(
-              //image: DecorationImage(
-              //  image: AssetImage("../assets/background/homescreen.png"),
-              //  fit: BoxFit.none,
-              //  alignment: Alignment.bottomCenter,
-              //  scale: 2,
-              //),
-              ),
+            image: DecorationImage(
+              image:
+                  AssetImage("../assets/background/homescreen_background.png"),
+              fit: BoxFit.contain,
+              alignment: Alignment.bottomCenter,
+              scale: 2,
+            ),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -70,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     textAlign: TextAlign.left),
                 Text("Pronto, Set, Gusto!",
                     style: Theme.of(context).textTheme.titleMedium),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                 Container(
                   padding: const EdgeInsets.all(16.0),
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -101,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
