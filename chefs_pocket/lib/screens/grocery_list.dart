@@ -163,7 +163,13 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
   Widget buildDrawer() {
     return Drawer(
       child: Container(
-        color: Color(0xFFFFFDF4), // Set the background color of the drawer
+        decoration: BoxDecoration(
+          color: Color(0xFFFFFDF4),
+          image: DecorationImage(
+            image: AssetImage("../assets/background/grocery_drawer_background.png"),
+            fit: BoxFit.contain,
+          ),
+        ),
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
