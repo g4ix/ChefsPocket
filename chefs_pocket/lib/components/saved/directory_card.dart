@@ -5,14 +5,12 @@ import '../../models/directory.dart';
 class DirectoryCard extends StatefulWidget {
   final Directory directory;
   final bool modModify;
-  final bool modAdd;
   //final Function()? addDirectory;
   //final Function(Directory)? onRemoveDirectory;
 
   const DirectoryCard(
       {required this.directory,
       required this.modModify,
-      this.modAdd = false,
       //this.addDirectory,
       //this.onRemoveDirectory
       });

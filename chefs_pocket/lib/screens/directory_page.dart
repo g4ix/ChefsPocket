@@ -14,6 +14,7 @@ class DirectoryPage extends StatefulWidget {
 }
 
 class _DirectoryPageState extends State<DirectoryPage> {
+  bool modModify = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +34,20 @@ class _DirectoryPageState extends State<DirectoryPage> {
                 });
               },
             ),
+            actions: [
+              IconButton(
+                icon: Icon(
+                  modModify ? Icons.check : Icons.edit,
+                  size: 30,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  setState(() {
+                    modModify = !modModify;
+                  });
+                },
+              ),
+            ],
             expandedHeight: 250.0,
             pinned: true,
             title: Text(
@@ -75,6 +90,7 @@ class _DirectoryPageState extends State<DirectoryPage> {
                     padding: EdgeInsets.symmetric(vertical: 2.0),
                     child: RecipeSavedElement(
                       recipe: widget.directory.recipes[index],
+                      modModify: modModify,
                     ),
                   ),
                 );

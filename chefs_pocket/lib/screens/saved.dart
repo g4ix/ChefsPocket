@@ -689,7 +689,7 @@ class _SavedScreenState extends State<SavedScreen> {
                   );
                 });
               },
-              child: RecipeSavedElement(recipe: currentRecipes[index]),
+              child: RecipeSavedElement(recipe: currentRecipes[index], modModify: modModify),
             );
           },
         ),

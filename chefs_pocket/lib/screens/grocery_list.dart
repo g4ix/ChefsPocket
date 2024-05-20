@@ -71,23 +71,48 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
               ),
         ),
         ...groceryLists[currentListIndex].elements.map((ingredient) {
-          return ListTile(
-            title: Text(ingredient),
-            trailing: Transform.scale(
-              scale:
-                  1.3, // Modifica questo valore per cambiare la dimensione del checkbox
-              child: Checkbox(
-                shape: CircleBorder(),
-                value: ingredientCheckStatus[ingredient] ?? false,
-                onChanged: (bool? value) {
-                  setState(() {
-                    ingredientCheckStatus[ingredient] = value!;
-                  });
-                },
-                activeColor: Color(0xFF557F9F),
-                checkColor: Colors.white,
+          return Dismissible(
+            key: ObjectKey(ingredient),
+            child: ListTile(
+              title: Text(ingredient),
+              trailing: Transform.scale(
+                scale: 1.3,
+                child: Checkbox(
+                  shape: CircleBorder(),
+                  value: ingredientCheckStatus[ingredient] ?? false,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      ingredientCheckStatus[ingredient] = value!;
+                    });
+                  },
+                  activeColor: Color(0xFF557F9F),
+                  checkColor: Colors.white,
+                ),
               ),
             ),
+            background: Container(
+              color: Colors.red,
+              child: Icon(Icons.delete, color: Colors.white),
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.only(right: 20),
+            ),
+            onDismissed: (direction) {
+              setState(() {
+                groceryLists[currentListIndex].elements.remove(ingredient);
+              });
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("$ingredient deleted"),
+                action: SnackBarAction(
+                  label: "UNDO",
+                  textColor: Colors.white,
+                  onPressed: () {
+                    setState(() {
+                      groceryLists[currentListIndex].elements.add(ingredient);
+                    });
+                  },
+                ),
+              ));
+            },
           );
         }).toList(),
       ],
