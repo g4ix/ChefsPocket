@@ -18,6 +18,8 @@ class RecipeSavedElement extends StatefulWidget {
 class _RecipeSavedElementState extends State<RecipeSavedElement> {
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: () {
         // Open the specific recipe page
@@ -118,6 +120,7 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                 top: 0,
                 right: 0,
                 child: IconButton(
+                  iconSize: height * 0.02,
                   icon: const Icon(Icons.close, color: Colors.white),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(

@@ -22,8 +22,11 @@ class DirectoryCard extends StatefulWidget {
 }
 
 class _DirectoryCardState extends State<DirectoryCard> {
+
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10), // Lo stesso valore del Card
@@ -88,6 +91,7 @@ class _DirectoryCardState extends State<DirectoryCard> {
                 top: 0,
                 right: 0,
                 child: IconButton(
+                  iconSize: height * 0.02,
                   icon: Icon(Icons.close, color: Colors.white),
                  style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
