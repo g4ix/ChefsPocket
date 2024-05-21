@@ -481,7 +481,7 @@ class _SavedScreenState extends State<SavedScreen> {
                     },
                     child: Container(
                       width: double.infinity,
-                      height: 170,
+                      height: MediaQuery.of(context).size.height / 5,
                       decoration: BoxDecoration(
                         color: const Color(0xFF557F9F).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(10),
@@ -506,7 +506,7 @@ class _SavedScreenState extends State<SavedScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: MediaQuery.of(context).size.height / 30),
                   TextField(
                     onChanged: (value) {
                       title = value;

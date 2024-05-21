@@ -48,7 +48,7 @@ class _DirectoryPageState extends State<DirectoryPage> {
                 },
               ),
             ],
-            expandedHeight: 250.0,
+            expandedHeight: MediaQuery.of(context).size.height * 0.3,
             pinned: true,
             title: Text(
               widget.directory.name,
@@ -63,7 +63,7 @@ class _DirectoryPageState extends State<DirectoryPage> {
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 250,
+                    height: MediaQuery.of(context).size.height * 0.3,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(widget.directory.imageUrl),

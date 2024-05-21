@@ -82,9 +82,9 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
         padding: const EdgeInsets.all(20),
         children: <Widget>[
           buildList(),
-          SizedBox(height: 20),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           buildIngredientField(),
-          SizedBox(height: 20),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           buildReminder(),
         ],
       ),
@@ -315,7 +315,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       margin: const EdgeInsets.symmetric(vertical: 8.0),
-      height: 200,
+      height: MediaQuery.of(context).size.height * 0.2,
       decoration: BoxDecoration(
         color: Color(0xFFFFFED9),
         borderRadius: BorderRadius.circular(20.0),
@@ -350,7 +350,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
             ],
           ),
           SizedBox(
-              height: 10), // Aggiungi un po' di spazio tra il titolo e la nota
+              height: MediaQuery.of(context).size.height * 0.01), // Aggiungi un po' di spazio tra il titolo e la nota
           Text(
             groceryLists[currentListIndex].note, // Modifica questa linea
             style: Theme.of(context).textTheme.bodyMedium,
