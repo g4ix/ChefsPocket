@@ -67,7 +67,7 @@ class _RecipeCardState extends State<RecipeCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: width * 0.59, // 80% of screen width
+                    width: width * 0.6, // 80% of screen width
                     height: height * 0.15,
                     decoration: BoxDecoration(
                       color: Theme.of(context).brightness == Brightness.dark
@@ -76,10 +76,10 @@ class _RecipeCardState extends State<RecipeCard> {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Align(
-                      alignment: Alignment.bottomLeft,
+                      alignment: Alignment.bottomCenter,
                       child: Container(
                         height: height * 0.5, // 20% of screen height
-                        width: double.infinity,
+                        width: width*0.6, // 80% of screen width
                         margin: const EdgeInsets.all(
                             8.0), // Crea un bordo di 8 pixel
                         decoration: BoxDecoration(
@@ -88,7 +88,7 @@ class _RecipeCardState extends State<RecipeCard> {
                               : Colors.white.withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5.0),
                           image: DecorationImage(
-                            image: NetworkImage(widget.recipe.imageUrl),
+                            image: AssetImage(widget.recipe.imageUrl),
                             fit: BoxFit.cover,
                           ),
                         ),

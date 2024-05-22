@@ -15,7 +15,7 @@ class AddRecipeSquare extends StatefulWidget {
 class _AddRecipeSquareState extends State<AddRecipeSquare> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         showDialog(
           context: context,
@@ -34,6 +34,7 @@ class _AddRecipeSquareState extends State<AddRecipeSquare> {
                           Navigator.pop(context);
                         },
                         child: Container(
+                          color: Colors.transparent,
                           height: MediaQuery.of(context).size.height * 0.22,
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: RecipeCard(

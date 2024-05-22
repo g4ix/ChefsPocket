@@ -17,8 +17,16 @@ class IngredientSection extends StatefulWidget {
 }
 
 class _IngredientSectionState extends State<IngredientSection> {
+   Map<Ingredient, TextEditingController> ingredientControllers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    widget.recipe.ingredients.forEach((ingredient) {
+      ingredientControllers[ingredient] = TextEditingController(text: ingredient.quantity.toString());
+    });
+  }
   
-  Map<Ingredient, TextEditingController> ingredientControllers = {};
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,13 +58,9 @@ class _IngredientSectionState extends State<IngredientSection> {
                         setState(() {
                           widget.recipe.showsEuMeasures = value;
                           if (widget.recipe.showsEuMeasures) {
-                            for (int i = 0;
-                                i < widget.recipe.ingredients.length;
-                                i++) {
+                            for (int i = 0; i < widget.recipe.ingredients.length; i++) {
                               widget.recipe.ingredients[i].convertToEuunits();
-
-                              ingredientControllers[widget.recipe.ingredients[i]]!
-                                      .text =
+                              ingredientControllers[widget.recipe.ingredients[i]]!.text =
                                   widget.recipe.ingredients[i].quantity.toString();
                             }
                           } else {
@@ -112,11 +116,7 @@ class _IngredientSectionState extends State<IngredientSection> {
                           width: 20,
                         ), // Use a circle icon for the dot
                         Text(
-                          widget.recipe.ingredients[index].quantity.toString() +
-                              " " +
-                              widget.recipe.ingredients[index].unit.toString() +
-                              " " +
-                              widget.recipe.ingredients[index].name,
+                         '${widget.recipe.ingredients[index].quantity} ${widget.recipe.ingredients[index].unit} ${widget.recipe.ingredients[index].name}',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ), // Display the array element
                       ],
