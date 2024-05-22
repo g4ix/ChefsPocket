@@ -42,8 +42,25 @@ class _IngredientSectionState extends State<IngredientSection> {
                 SetPortion(
                     onChangedPortion: (value) {
                       setState(() {
-                        widget.recipe.portions = int.parse(value);
-                      });
+                          widget.recipe.showsEuMeasures = value;
+                          if (widget.recipe.showsEuMeasures) {
+                            for (int i = 0; i < widget.recipe.ingredients.length; i++) {
+                              widget.recipe.ingredients[i].convertPortions(value, widget.recipe.portions);
+                              ingredientControllers[widget.recipe.ingredients[i]]!.text =
+                                  widget.recipe.ingredients[i].quantity.toString();
+                          
+                            }
+                          } else {
+                            for (int i = 0;
+                                i < widget.recipe.ingredients.length;
+                                i++) {
+                              widget.recipe.ingredients[i].convertPortions(value, widget.recipe.portions);
+                              ingredientControllers[widget.recipe.ingredients[i]]!
+                                      .text =
+                                  widget.recipe.ingredients[i].quantity.toString();
+                            }
+                          }
+                        });
                       // Update recipe portions
                     },
                     recipe: widget.recipe),

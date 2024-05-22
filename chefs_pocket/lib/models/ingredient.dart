@@ -10,19 +10,18 @@ class Ingredient {
   });
 
   void convertToEuunits() {
-    
     if (unit == "tbsp") {
       unit = "ml";
-      quantity = double.parse((quantity * 15).toStringAsFixed(2));   
+      quantity = double.parse((quantity * 15).toStringAsFixed(2));
     } else if (unit == "tsp") {
       unit = "ml";
-      quantity = double.parse((quantity * 5).toStringAsFixed(2) );
+      quantity = double.parse((quantity * 5).toStringAsFixed(2));
     } else if (unit == "cup") {
       unit = "ml";
-      quantity = double.parse((quantity * 240).toStringAsFixed(2));  
+      quantity = double.parse((quantity * 240).toStringAsFixed(2));
     } else if (unit == "fl oz") {
       unit = "ml";
-      quantity =   double.parse((quantity * 29).toStringAsFixed(2));
+      quantity = double.parse((quantity * 29).toStringAsFixed(2));
     } else if (unit == "gal") {
       unit = "ml";
       quantity = double.parse((quantity * 3840).toStringAsFixed(2));
@@ -33,13 +32,9 @@ class Ingredient {
       unit = "g";
       quantity = double.parse((quantity * 28).toStringAsFixed(2));
     }
-    
-    
-
   }
 
   void convertToUsunits() {
-   
     if (unit == "ml") {
       unit = "tbsp";
       quantity = double.parse((quantity / 15).toStringAsFixed(2));
@@ -54,6 +49,12 @@ class Ingredient {
 
       quantity = double.parse((quantity / 3840).toStringAsFixed(2));
     }
+  }
+
+  void convertPortions(int newPortions, int oldPortions) {
+    double ratio = newPortions / oldPortions;
+
+    quantity = double.parse((quantity * ratio).toStringAsFixed(2));
 
   }
 }

@@ -85,4 +85,5 @@ class Recipe {
       showsEuMeasures = false;
     }
   }
+
 }

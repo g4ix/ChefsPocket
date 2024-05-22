@@ -52,6 +52,7 @@ class _SetPortionState extends State<SetPortion> {
               alignLabelWithHint: true, // Align the label with the input field
             ),
             onChanged: (value) {
+              widget.onChangedPortion(value);
               widget.recipe.portions = int.parse(value);
             },
           ),

@@ -34,6 +34,7 @@ enum Tag {
 List<Recipe> mockRecipes = [
   Recipe(
     title: "Pasta al Pomodoro",
+    portions: 3,
     imageUrl: "../assets/recipes/pasta_pomodoro.jpg",
     tags: [Tag.Primo, Tag.Vegetariano],
     rating: 3,
@@ -79,6 +80,7 @@ List<Recipe> mockRecipes = [
   ),
   Recipe(
     title: "Pasta al Pesto",
+    portions: 2,
     imageUrl: "../assets/Recipes/pasta_pesto.jpg",
     rating: 2,
     tags: [Tag.Primo],
@@ -117,6 +119,7 @@ List<Recipe> mockRecipes = [
   ),
   Recipe(
     title: "Pasta alla Carbonara",
+    portions: 2,
     imageUrl: "../assets/Recipes/pasta_carbonara.jpg",
     rating: 4,
     totalTime: Duration(minutes: 30),
