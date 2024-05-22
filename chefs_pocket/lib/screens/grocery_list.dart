@@ -196,7 +196,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
           color: Color(0xFFFFFDF4),
           image: DecorationImage(
             image: AssetImage(
-                "../assets/background/grocery_drawer_background.png"),
+                "assets/background/grocery_drawer_background.png"),
             fit: BoxFit.contain,
           ),
         ),

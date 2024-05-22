@@ -659,7 +659,7 @@ List<Recipe> allSavedRecipes = [
 
 Directory savedRecipesDirectory = Directory(
   name: 'Ricette Salvate',
-  imageUrl: '../assets/directories/saved_recipes.jpg',
+  imageUrl: 'assets/directories/saved_recipes.jpg',
   recipes: allSavedRecipes,
 );
 
@@ -667,12 +667,12 @@ Directory savedRecipesDirectory = Directory(
 List<Directory> mockDirectories = [
   Directory(
     name: 'Italiano',
-    imageUrl: '../assets/directories/italian_cuisine.jpg',
+    imageUrl: 'assets/directories/italian_cuisine.jpg',
     recipes: italianRecipes,
   ),
   Directory(
     name: 'Messicano',
-    imageUrl: '../assets/directories/mexican_cuisine.jpg',
+    imageUrl: 'assets/directories/mexican_cuisine.jpg',
     recipes: mexicanRecipes,
   ),
   // Altre directory possono essere aggiunte qui

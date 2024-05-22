@@ -140,7 +140,7 @@ class _SavedScreenState extends State<SavedScreen> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("../assets/background/saved_background.png"),
+                image: AssetImage("assets/background/saved_background.png"),
                 fit: BoxFit.contain,
               ),
             ),
