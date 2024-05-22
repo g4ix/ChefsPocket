@@ -7,7 +7,7 @@ class PlannerManager extends ChangeNotifier {
   final List<Day> _days = <Day>[
     Day(
         date: DateTime.now(),
-        breakfast: [mockRecipes[0]],
+        breakfast: [mockRecipes[0], mockRecipes[1], mockRecipes[2]],
         lunch: [mockRecipes[1]],
         dinner: [mockRecipes[2]],
         snacks: [mockRecipes[2]]),

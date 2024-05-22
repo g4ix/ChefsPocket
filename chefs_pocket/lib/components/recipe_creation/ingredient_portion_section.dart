@@ -8,6 +8,7 @@ import 'ingredient_input.dart';
 
 class IngredientPortionSection extends StatefulWidget {
   List<Ingredient> ingredients;
+  Function remove; 
   Map<Ingredient, TextEditingController> ingredientControllers;
   bool useEuUnits;
   Function onPortionChange;
@@ -15,6 +16,7 @@ class IngredientPortionSection extends StatefulWidget {
 
   IngredientPortionSection(
       {required this.ingredients,
+      required this.remove,
       required this.ingredientControllers,
       required this.useEuUnits,
       required this.onPortionChange,
@@ -42,6 +44,7 @@ class _IngredientPortionSectionState extends State<IngredientPortionSection> {
           children: widget.ingredients.map((ingredient) {
             return IngredientInput(
                 ingredient: ingredient,
+                remove: widget.remove,
                 controller: widget.ingredientControllers[ingredient]!,
                 units: widget.useEuUnits ? euMeasures : usMeasures);
           }).toList(),
@@ -54,7 +57,7 @@ class _IngredientPortionSectionState extends State<IngredientPortionSection> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 SetPortion(
+                  SetPortion(
                     onChangedPortion: widget.onPortionChange,
                     recipe: Recipe(portions: 2),
                   ),

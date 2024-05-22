@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Container(
                     margin: const EdgeInsets.symmetric(vertical: 8.0),
-                    height: MediaQuery.of(context).size.height * 0.22,
+                    height: MediaQuery.of(context).size.height * 0.25,
                     child: (toShow.length > 0)
                         ? ListView.builder(
                             scrollDirection: Axis.horizontal,

@@ -144,6 +144,12 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             SizedBox(height: 10),
             IngredientPortionSection(
               ingredients: _ingredients,
+              remove: (ingredient) {
+                setState(() {
+                  _ingredients.remove(ingredient);
+                  ingredientControllers.remove(ingredient);
+                });
+              },
               ingredientControllers: ingredientControllers,
               useEuUnits: _useEUUnits,
               recipe: widget.recipe,
