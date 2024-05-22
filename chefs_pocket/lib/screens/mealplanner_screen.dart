@@ -1,3 +1,5 @@
+
+
 import 'package:chefs_pocket/components/calendar.dart';
 import 'package:chefs_pocket/components/meal_planner/add_recipe_square.dart';
 import 'package:chefs_pocket/components/meal_planner/clipoval_with_text.dart';
@@ -110,8 +112,11 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                   });
                 }),
               ),
-              Expanded(
-                //container per le ricette
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: buildReminder(),
+              ),
+              Expanded(                //container per le ricette
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisExtent: 200,
@@ -182,6 +187,97 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
             child:
                 Icon(modModify ? Icons.check : Icons.edit, color: Colors.white),
           )),
+    );
+  }
+
+
+
+Widget buildReminder() {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      height: MediaQuery.of(context).size.height * 0.15,
+      decoration: BoxDecoration(
+        color: Color(0xFFFFFED9),
+        borderRadius: BorderRadius.circular(20.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Da ricordare oggi",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              GestureDetector(
+                onTap: () {
+                  _editNote();
+                },
+                child: Icon(
+                  Icons.edit,
+                  color: Color(0xFF557F9F),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01), // Aggiungi un po' di spazio tra il titolo e la nota
+          Text(
+            selectedMeals.notesOfDay, // Modifica questa linea
+            style: Theme.of(context).textTheme.bodyMedium,
+          )
+        ],
+      ),
+    );
+  }
+
+  void _editNote() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String newNote =
+             selectedMeals.notesOfDay; // Modifica questa linea
+        TextEditingController textEditingController = TextEditingController(
+            text:  selectedMeals.notesOfDay); // Modifica questa linea
+
+        return AlertDialog(
+          title: Text('Modifica note'),
+          content: TextField(
+            onChanged: (value) {
+              newNote = value;
+            },
+            controller: textEditingController,
+          ),
+          actions: [
+            TextButton(
+              child: Text('Annulla'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Salva'),
+              onPressed: () {
+                setState(() {
+                 selectedMeals.notesOfDay =
+                      newNote; // Modifica questa linea
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

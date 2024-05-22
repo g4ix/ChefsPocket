@@ -28,6 +28,7 @@ enum Tag {
   Vegetariano,
   Carne,
   Pesce,
+  NoLattosio,
 }
 
 List<Recipe> mockRecipes = [
