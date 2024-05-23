@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../models/recipe.dart';
 import '../../screens/recipe_page.dart';
@@ -52,17 +53,17 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: 70,
-                    width: 70,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.2,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
                       image: DecorationImage(
-                        image: NetworkImage(widget.recipe.imageUrl),
+                        image: AssetImage(widget.recipe.imageUrl),
                         fit: BoxFit.cover,
                       ), // Add the desired border radius value
                     ),
                   ),
-                  const SizedBox(width: 15.0),
+                   SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +76,7 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                                     color: Colors.black,
                                   ),
                         ),
-                        const SizedBox(height: 8.0),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -86,10 +87,10 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                                 color: Color(0xFF557F9F),
                               ),
                               itemCount: 5,
-                              itemSize: 23,
+                              itemSize: 22,
                               direction: Axis.horizontal,
                             ),
-                            const SizedBox(width: 8.0),
+                            SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0, vertical: 4.0),
@@ -100,8 +101,8 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                               child: Row(
                                 children: [
                                   const Icon(Icons.timer,
-                                      color: Color(0xFF557F9F)),
-                                  const SizedBox(width: 4.0),
+                                      color: Color(0xFF557F9F), size: 22,),
+                                  SizedBox(width: MediaQuery.of(context).size.width * 0.01),
                                   Text(
                                       '${widget.recipe.totalTime.inHours} h ${widget.recipe.totalTime.inMinutes.remainder(60)} m'),
                                 ],

@@ -35,7 +35,7 @@ List<Recipe> mockRecipes = [
   Recipe(
     title: "Pasta al Pomodoro",
     portions: 3,
-    imageUrl: "../assets/recipes/pasta_pomodoro.jpg",
+    imageUrl: "assets/recipes/pasta_pomodoro.jpg",
     tags: [Tag.Primo, Tag.Vegetariano],
     rating: 3,
     ingredients: [
@@ -58,15 +58,15 @@ List<Recipe> mockRecipes = [
     steps: [
       RecipeStep(
         imageUrls: [
-          '../assets/recipes/pentola.jpg',
-          '../assets/recipes/pasta.jpg'
+          'assets/recipes/pentola.jpg',
+          'assets/recipes/pasta.jpg'
         ],
         title: "Preparazione",
         description: "Per preparare gli spaghetti al pomodoro cominciate dalla preparazione della salsa. In una padella versate l'olio extravergine d'oliva insieme allo spicchio d'aglio sbucciato e diviso a metà 1, così potrete eliminare l'anima per rendere il profumo più delicato. Dopo 2 minuti di cottura a fiamma viva, unite i pomodori pelati 2 e aggiustate di sale 3.",
         timer: const Duration(minutes: 10),
       ),
       RecipeStep(
-        imageUrls: ['../assets/recipes/pasta.jpg', '../assets/recipes/sugo.jpg'],
+        imageUrls: ['assets/recipes/pasta.jpg', 'assets/recipes/sugo.jpg'],
         title: "Preparazione", description: "Aggiungi la pasta"),
       RecipeStep(
         title: "Preparazione",
@@ -81,7 +81,7 @@ List<Recipe> mockRecipes = [
   Recipe(
     title: "Pasta al Pesto",
     portions: 2,
-    imageUrl: "../assets/Recipes/pasta_pesto.jpg",
+    imageUrl: "assets/recipes/pasta_pesto.jpg",
     rating: 2,
     tags: [Tag.Primo],
     ingredients: [
@@ -99,8 +99,8 @@ List<Recipe> mockRecipes = [
     steps: [
       RecipeStep(
          imageUrls: [
-          '../assets/recipes/pentola.jpg',
-          '../assets/recipes/pasta.jpg'
+          'assets/recipes/pentola.jpg',
+          'assets/recipes/pasta.jpg'
         ],
         title: "Preparazione",
         description: "Metti a bollire l'acqua",
@@ -120,7 +120,7 @@ List<Recipe> mockRecipes = [
   Recipe(
     title: "Pasta alla Carbonara",
     portions: 2,
-    imageUrl: "../assets/Recipes/pasta_carbonara.jpg",
+    imageUrl: "assets/recipes/pasta_carbonara.jpg",
     rating: 4,
     totalTime: Duration(minutes: 30),
     tags: [Tag.Primo, Tag.Carne],
@@ -170,8 +170,8 @@ List<Recipe> mockRecipes = [
       RecipeStep(
         title: "Preparazione",
         imageUrls: [
-          '../assets/recipes/pasta_carbonara.jpg',
-          '../assets/recipes/pasta.jpg'
+          'assets/recipes/pasta_carbonara.jpg',
+          'assets/recipes/pasta.jpg'
         ],
         description: "Metti a bollire l'acqua",
         timer: const Duration(minutes: 10),
@@ -179,8 +179,8 @@ List<Recipe> mockRecipes = [
       RecipeStep(title: "Preparazione", description: "Aggiungi la pasta"),
       RecipeStep(
          imageUrls: [
-          '../assets/recipes/pentola.jpg',
-          '../assets/recipes/pasta.jpg'
+          'assets/recipes/pentola.jpg',
+          'assets/recipes/pasta.jpg'
         ],
         title: "Preparazione",
         description: "Scola la pasta, ",
@@ -251,7 +251,7 @@ List<Day> mockDays = [
 List<Recipe> italianRecipes = [
   Recipe(
     title: "Pizza Margherita",
-    imageUrl: "../assets/recipes/pizza_margherita.jpg",
+    imageUrl: "assets/recipes/pizza_margherita.jpg",
     ingredients: [
       Ingredient(
         name: "Farina",
@@ -320,7 +320,7 @@ List<Recipe> italianRecipes = [
   ),
   Recipe(
     title: "Arancini di Riso",
-    imageUrl: "../assets/recipes/arancini_di_riso.jpg",
+    imageUrl: "assets/recipes/arancini_di_riso.jpg",
     ingredients: [
       Ingredient(
         name: "Riso Arborio",
@@ -388,7 +388,7 @@ List<Recipe> italianRecipes = [
   ),
   Recipe(
     title: "Focaccia Genovese",
-    imageUrl: "../assets/recipes/focaccia_genovese.jpg",
+    imageUrl: "assets/recipes/focaccia_genovese.jpg",
     ingredients: [
       Ingredient(
         name: "Farina",
@@ -461,7 +461,7 @@ List<Recipe> italianRecipes = [
 List<Recipe> mexicanRecipes = [
   Recipe(
     title: "Tacos al Pastor",
-    imageUrl: "../assets/recipes/tacos_al_pastor.jpg",
+    imageUrl: "assets/recipes/tacos_al_pastor.jpg",
     ingredients: [
       Ingredient(
         name: "Carne di maiale",
@@ -519,7 +519,7 @@ List<Recipe> mexicanRecipes = [
   ),
   Recipe(
     title: "Guacamole",
-    imageUrl: "../assets/recipes/guacamole.jpg",
+    imageUrl: "assets/recipes/guacamole.jpg",
     ingredients: [
       Ingredient(
         name: "Avocado",
@@ -582,7 +582,7 @@ List<Recipe> mexicanRecipes = [
   ),
   Recipe(
     title: "Enchiladas",
-    imageUrl: "../assets/recipes/enchiladas.jpg",
+    imageUrl: "assets/recipes/enchiladas.jpg",
     ingredients: [
       Ingredient(
         name: "Tortillas di mais",

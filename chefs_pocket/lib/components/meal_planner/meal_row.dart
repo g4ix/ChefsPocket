@@ -20,7 +20,7 @@ class _MealRowState extends State<MealRow> {
       children: [
         ClipOvalWithText(
           text: 'Colazione',
-          image: 'assets/background/colazione.jpeg',
+          image: AssetImage('assets/background/colazione.jpeg'),
           isSelected: isSelected[0],
           onPressed: () {
             setState(() {
@@ -33,7 +33,7 @@ class _MealRowState extends State<MealRow> {
         ),
         ClipOvalWithText(
           text: 'Pranzo',
-          image: 'assets/background/pranzo.jpeg',
+          image: AssetImage('assets/background/pranzo.jpeg'),
           isSelected: isSelected[1],
           onPressed: () {
             setState(() {
@@ -46,7 +46,7 @@ class _MealRowState extends State<MealRow> {
         ),
         ClipOvalWithText(
           text: 'Merenda',
-          image: 'assets/background/merenda.jpeg',
+          image: AssetImage('assets/background/merenda.jpeg'),
           isSelected: isSelected[2],
           onPressed: () {
             setState(() {
@@ -59,7 +59,7 @@ class _MealRowState extends State<MealRow> {
         ),
         ClipOvalWithText(
           text: 'Cena',
-          image: 'assets/background/cena.jpeg',
+          image: AssetImage('assets/background/cena.jpeg'),
           isSelected: isSelected[3],
           onPressed: () {
             setState(() {

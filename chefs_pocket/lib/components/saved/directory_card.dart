@@ -49,10 +49,12 @@ class _DirectoryCardState extends State<DirectoryCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
+                  height: MediaQuery.of(context).size.height * 0.14,
+                  width: MediaQuery.of(context).size.width * 0.7,
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    height: 122,
-                    width: 170,
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     margin:
                         const EdgeInsets.all(8.0), // Crea un bordo di 8 pixel
                     decoration: BoxDecoration(
@@ -61,7 +63,7 @@ class _DirectoryCardState extends State<DirectoryCard> {
                           : Colors.white.withOpacity(0.6),
                       borderRadius: BorderRadius.circular(5.0),
                       image: DecorationImage(
-                        image: NetworkImage(widget.directory.imageUrl),
+                        image: AssetImage(widget.directory.imageUrl),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -77,7 +79,11 @@ class _DirectoryCardState extends State<DirectoryCard> {
                           widget.directory.name,
                           maxLines: 1,
                           overflow: TextOverflow.visible,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: TextStyle(
+                            fontFamily: Theme.of(context).textTheme.bodyMedium?.fontFamily,
+                            fontSize: height * 0.02,
+                          ),
+                          
                         ),
                       ],
                     ),

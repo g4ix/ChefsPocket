@@ -66,7 +66,7 @@ class _DirectoryPageState extends State<DirectoryPage> {
                     height: MediaQuery.of(context).size.height * 0.3,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(widget.directory.imageUrl),
+                        image: AssetImage(widget.directory.imageUrl),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
                           Colors.black.withOpacity(0.5),
