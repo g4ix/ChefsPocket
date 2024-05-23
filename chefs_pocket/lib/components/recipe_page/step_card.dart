@@ -37,7 +37,7 @@ class StepCard extends StatelessWidget {
                       padding: const EdgeInsets.all(5.0),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
+                        child: Image.asset(  // Replace with Image.network for network images
                           recipe.steps[pos].imageUrls![index],
                           fit: BoxFit.cover,
                         ),
