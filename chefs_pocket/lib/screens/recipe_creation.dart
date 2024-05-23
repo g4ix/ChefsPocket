@@ -24,7 +24,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class RecipeCreationPage extends StatefulWidget {
   Recipe recipe = Recipe();
 
@@ -54,7 +53,8 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   final Directory _recipes = savedRecipesDirectory;
 
   final recipeManager = RecipeManager(); // Create an instance of RecipeManager
-  final directoryManager = DirectoryManager(); // Create an instance of DirectoryManager
+  final directoryManager =
+      DirectoryManager(); // Create an instance of DirectoryManager
 
   final ImagePicker _picker = ImagePicker();
 
@@ -94,7 +94,6 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
           },
         ),
         actions: [
-      
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () {
@@ -235,7 +234,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                       },
                     ),
                   ),
-                  SizedBox(width: 50),
+                  SizedBox(width: MediaQuery.of(context).size.width / 15),
                   IconButton(
                     icon: Icon(
                         step.isTimerSet ? Icons.timer : Icons.timer_outlined),

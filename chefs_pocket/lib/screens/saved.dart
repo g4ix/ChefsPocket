@@ -124,6 +124,7 @@ class _SavedScreenState extends State<SavedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(
           "Ricette Salvate",
           style: Theme.of(context).textTheme.titleMedium,
@@ -171,16 +172,15 @@ class _SavedScreenState extends State<SavedScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-              setState(() {
-                modModify = !modModify;
-              });
-            },
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            child:
-                Icon(modModify ? Icons.check : Icons.edit, color: Colors.white),
+          setState(() {
+            modModify = !modModify;
+          });
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        child: Icon(modModify ? Icons.check : Icons.edit, color: Colors.white),
       ),
     );
   }
@@ -689,7 +689,8 @@ class _SavedScreenState extends State<SavedScreen> {
                   );
                 });
               },
-              child: RecipeSavedElement(recipe: currentRecipes[index], modModify: modModify),
+              child: RecipeSavedElement(
+                  recipe: currentRecipes[index], modModify: modModify),
             );
           },
         ),
@@ -700,7 +701,8 @@ class _SavedScreenState extends State<SavedScreen> {
   Widget buildDirectories() {
     return GridView.builder(
         shrinkWrap: true,
-        itemCount:  modModify ? (directories.length + 2) : (directories.length + 1),
+        itemCount:
+            modModify ? (directories.length + 2) : (directories.length + 1),
         itemBuilder: (BuildContext context, int index) {
           if (index == directories.length + 1 && modModify) {
             return buildAddDirectory();

@@ -40,6 +40,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(
           groceryLists[currentListIndex].title, // Modifica questa linea
           style: Theme.of(context).textTheme.titleMedium,
@@ -61,7 +62,8 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: Text('Eliminare un elemento'),
-                    content: Text('Per eliminare un elemento dalla lista, fai swipe da destra verso sinistra su di esso.'),
+                    content: Text(
+                        'Per eliminare un elemento dalla lista, fai swipe da destra verso sinistra su di esso.'),
                     actions: <Widget>[
                       TextButton(
                         child: Text('Chiudi'),
@@ -195,8 +197,8 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
         decoration: BoxDecoration(
           color: Color(0xFFFFFDF4),
           image: DecorationImage(
-            image: AssetImage(
-                "assets/background/grocery_drawer_background.png"),
+            image:
+                AssetImage("assets/background/grocery_drawer_background.png"),
             fit: BoxFit.contain,
           ),
         ),
@@ -228,7 +230,8 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text('Eliminare lista'),
-                          content: Text('Sei sicuro di voler eliminare questa lista?'),
+                          content: Text(
+                              'Sei sicuro di voler eliminare questa lista?'),
                           actions: <Widget>[
                             TextButton(
                               child: Text('Annulla'),
@@ -350,7 +353,8 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
             ],
           ),
           SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01), // Aggiungi un po' di spazio tra il titolo e la nota
+              height: MediaQuery.of(context).size.height *
+                  0.01), // Aggiungi un po' di spazio tra il titolo e la nota
           Text(
             groceryLists[currentListIndex].note, // Modifica questa linea
             style: Theme.of(context).textTheme.bodyMedium,

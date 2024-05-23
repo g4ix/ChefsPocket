@@ -79,7 +79,7 @@ class _RecipeCardState extends State<RecipeCard> {
                       alignment: Alignment.bottomCenter,
                       child: Container(
                         height: height * 0.5, // 20% of screen height
-                        width: width*0.6, // 80% of screen width
+                        width: width * 0.6, // 80% of screen width
                         margin: const EdgeInsets.all(
                             8.0), // Crea un bordo di 8 pixel
                         decoration: BoxDecoration(
@@ -98,16 +98,23 @@ class _RecipeCardState extends State<RecipeCard> {
                   SizedBox(height: 2),
                   Container(
                     width: width * 0.59, // 80% of screen width
-
                     child: Padding(
                       padding: EdgeInsets.only(left: 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(widget.recipe.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodyLarge),
+                          Text(
+                            widget.recipe.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.fontFamily,
+                              fontSize: height * 0.02,
+                            ),
+                          ),
                           RatingBarIndicator(
                             rating: widget.recipe.rating.toDouble(),
                             itemBuilder: (context, index) => Icon(
