@@ -296,16 +296,21 @@ class _SavedScreenState extends State<SavedScreen> {
 
   Widget buildTagFilter(StateSetter setState) {
     return Wrap(
-      spacing: 8.0,
-      runSpacing: 10.0,
+      spacing: 4.0,
+      runSpacing: 0.5,
       children: Tag.values.map((tag) {
         return FilterChip(
-          label: Text(
-            tag.toString().replaceAll('Tag.', ''),
-            style: TextStyle(
-              color: _selectedFilterTags.contains(tag)
-                  ? Colors.white
-                  : const Color(0xFF557F9F),
+          label: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 2.0, vertical: 1.0), // Adjust the padding here
+            child: Text(
+              tag.toString().replaceAll('Tag.', ''),
+              style: TextStyle(
+                fontSize: 12,
+                color: _selectedFilterTags.contains(tag)
+                    ? Colors.white
+                    : const Color(0xFF557F9F),
+              ),
             ),
           ),
           selected: _selectedFilterTags.contains(tag),
@@ -339,6 +344,7 @@ class _SavedScreenState extends State<SavedScreen> {
       allowHalfRating: true,
       itemCount: 5,
       itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+      itemSize: MediaQuery.of(context).size.width * 0.095,
       itemBuilder: (context, _) =>
           const Icon(Icons.star, color: Color(0xFF557F9F)),
       onRatingUpdate: (new_rating) {
@@ -356,8 +362,8 @@ class _SavedScreenState extends State<SavedScreen> {
       child: Slider(
         value: _time.inMinutes.toDouble(),
         min: 0,
-        max: 100,
-        divisions: 5,
+        max: 240,
+        divisions: 48,
         label: '< ${_time.inHours}h ${_time.inMinutes.remainder(60)}m',
         onChanged: (value) {
           setState(() {
@@ -374,92 +380,102 @@ class _SavedScreenState extends State<SavedScreen> {
       context: context,
       backgroundColor: const Color(0xFFFFFDF4),
       builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Filtri',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Tag',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF557F9F),
-                          ),
-                    ),
-                  ),
-                  buildTagFilter(setState),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Voto',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF557F9F),
-                          ),
-                    ),
-                  ),
-                  buildRatingFilter(setState),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Durata',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF557F9F),
-                          ),
-                    ),
-                  ),
-                  buildTimeFilter(setState),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text(
-                          'Annulla',
-                          style: TextStyle(
-                            color: Color(0xFF557F9F),
-                            fontSize: 18,
-                          ),
+        return Scrollbar(
+          radius: const Radius.circular(10),
+          thickness: 7,
+          thumbVisibility: true,
+          child: SingleChildScrollView(
+            child: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Filtri',
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Implementa la logica per applicare i filtri
-                          applyFilters(allSavedRecipes, _selectedFilterTags,
-                              _rating, _time);
-
-                          Navigator.of(context).pop();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF557F9F),
-                          foregroundColor: const Color(0xFFFFFDF4),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Tag',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF557F9F),
+                                  ),
                         ),
-                        child: const Text('Applica',
-                            style: TextStyle(fontSize: 18)),
+                      ),
+                      buildTagFilter(setState),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Voto',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF557F9F),
+                                  ),
+                        ),
+                      ),
+                      buildRatingFilter(setState),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Durata',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF557F9F),
+                                  ),
+                        ),
+                      ),
+                      buildTimeFilter(setState),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text(
+                              'Annulla',
+                              style: TextStyle(
+                                color: Color(0xFF557F9F),
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Implementa la logica per applicare i filtri
+                              applyFilters(allSavedRecipes, _selectedFilterTags,
+                                  _rating, _time);
+
+                              Navigator.of(context).pop();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF557F9F),
+                              foregroundColor: const Color(0xFFFFFDF4),
+                            ),
+                            child: const Text('Applica',
+                                style: TextStyle(fontSize: 18)),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ),
         );
       },
     );
