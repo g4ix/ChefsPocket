@@ -196,9 +196,9 @@ class _IngredientSectionState extends State<IngredientSection> {
     
           //lista di ingredienti della ricetta
          Positioned(
-                bottom: 30, // Distance from the bottom of the screen
-                left: 20, // Distance from the left side of the screen (optional)
-                right: 20,
+                bottom: MediaQuery.of(context).size.height * .1, // Distance from the bottom of the screen
+                left:MediaQuery.of(context).size.width * .2,
+                right: MediaQuery.of(context).size.width * .2,
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {});

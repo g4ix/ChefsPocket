@@ -19,6 +19,40 @@ class PlannerManager extends ChangeNotifier {
 
   //funzioni per rimuovere/aggiungere ricette ai pasti di un particolare giorno
   //non so se deve essere fatto qua.
+  void addRecipe(DateTime date, String meal, Recipe item) {
+    // sarebbe necessario controllare che la ricetta non sia già presente
+    switch (meal) {
+      case 'Colazione':
+        addRecipeBreakfast(item, date);
+        break;
+      case 'Pranzo':
+        addRecipeLunch(item, date);
+        break;
+      case 'Cena':
+        addRecipeDinner(item, date);
+        break;
+      case 'Merenda':
+        addRecipeSnacks(item, date);
+        break;
+    }
+  }
+
+  void deleteRecipe(int index, DateTime date, String meal) {
+    switch (meal) {
+      case 'Colazione':
+        deleteRecipeBreakfast(index, date);
+        break;
+      case 'Pranzo':
+        deleteRecipeLunch(index, date);
+        break;
+      case 'Cena':
+        deleteRecipeDinner(index, date);
+        break;
+      case 'Merenda':
+        deleteRecipeSnacks(index, date);
+        break;
+    }
+  }
 
   //delete a recipe from lunch array
   void deleteRecipeLunch(int index, DateTime date) {
@@ -102,6 +136,13 @@ class PlannerManager extends ChangeNotifier {
       _days[indexDay].snacks.add(item);
       notifyListeners();
     }
+  }
+
+  void updateNotes(String notes, DateTime date) {
+    //search the object day with the date variable equals to the date parameter
+    int indexDay = _days.indexWhere((element) => element.date == date);
+    _days[indexDay].notesOfDay = notes;
+    notifyListeners();
   }
 
   //non so se mancano funzioni per aggiungere o togliere direttamente date

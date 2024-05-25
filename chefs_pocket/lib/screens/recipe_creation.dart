@@ -35,19 +35,19 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   final _formKey = GlobalKey<FormState>();
 
   String _titleController = '';
-  final _images = <String>[];
+  List<String> _images = [];
   double _rating = 0;
   int _portions = 1;
 
-  final List<Ingredient> _ingredients = [
+  List<Ingredient> _ingredients = [
     Ingredient(name: '', quantity: 0, unit: ''),
   ];
-  final List<RecipeStep> _steps = [
+  List<RecipeStep> _steps = [
     RecipeStep(title: '', description: ''),
   ];
   int _selectedHour = 0;
   int _selectedMinute = 0;
-  final List<Tag> _selectedTags = [];
+  List<Tag> _selectedTags = [];
   bool _useEUUnits = true;
 
   final Directory _recipes = savedRecipesDirectory;
@@ -100,11 +100,15 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               widget.recipe.ingredients = _ingredients;
               widget.recipe.steps = _steps;
               widget.recipe.tags = _selectedTags;
-              print(widget.recipe);
               recipeManager
                   .addRecipe(widget.recipe); // Add the recipe to the list
-              directoryManager.addRecipeToDirectory(_recipes, widget.recipe);
-              //Navigator.pop(RecipeViewer(widget.recipe));
+              //directoryManager.addRecipeToDirectory(_recipes, widget.recipe);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RecipePage(recipe: widget.recipe),
+                ),
+              );
             },
           ),
         ],

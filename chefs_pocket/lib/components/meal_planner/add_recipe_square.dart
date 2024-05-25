@@ -28,21 +28,18 @@ class _AddRecipeSquareState extends State<AddRecipeSquare> {
                 child: ListView.builder(
                     itemCount: allSavedRecipes.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () {
-                          widget.addRecipeToMeal(allSavedRecipes[index]);
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          height: MediaQuery.of(context).size.height * 0.22,
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          child: RecipeCard(
-                            recipe: allSavedRecipes[index],
-                            modModify: false,
-                            modAdd: true,
-                           // addRecipe: allSavedRecipes[index],
-                          ),
+                      return Container(
+                        color: Colors.transparent,
+                        height: MediaQuery.of(context).size.height * 0.22,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: RecipeCard(
+                          recipe: allSavedRecipes[index],
+                          modModify: false,
+                          modAdd: true,
+                          addRecipe: () {
+                            widget.addRecipeToMeal(allSavedRecipes[index]);
+                            Navigator.pop(context);
+                          },
                         ),
                       );
                     }),

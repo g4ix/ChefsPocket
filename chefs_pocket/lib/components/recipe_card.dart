@@ -35,7 +35,7 @@ class _RecipeCardState extends State<RecipeCard> {
     return InkWell(
       onTap: () {
         if (widget.modAdd) {
-          widget.addRecipe;
+          widget.addRecipe!();
         } else {
           Navigator.push(
             context,

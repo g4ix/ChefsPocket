@@ -1,10 +1,10 @@
-
-
 import 'package:chefs_pocket/components/calendar.dart';
 import 'package:chefs_pocket/components/meal_planner/add_recipe_square.dart';
 import 'package:chefs_pocket/components/meal_planner/clipoval_with_text.dart';
 import 'package:chefs_pocket/components/meal_planner/meal_row.dart';
+import 'package:chefs_pocket/components/note_dialog.dart';
 import 'package:chefs_pocket/components/recipe_card.dart';
+import 'package:chefs_pocket/components/reminder_note.dart';
 import 'package:chefs_pocket/components/saved/recipe_saved_element.dart';
 import 'package:chefs_pocket/config.dart';
 import 'package:chefs_pocket/manager/planner_manager.dart';
@@ -27,6 +27,7 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
   DateTime selectedDay = DateTime.now();
   Day selectedMeals = Day();
   List<Recipe> toShow = [];
+  String mealSelected = 'Colazione';
 
   @override
   void initState() {
@@ -40,6 +41,7 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
       return Day();
     });
     toShow = selectedMeals.breakfast;
+    mealSelected = 'Colazione';
   }
 
   @override
@@ -96,15 +98,19 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                     switch (meal) {
                       case 'Colazione':
                         toShow = selectedMeals.breakfast;
+                        mealSelected = 'Colazione';
                         break;
                       case 'Pranzo':
                         toShow = selectedMeals.lunch;
+                        mealSelected = 'Pranzo';
                         break;
                       case 'Merenda':
                         toShow = selectedMeals.snacks;
+                        mealSelected = 'Merenda';
                         break;
                       case 'Cena':
                         toShow = selectedMeals.dinner;
+                        mealSelected = 'Cena';
                         break;
                       default:
                         toShow = selectedMeals.breakfast;
@@ -112,63 +118,84 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                   });
                 }),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: buildReminder(),
-              ),
-              Expanded(                //container per le ricette
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisExtent: 200,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                    crossAxisCount: 2,
-                    // number of items per row
-                  ),
-                  scrollDirection: Axis.vertical,
-                  itemCount: modModify ? (toShow.length + 1) : toShow.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == toShow.length && modModify) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AddRecipeSquare(
-                          addRecipeToMeal: (Recipe recipe) {
-                            setState(() {
-                              var plannerManager =
+              Expanded(
+                child: ListView(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ReminderNote(
+                        notesOfDay: selectedMeals.notesOfDay,
+                        onModify: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return NoteDialog(
+                                initialNote: selectedMeals.notesOfDay,
+                                onSave: (newNote) {
+                                  setState(() {
+                                    selectedMeals.notesOfDay = newNote;
+                                  });
                                   Provider.of<PlannerManager>(context,
-                                      listen: false);
-                              plannerManager.addRecipeBreakfast(
-                                  recipe, selectedMeals.date!);
-                              toShow = selectedMeals.breakfast;
-                            });
-                          },
-                        ),
-                      ); // Replace with your widget
-                    } else {
-                      // Otherwise, return the RecipeCard
-                      return Container(
-                        width: 100,
-                        child: RecipeCard(
-                            recipe: toShow[index],
-                            modModify: modModify,
-                            onRemoveRecipe: (Recipe toRemove) {
-                              setState(() {
-                                var plannerManager =
-                                    Provider.of<PlannerManager>(context,
-                                        listen: false);
-                                int index = toShow.indexWhere(
-                                    (element) => element == toRemove);
-                                // manca un modo di capire se è selezionato il pranzo o la cena ecc.
-                                // si potrebbe creare una variabile mealSelected che contiene il pasto selezionato
-                                // e aggiornarla attravero MealRow
-                                plannerManager.deleteRecipeBreakfast(
-                                    index, selectedMeals.date!);
-                              });
-                            }),
-                      );
-                    }
-                    //ricette del pranzo di mockday presente in config
-                  },
+                                          listen: false)
+                                      .updateNotes(selectedMeals.notesOfDay,
+                                          selectedMeals.date!);
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 200,
+                        mainAxisSpacing: 5,
+                        crossAxisSpacing: 5,
+                        crossAxisCount: 2,
+                      ),
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount:
+                          modModify ? (toShow.length + 1) : toShow.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index == toShow.length && modModify) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: AddRecipeSquare(
+                              addRecipeToMeal: (Recipe recipe) {
+                                setState(() {
+                                  var plannerManager =
+                                      Provider.of<PlannerManager>(context,
+                                          listen: false);
+                                  plannerManager.addRecipe(selectedMeals.date!,
+                                      mealSelected, recipe);
+                                });
+                              },
+                            ),
+                          );
+                        } else {
+                          return Container(
+                            width: 100,
+                            child: RecipeCard(
+                              recipe: toShow[index],
+                              modModify: modModify,
+                              onRemoveRecipe: (Recipe toRemove) {
+                                setState(() {
+                                  var plannerManager =
+                                      Provider.of<PlannerManager>(context,
+                                          listen: false);
+                                  int index = toShow.indexWhere(
+                                      (element) => element == toRemove);
+                                  plannerManager.deleteRecipeBreakfast(
+                                      index, selectedMeals.date!);
+                                });
+                              },
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
                 ),
               )
             ],
@@ -190,9 +217,7 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
     );
   }
 
-
-
-Widget buildReminder() {
+  Widget buildReminder(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -221,7 +246,7 @@ Widget buildReminder() {
               ),
               GestureDetector(
                 onTap: () {
-                  _editNote();
+                  _editNote(context);
                 },
                 child: Icon(
                   Icons.edit,
@@ -231,7 +256,8 @@ Widget buildReminder() {
             ],
           ),
           SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01), // Aggiungi un po' di spazio tra il titolo e la nota
+              height: MediaQuery.of(context).size.height *
+                  0.01), // Aggiungi un po' di spazio tra il titolo e la nota
           Text(
             selectedMeals.notesOfDay, // Modifica questa linea
             style: Theme.of(context).textTheme.bodyMedium,
@@ -241,14 +267,13 @@ Widget buildReminder() {
     );
   }
 
-  void _editNote() {
+  void _editNote(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        String newNote =
-             selectedMeals.notesOfDay; // Modifica questa linea
+        String newNote = selectedMeals.notesOfDay; // Modifica questa linea
         TextEditingController textEditingController = TextEditingController(
-            text:  selectedMeals.notesOfDay); // Modifica questa linea
+            text: selectedMeals.notesOfDay); // Modifica questa linea
 
         return AlertDialog(
           title: Text('Modifica note'),
@@ -269,9 +294,10 @@ Widget buildReminder() {
               child: Text('Salva'),
               onPressed: () {
                 setState(() {
-                 selectedMeals.notesOfDay =
-                      newNote; // Modifica questa linea
+                  selectedMeals.notesOfDay = newNote; // Modifica questa linea
                 });
+                Provider.of<PlannerManager>(context)
+                    .updateNotes(selectedMeals.notesOfDay, selectedMeals.date!);
                 Navigator.of(context).pop();
               },
             ),
