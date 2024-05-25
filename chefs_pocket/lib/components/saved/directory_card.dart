@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:chefs_pocket/screens/directory_page.dart';
 import '../../models/directory.dart';
 
 class DirectoryCard extends StatefulWidget {
   final Directory directory;
   final bool modModify;
-  //final Function()? addDirectory;
-  //final Function(Directory)? onRemoveDirectory;
+
+  final Function(Directory)? onRemoveDirectory;
 
   const DirectoryCard(
       {required this.directory,
       required this.modModify,
-      //this.addDirectory,
-      //this.onRemoveDirectory
-      });
+      this.onRemoveDirectory});
 
   @override
   State<DirectoryCard> createState() {
@@ -22,12 +21,11 @@ class DirectoryCard extends StatefulWidget {
 }
 
 class _DirectoryCardState extends State<DirectoryCard> {
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
 
-    return Container(
+     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10), // Lo stesso valore del Card
         boxShadow: [
@@ -63,7 +61,7 @@ class _DirectoryCardState extends State<DirectoryCard> {
                           : Colors.white.withOpacity(0.6),
                       borderRadius: BorderRadius.circular(5.0),
                       image: DecorationImage(
-                        image: AssetImage(widget.directory.imageUrl),
+                        image: AssetImage(widget.directory.imageUrl ?? 'assets/placeholder.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -80,10 +78,12 @@ class _DirectoryCardState extends State<DirectoryCard> {
                           maxLines: 1,
                           overflow: TextOverflow.visible,
                           style: TextStyle(
-                            fontFamily: Theme.of(context).textTheme.bodyMedium?.fontFamily,
+                            fontFamily: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.fontFamily,
                             fontSize: height * 0.02,
                           ),
-                          
                         ),
                       ],
                     ),
@@ -99,18 +99,21 @@ class _DirectoryCardState extends State<DirectoryCard> {
                 child: IconButton(
                   iconSize: height * 0.02,
                   icon: Icon(Icons.close, color: Colors.white),
-                 style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).colorScheme.primary),
-                    ),
-                    onPressed: () {
-                      // Logica per rimuovere la directory
-                    },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).colorScheme.primary),
+                  ),
+                  onPressed: () {
+                    if (widget.onRemoveDirectory != null) {
+                      widget.onRemoveDirectory!(widget.directory);
+                    }
+                  },
                 ),
               ),
           ],
         ),
       ),
+      
     );
   }
 }

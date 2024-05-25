@@ -7,14 +7,14 @@ class DirectoryManager extends ChangeNotifier {
   final List<Directory> _directories = mockDirectories;
   
 
-  List<Directory> get directory => List.unmodifiable(_directories);
+  List<Directory> get directory => _directories;
 
-  void deleteItem(int index) {
+  void deleteDirectory(int index) {
     _directories.removeAt(index);
     notifyListeners();
   }
 
-  void addItem(Directory item) {
+  void addDirectory(Directory item) {
     _directories.add(item);
     notifyListeners();
   }
@@ -24,8 +24,4 @@ class DirectoryManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateItem(Directory item, int index) {
-    _directories[index] = item;
-    notifyListeners();
-  }
 }
