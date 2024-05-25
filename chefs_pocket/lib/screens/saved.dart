@@ -592,6 +592,8 @@ class _SavedScreenState extends State<SavedScreen> {
 
   Widget buildFilteredRecipes() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Wrap(
           alignment: WrapAlignment.start,
@@ -695,18 +697,18 @@ class _SavedScreenState extends State<SavedScreen> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          RecipePage(recipe: currentRecipes[index]),
-                    ),
-                  );
-                });
+          setState(() {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+              RecipePage(recipe: currentRecipes[index]),
+              ),
+            );
+          });
               },
               child: RecipeSavedElement(
-                  recipe: currentRecipes[index], modModify: modModify),
+            recipe: currentRecipes[index], modModify: modModify),
             );
           },
         ),

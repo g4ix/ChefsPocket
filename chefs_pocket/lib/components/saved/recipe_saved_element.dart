@@ -32,11 +32,11 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.all(8.0), // Add the desired padding value
+        padding: const EdgeInsets.all(4), 
         child: Stack(
           children: [
             Container(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 color: const Color(0xFFFFFDF4),
@@ -63,7 +63,7 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                       ), // Add the desired border radius value
                     ),
                   ),
-                   SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.03),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,36 +80,38 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            RatingBarIndicator(
-                              rating: widget.recipe.rating.toDouble(),
-                              itemBuilder: (context, index) => const Icon(
-                                Icons.star,
-                                color: Color(0xFF557F9F),
-                              ),
-                              itemCount: 5,
-                              itemSize: 22,
-                              direction: Axis.horizontal,
+                          RatingBarIndicator(
+                            rating: widget.recipe.rating.toDouble(),
+                            itemBuilder: (context, index) => const Icon(
+                            Icons.star,
+                            color: Color(0xFF557F9F),
                             ),
-                            SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 4.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.0),
-                                color: Colors.grey[200],
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.timer,
-                                      color: Color(0xFF557F9F), size: 22,),
-                                  SizedBox(width: MediaQuery.of(context).size.width * 0.01),
-                                  Text(
-                                      '${widget.recipe.totalTime.inHours} h ${widget.recipe.totalTime.inMinutes.remainder(60)} m'),
-                                ],
-                              ),
+                            itemCount: 5,
+                            itemSize: MediaQuery.of(context).size.width * 0.06, // Set the desired size relative to the screen width
+                            direction: Axis.horizontal,
+                          ),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                            decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            color: Colors.grey[200],
                             ),
+                            child: Row(
+                            children: [
+                               Icon(Icons.timer,
+                                color: Color(0xFF557F9F), size: MediaQuery.of(context).size.width * 0.05),
+                              SizedBox(width: MediaQuery.of(context).size.width * 0.01),
+                              Text(
+                                '${widget.recipe.totalTime.inHours} h ${widget.recipe.totalTime.inMinutes.remainder(60)} m',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                            ),
+                          ),
                           ],
-                        ),
+                        ),  
                       ],
                     ),
                   ),

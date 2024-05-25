@@ -28,6 +28,7 @@ class _RecipePageState extends State<RecipePage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xFFFFFDF4),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
