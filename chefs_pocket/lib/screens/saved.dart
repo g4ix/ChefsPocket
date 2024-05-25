@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chefs_pocket/components/saved/directory_card.dart';
+import 'package:chefs_pocket/manager/directory_manager.dart';
 import 'package:chefs_pocket/models/directory.dart';
 import 'package:chefs_pocket/screens/directory_page.dart';
 import 'package:chefs_pocket/models/recipe.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '/config.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -95,6 +97,8 @@ class _SavedScreenState extends State<SavedScreen> {
   @override
   void initState() {
     super.initState();
+    var directoryManager =
+        Provider.of<DirectoryManager>(context, listen: false);
     myFocusNode.addListener(() {
       setState(() {
         hasFocus = myFocusNode.hasFocus;
@@ -543,14 +547,14 @@ class _SavedScreenState extends State<SavedScreen> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      if (title.isNotEmpty && image != null) {
-                        // Creare un nuovo oggetto Directory
-                        Directory newDirectory =
-                            Directory(name: title, imageUrl: image!.path);
-
+                      if (title.isNotEmpty) {
                         // Aggiungere la nuova directory a una lista di directory
                         setState(() {
-                          directories.add(newDirectory);
+                          Directory newDirectory =
+                            Directory(name: title, imageUrl: image?.path);
+                          var directoryManager =
+                              Provider.of<DirectoryManager>(context, listen: false);
+                          directoryManager.addDirectory(newDirectory);
                         });
                         // Chiudi il dialog
                         Navigator.of(context).pop();
@@ -697,18 +701,18 @@ class _SavedScreenState extends State<SavedScreen> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-          setState(() {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-              RecipePage(recipe: currentRecipes[index]),
-              ),
-            );
-          });
+                setState(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          RecipePage(recipe: currentRecipes[index]),
+                    ),
+                  );
+                });
               },
               child: RecipeSavedElement(
-            recipe: currentRecipes[index], modModify: modModify),
+                  recipe: currentRecipes[index], modModify: modModify),
             );
           },
         ),
@@ -738,7 +742,9 @@ class _SavedScreenState extends State<SavedScreen> {
                 });
               },
               child: DirectoryCard(
-                  directory: allSavedRecipesDir, modModify: modModify),
+                directory: allSavedRecipesDir,
+                modModify: modModify,
+              ),
             );
           } else {
             return GestureDetector(
@@ -754,7 +760,18 @@ class _SavedScreenState extends State<SavedScreen> {
                 });
               },
               child: DirectoryCard(
-                  directory: directories[index], modModify: modModify),
+                  directory: directories[index],
+                  modModify: modModify,
+                  onRemoveDirectory: (Directory toRemove) {
+                    setState(() {
+                      var directoryManager =
+                          Provider.of<DirectoryManager>(context, listen: false);
+
+                      int index = directories
+                          .indexWhere((element) => element == toRemove);
+                      directoryManager.deleteDirectory(index);
+                    });
+                  }),
             );
           }
         },
