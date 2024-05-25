@@ -1,5 +1,6 @@
 import 'package:chefs_pocket/models/recipe.dart';
 import 'package:flutter/Material.dart';
+import 'package:intl/intl.dart';
 
 class SetPortion extends StatefulWidget {
   final Function onChangedPortion;
@@ -52,7 +53,8 @@ class _SetPortionState extends State<SetPortion> {
               alignLabelWithHint: true, // Align the label with the input field
             ),
             onChanged: (value) {
-              widget.onChangedPortion(value);
+              int portion = int.parse(value);
+              widget.onChangedPortion(portion);
               widget.recipe.portions = int.parse(value);
             },
           ),

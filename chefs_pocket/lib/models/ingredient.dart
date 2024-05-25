@@ -55,6 +55,5 @@ class Ingredient {
     double ratio = newPortions / oldPortions;
 
     quantity = double.parse((quantity * ratio).toStringAsFixed(2));
-
   }
 }

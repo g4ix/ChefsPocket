@@ -46,6 +46,7 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var plannerManager = Provider.of<PlannerManager>(context);
     return GestureDetector(
       onTap: () => setState(() => showWeek = true),
       child: Scaffold(
@@ -77,16 +78,15 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
               Calendar(
                   showWeek: showWeek,
                   onDaySelection: (DateTime date) {
-                    var plannerManager =
-                        Provider.of<PlannerManager>(context, listen: false);
                     setState(() {
                       selectedMeals = plannerManager.days.firstWhere(
                           (element) =>
                               element.date?.day == date.day &&
                               element.date?.month == date.month &&
                               element.date?.year == date.year, orElse: () {
-                        return Day();
+                        return Day(date: date);
                       });
+                      plannerManager.addItem(selectedMeals);
                       toShow = selectedMeals.breakfast;
                     });
                   }), //calendario
@@ -135,10 +135,9 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                                   setState(() {
                                     selectedMeals.notesOfDay = newNote;
                                   });
-                                  Provider.of<PlannerManager>(context,
-                                          listen: false)
-                                      .updateNotes(selectedMeals.notesOfDay,
-                                          selectedMeals.date!);
+                                  plannerManager.updateNotes(
+                                      selectedMeals.notesOfDay,
+                                      selectedMeals.date!);
                                 },
                               );
                             },
@@ -164,9 +163,6 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                             child: AddRecipeSquare(
                               addRecipeToMeal: (Recipe recipe) {
                                 setState(() {
-                                  var plannerManager =
-                                      Provider.of<PlannerManager>(context,
-                                          listen: false);
                                   plannerManager.addRecipe(selectedMeals.date!,
                                       mealSelected, recipe);
                                 });
@@ -181,9 +177,6 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                               modModify: modModify,
                               onRemoveRecipe: (Recipe toRemove) {
                                 setState(() {
-                                  var plannerManager =
-                                      Provider.of<PlannerManager>(context,
-                                          listen: false);
                                   int index = toShow.indexWhere(
                                       (element) => element == toRemove);
                                   plannerManager.deleteRecipeBreakfast(
@@ -214,56 +207,6 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
             child:
                 Icon(modModify ? Icons.check : Icons.edit, color: Colors.white),
           )),
-    );
-  }
-
-  Widget buildReminder(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      height: MediaQuery.of(context).size.height * 0.15,
-      decoration: BoxDecoration(
-        color: Color(0xFFFFFED9),
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Da ricordare oggi",
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              GestureDetector(
-                onTap: () {
-                  _editNote(context);
-                },
-                child: Icon(
-                  Icons.edit,
-                  color: Color(0xFF557F9F),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height *
-                  0.01), // Aggiungi un po' di spazio tra il titolo e la nota
-          Text(
-            selectedMeals.notesOfDay, // Modifica questa linea
-            style: Theme.of(context).textTheme.bodyMedium,
-          )
-        ],
-      ),
     );
   }
 

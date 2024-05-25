@@ -4,7 +4,7 @@ import 'package:chefs_pocket/models/recipe.dart';
 import 'package:flutter/material.dart';
 
 class PlannerManager extends ChangeNotifier {
-  final List<Day> _days = <Day>[
+  List<Day> _days = [
     Day(
         date: DateTime.now(),
         breakfast: [mockRecipes[0], mockRecipes[1], mockRecipes[2]],
@@ -15,7 +15,7 @@ class PlannerManager extends ChangeNotifier {
     mockDays[2],
   ];
 
-  List<Day> get days => List.unmodifiable(_days);
+  List<Day> get days => _days;
 
   //funzioni per rimuovere/aggiungere ricette ai pasti di un particolare giorno
   //non so se deve essere fatto qua.
