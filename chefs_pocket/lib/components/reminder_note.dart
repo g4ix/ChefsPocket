@@ -32,7 +32,7 @@ class ReminderNote extends StatelessWidget {
             children: [
               Text(
                 "Da ricordare oggi",
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
               if (onModify != null)
               GestureDetector(

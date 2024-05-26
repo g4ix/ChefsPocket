@@ -49,22 +49,22 @@ class _HomeScreenState extends State<HomeScreen> {
             element.date?.year == DateTime.now().year, orElse: () {
       return Day();
     });
-    toShow = todayMeals.breakfast;
+    setState(() {
+      toShow = todayMeals.breakfast;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    var plannerManager = Provider.of<PlannerManager>(context, listen: false);
-    todayMeals = plannerManager.days.firstWhere(
-        (element) =>
-            element.date?.day == DateTime.now().day &&
-            element.date?.month == DateTime.now().month &&
-            element.date?.year == DateTime.now().year, orElse: () {
-      return Day();
-    });
-    toShow = todayMeals.breakfast;
     return Consumer<PlannerManager>(
       builder: (context, plannerManager, child) {
+        todayMeals = plannerManager.days.firstWhere(
+            (element) =>
+                element.date?.day == DateTime.now().day &&
+                element.date?.month == DateTime.now().month &&
+                element.date?.year == DateTime.now().year, orElse: () {
+          return Day();
+        });
         return SafeArea(
           child: SingleChildScrollView(
             child: Container(

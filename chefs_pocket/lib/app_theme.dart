@@ -13,6 +13,12 @@ class ChefsPocketTheme {
     //titoli widget: pasti, note, timer,step
     titleMedium: TextStyle(
       fontFamily: "Adamina",
+      fontSize: 24,
+      fontWeight: FontWeight.w500,
+      color: const Color(0xFF557F9F),
+    ),
+     titleSmall: TextStyle(
+      fontFamily: "Adamina",
       fontSize: 20,
       fontWeight: FontWeight.w500,
       color: const Color(0xFF557F9F),

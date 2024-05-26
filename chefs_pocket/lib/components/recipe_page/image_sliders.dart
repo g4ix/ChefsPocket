@@ -14,13 +14,13 @@ class ImageSliders extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
             height: MediaQuery.of(context).size.height * 0.3,
-            child:Image.network(
+            child:Image.asset(
               imageUrls[index],
               fit: BoxFit.cover,
             ) 
           );
         },
-      ) : (Image.network('../assets/background/family.jpg', fit: BoxFit.cover))
+      ) : (Image.asset('assets/background/family.jpg', fit: BoxFit.cover))
     );
   }
 }

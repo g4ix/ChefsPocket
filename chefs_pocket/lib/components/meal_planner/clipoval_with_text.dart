@@ -43,7 +43,9 @@ class ClipOvalWithText extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             ),
-            Text(text, style: Theme.of(context).textTheme.titleSmall)
+            Text(text, style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            )),
           ],
         ),
       ),

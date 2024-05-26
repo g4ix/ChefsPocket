@@ -83,6 +83,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(
           'Nuova ricetta',
           style: Theme.of(context).textTheme.titleMedium,

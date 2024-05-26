@@ -59,13 +59,17 @@ class _BuildPageState extends State<BuildPage> {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.centerLeft,
+        Positioned(
+          width: MediaQuery.of(context).size.width * 0.9,
+          bottom: MediaQuery.of(context).size.height * 0.1,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text(
-              widget.step.description,
-              style: Theme.of(context).textTheme.bodyLarge,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: Text(
+                widget.step.description,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
           ),
         ),
