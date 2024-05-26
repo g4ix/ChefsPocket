@@ -551,7 +551,7 @@ class _SavedScreenState extends State<SavedScreen> {
                         // Aggiungere la nuova directory a una lista di directory
                         setState(() {
                           Directory newDirectory =
-                            Directory(name: title, imageUrl: image?.path);
+                            Directory(name: title, imageUrl: image?.path??'');
                           var directoryManager =
                               Provider.of<DirectoryManager>(context, listen: false);
                           directoryManager.addDirectory(newDirectory);

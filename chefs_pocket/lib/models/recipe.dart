@@ -8,7 +8,7 @@ class Recipe {
   String id = const Uuid().v4(); //id per riconoscere la ricetta
   String title = "";
   String imageUrl = "";
-  int rating = 0; //da 1 a 5
+  int rating = 3; //da 1 a 5
   int portions = 0;
   List<Ingredient> ingredients = [];
   bool showsEuMeasures = true;

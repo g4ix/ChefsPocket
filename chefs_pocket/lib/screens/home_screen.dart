@@ -22,13 +22,17 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Recipe> selectRecipies(String meal) {
     switch (meal) {
       case 'Colazione':
+        print('C');
         return todayMeals.breakfast;
       case 'Pranzo':
+        print('P');
         return todayMeals.lunch;
       case 'Merenda':
+        print('M');
         return todayMeals.snacks;
       case 'Cena':
-        return toShow = todayMeals.dinner;
+        print('Ce');
+        return todayMeals.dinner;
       default:
         return [];
     }
@@ -50,18 +54,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var plannerManager = Provider.of<PlannerManager>(context, listen: false);
+    todayMeals = plannerManager.days.firstWhere(
+        (element) =>
+            element.date?.day == DateTime.now().day &&
+            element.date?.month == DateTime.now().month &&
+            element.date?.year == DateTime.now().year, orElse: () {
+      return Day();
+    });
+    toShow = todayMeals.breakfast;
     return Consumer<PlannerManager>(
       builder: (context, plannerManager, child) {
-        todayMeals = plannerManager.days.firstWhere(
-          (element) =>
-              element.date?.day == DateTime.now().day &&
-              element.date?.month == DateTime.now().month &&
-              element.date?.year == DateTime.now().year, orElse: () {
-        return Day();
-      });
-      toShow = todayMeals.breakfast;
         return SafeArea(
-          child: Expanded(
+          child: SingleChildScrollView(
             child: Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -109,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             setState(() {
                               index = (index + 1 + meals.length) % meals.length;
                               toShow = selectRecipies(meals[index]);
+                              print(toShow);
                             });
                           },
                           icon: Icon(MdiIcons.chevronRight),

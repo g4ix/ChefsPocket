@@ -88,7 +88,7 @@ class _RecipeCardState extends State<RecipeCard> {
                               : Colors.white.withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5.0),
                           image: DecorationImage(
-                            image: AssetImage(widget.recipe.imageUrl),
+                            image: AssetImage((widget.recipe.imageUrl == "") ? 'assets/recipes/plcHolder.jpg' : widget.recipe.imageUrl),
                             fit: BoxFit.cover,
                           ),
                         ),

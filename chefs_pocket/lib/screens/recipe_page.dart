@@ -54,8 +54,10 @@ class _RecipePageState extends State<RecipePage> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.asset(
-                    widget.recipe
-                        .imageUrl, // Sostituisci con il percorso della tua immagine
+                    (widget.recipe.imageUrl == '')
+                        ? 'assets/recipes/plcHolder.jpg'
+                        : widget.recipe
+                            .imageUrl, // Sostituisci con il percorso della tua immagine
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.5,
                     fit: BoxFit.cover,

@@ -87,12 +87,6 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
           'Nuova ricetta',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         actions: [
           IconButton(
             icon: Icon(Icons.save),
