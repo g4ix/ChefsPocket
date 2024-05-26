@@ -5,7 +5,6 @@ import 'package:chefs_pocket/models/recipe.dart';
 
 class DirectoryManager extends ChangeNotifier {
   final List<Directory> _directories = mockDirectories;
-  
 
   List<Directory> get directory => _directories;
 
@@ -24,4 +23,8 @@ class DirectoryManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeRecipeFromDirectory(Directory dir, int index) {
+    dir.recipes.removeAt(index);
+    notifyListeners();
+  }
 }

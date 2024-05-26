@@ -1,8 +1,11 @@
+import 'package:chefs_pocket/manager/directory_manager.dart';
 import 'package:chefs_pocket/models/directory.dart';
+import 'package:chefs_pocket/models/recipe.dart';
 import 'package:chefs_pocket/screens/saved.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chefs_pocket/components/saved/recipe_saved_element.dart';
+import 'package:provider/provider.dart';
 
 class DirectoryPage extends StatefulWidget {
   final Directory directory;
@@ -15,6 +18,7 @@ class DirectoryPage extends StatefulWidget {
 
 class _DirectoryPageState extends State<DirectoryPage> {
   bool modModify = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +70,8 @@ class _DirectoryPageState extends State<DirectoryPage> {
                     height: MediaQuery.of(context).size.height * 0.3,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(widget.directory.imageUrl ?? 'assets/placeholder.png'),
+                        image: AssetImage(widget.directory.imageUrl ??
+                            'assets/placeholder.png'),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
                           Colors.black.withOpacity(0.5),
@@ -91,6 +96,21 @@ class _DirectoryPageState extends State<DirectoryPage> {
                     child: RecipeSavedElement(
                       recipe: widget.directory.recipes[index],
                       modModify: modModify,
+                      onRemoveRecipe: (Recipe toRemove) {
+                        // Remove recipe from directory
+                        setState(() {
+                          var directoryManager = Provider.of<DirectoryManager>(
+                            context,
+                            listen: false,
+                          );
+                          int index = widget.directory.recipes
+                              .indexWhere((element) => element == toRemove);
+                          directoryManager.removeRecipeFromDirectory(
+                            widget.directory,
+                            index,
+                          );
+                        });
+                      },
                     ),
                   ),
                 );

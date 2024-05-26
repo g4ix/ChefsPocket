@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<RecipeManager>.value(value: _recipeManager),
       ],
       child: MaterialApp(
-        title: "Chef's Recipe", //titolo della pagina
+        title: "Chef's Pocket", //titolo della pagina
         theme: ChefsPocketTheme.light(), //tema della pagina
         home: const MyHomePage(title: "Chef's Pocket"), //pagina iniziale
       ),

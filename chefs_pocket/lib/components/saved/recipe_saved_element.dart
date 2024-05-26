@@ -7,8 +7,10 @@ import '../../screens/recipe_page.dart';
 class RecipeSavedElement extends StatefulWidget {
   final Recipe recipe;
   final bool modModify;
+  final Function(Recipe)? onRemoveRecipe;
 
-  const RecipeSavedElement({required this.recipe, required this.modModify});
+  const RecipeSavedElement(
+      {required this.recipe, required this.modModify, this.onRemoveRecipe});
 
   @override
   State<RecipeSavedElement> createState() {
@@ -32,7 +34,7 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.all(4), 
+        padding: const EdgeInsets.all(4),
         child: Stack(
           children: [
             Container(
@@ -76,42 +78,50 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                                     color: Colors.black,
                                   ),
                         ),
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                          RatingBarIndicator(
-                            rating: widget.recipe.rating.toDouble(),
-                            itemBuilder: (context, index) => const Icon(
-                            Icons.star,
-                            color: Color(0xFF557F9F),
-                            ),
-                            itemCount: 5,
-                            itemSize: MediaQuery.of(context).size.width * 0.06, // Set the desired size relative to the screen width
-                            direction: Axis.horizontal,
-                          ),
-                          SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 4.0),
-                            decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            color: Colors.grey[200],
-                            ),
-                            child: Row(
-                            children: [
-                               Icon(Icons.timer,
-                                color: Color(0xFF557F9F), size: MediaQuery.of(context).size.width * 0.05),
-                              SizedBox(width: MediaQuery.of(context).size.width * 0.01),
-                              Text(
-                                '${widget.recipe.totalTime.inHours} h ${widget.recipe.totalTime.inMinutes.remainder(60)} m',
-                                style: TextStyle(fontSize: 12),
+                            RatingBarIndicator(
+                              rating: widget.recipe.rating.toDouble(),
+                              itemBuilder: (context, index) => const Icon(
+                                Icons.star,
+                                color: Color(0xFF557F9F),
                               ),
-                            ],
+                              itemCount: 5,
+                              itemSize: MediaQuery.of(context).size.width *
+                                  0.06, // Set the desired size relative to the screen width
+                              direction: Axis.horizontal,
                             ),
-                          ),
+                            SizedBox(
+                                width:
+                                    MediaQuery.of(context).size.width * 0.02),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 4.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0),
+                                color: Colors.grey[200],
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.timer,
+                                      color: Color(0xFF557F9F),
+                                      size: MediaQuery.of(context).size.width *
+                                          0.05),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.01),
+                                  Text(
+                                    '${widget.recipe.totalTime.inHours} h ${widget.recipe.totalTime.inMinutes.remainder(60)} m',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
-                        ),  
+                        ),
                       ],
                     ),
                   ),
@@ -131,6 +141,9 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                   ),
                   onPressed: () {
                     // Remove the recipe from the saved list
+                    if (widget.onRemoveRecipe != null) {
+                      widget.onRemoveRecipe!(widget.recipe);
+                    }
                   },
                 ),
               ),
