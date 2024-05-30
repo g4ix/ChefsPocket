@@ -20,7 +20,7 @@ class _SetPortionState extends State<SetPortion> {
         Text(
           'Porzioni',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Color(0xFF557F9F), // Specify the desired color
+                color: Color(0xFF557F9F),
               ),
         ),
         SizedBox(
@@ -33,12 +33,12 @@ class _SetPortionState extends State<SetPortion> {
             style: Theme.of(context).textTheme.bodyMedium,
             keyboardType: TextInputType.number,
             initialValue: widget.recipe.portions
-                .toString(), // Set the default value to '2'
+                .toString(), 
             decoration: InputDecoration(
               focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
                 borderRadius: BorderRadius.circular(
-                    10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                    10.0), 
               ),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
@@ -49,8 +49,8 @@ class _SetPortionState extends State<SetPortion> {
                   borderRadius: BorderRadius.circular(10.0)),
               contentPadding: EdgeInsets.symmetric(
                   vertical: 8,
-                  horizontal: 10), // Adjust the vertical and horizontal padding
-              alignLabelWithHint: true, // Align the label with the input field
+                  horizontal: 10),
+              alignLabelWithHint: true, 
             ),
             onChanged: (value) {
               int portion = int.parse(value);

@@ -40,7 +40,7 @@ class TitleInputSection extends StatelessWidget {
             hintText: 'Inserisci il titolo',
           ),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontSize: 14, // Decrease the font size
+                fontSize: 14, 
               ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -48,7 +48,7 @@ class TitleInputSection extends StatelessWidget {
             }
             return null;
           },
-          onChanged: onChangedTitle, // Update recipe title
+          onChanged: onChangedTitle,
         ),
       ],
     );

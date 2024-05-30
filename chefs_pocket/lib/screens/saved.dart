@@ -197,7 +197,7 @@ class _SavedScreenState extends State<SavedScreen> {
           padding: const EdgeInsets.all(10),
           margin: const EdgeInsets.symmetric(vertical: 8.0),
           decoration: BoxDecoration(
-            color: const Color(0xFF557F9F), // Set the background color to blue
+            color: const Color(0xFF557F9F), 
             borderRadius: BorderRadius.circular(20.0),
             boxShadow: [
               BoxShadow(
@@ -288,7 +288,7 @@ class _SavedScreenState extends State<SavedScreen> {
                     ),
                     Divider(
                         color: const Color(0xFF557F9F).withOpacity(
-                            0.5)), // Aggiungi una linea blu tra ogni ListTile
+                            0.5)), 
                   ],
                 );
               },
@@ -306,7 +306,7 @@ class _SavedScreenState extends State<SavedScreen> {
         return FilterChip(
           label: Padding(
             padding: const EdgeInsets.symmetric(
-                horizontal: 2.0, vertical: 1.0), // Adjust the padding here
+                horizontal: 2.0, vertical: 1.0), 
             child: Text(
               tag.toString().replaceAll('Tag.', ''),
               style: TextStyle(
@@ -353,8 +353,7 @@ class _SavedScreenState extends State<SavedScreen> {
           const Icon(Icons.star, color: Color(0xFF557F9F)),
       onRatingUpdate: (new_rating) {
         setState(() {
-          // Implementa la logica per il filtro della valutazione in stelle
-          _rating = new_rating;
+                _rating = new_rating;
         });
       },
     );
@@ -373,7 +372,7 @@ class _SavedScreenState extends State<SavedScreen> {
           setState(() {
             _time = Duration(minutes: value.toInt());
           });
-          // Implementa la logica per il filtro del tempo
+       
         },
       ),
     );
@@ -459,7 +458,6 @@ class _SavedScreenState extends State<SavedScreen> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              // Implementa la logica per applicare i filtri
                               applyFilters(allSavedRecipes, _selectedFilterTags,
                                   _rating, _time);
 
@@ -556,7 +554,7 @@ class _SavedScreenState extends State<SavedScreen> {
                               Provider.of<DirectoryManager>(context, listen: false);
                           directoryManager.addDirectory(newDirectory);
                         });
-                        // Chiudi il dialog
+                       
                         Navigator.of(context).pop();
                       }
                     },
@@ -649,7 +647,7 @@ class _SavedScreenState extends State<SavedScreen> {
                 onDeleted: () {
                   setState(() {
                     activeFilters[1] =
-                        null; // Se toglie il filtro alle stelle allora mostro le ricette con qualunque valutazione
+                        null; 
                     applyFilters(allSavedRecipes, activeFilters[0],
                         activeFilters[1], activeFilters[2]);
                   });
@@ -729,7 +727,7 @@ class _SavedScreenState extends State<SavedScreen> {
           if (index == directories.length + 1 && modModify) {
             return buildAddDirectory();
           } else if (index == directories.length) {
-            // Render AllSavedRecipesDir
+           
             return GestureDetector(
               onTap: () {
                 setState(() {

@@ -22,7 +22,7 @@ class StepCard extends StatelessWidget {
             children: [
               Text(recipe.steps[pos].title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Color(0xFF557F9F), // Specify the desired color
+                        color: Color(0xFF557F9F), 
                       )),
               recipe.steps[pos].imageUrls!.length == 0
                   ? SizedBox()
@@ -37,7 +37,7 @@ class StepCard extends StatelessWidget {
                       padding: const EdgeInsets.all(5.0),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
-                        child: Image.asset(  // Replace with Image.network for network images
+                        child: Image.asset(  // sostituisci con Image.network per network images
                           recipe.steps[pos].imageUrls![index],
                           fit: BoxFit.cover,
                         ),
@@ -46,7 +46,7 @@ class StepCard extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(height: 16), // Add spacing between the images and text
+              SizedBox(height: 16), //aggiunge spazio tra le immagini e la descrizione
               Text(
                 recipe.steps[pos].description,
                 style: Theme.of(context).textTheme.bodyMedium,

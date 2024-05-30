@@ -53,7 +53,7 @@ class _BuildPageState extends State<BuildPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(widget.step.title,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: Color(0xFF557F9F), // Specify the desired color
+                          color: Color(0xFF557F9F), 
                         )),
               ),
             ),
@@ -124,7 +124,7 @@ class _BuildPageState extends State<BuildPage> {
             _timer?.cancel();
             _isTimerRunning = false;
             _remainingTime =
-                widget.step.timer?.inSeconds ?? 0; // Reset timer if needed
+                widget.step.timer?.inSeconds ?? 0; 
           }
         });
       });

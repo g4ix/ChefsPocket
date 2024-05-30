@@ -57,7 +57,7 @@ class _RecipePageState extends State<RecipePage> {
                     (widget.recipe.imageUrl == '')
                         ? 'assets/recipes/plcHolder.jpg'
                         : widget.recipe
-                            .imageUrl, // Sostituisci con il percorso della tua immagine
+                            .imageUrl, 
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.5,
                     fit: BoxFit.cover,
@@ -66,7 +66,7 @@ class _RecipePageState extends State<RecipePage> {
               ),
               Positioned(
                 top: MediaQuery.of(context).size.height *
-                    0.15, // Adjust based on your preference
+                    0.15, 
                 left: 16,
                 right: 16,
                 child: Container(
@@ -75,10 +75,10 @@ class _RecipePageState extends State<RecipePage> {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.5), // Shadow color
-                        spreadRadius: 20, // Spread radius
-                        blurRadius: 20, // Blur radius
-                        offset: Offset(0, 3), // Offset
+                        color: Colors.black.withOpacity(0.5), 
+                        spreadRadius: 20, 
+                        blurRadius: 20, 
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
@@ -119,9 +119,8 @@ class _RecipePageState extends State<RecipePage> {
               ),
               Positioned(
                 top: MediaQuery.of(context).size.height *
-                    0.20, // Adjust based on your preference
-                // left:0,
-                // right: MediaQuery.of(context).size.width ,
+                    0.20, 
+             
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.7,
@@ -150,7 +149,7 @@ class _RecipePageState extends State<RecipePage> {
                               text: 'Procedimento',
                             ),
                           ],
-                          //controller: _model.tabBarController,
+                         
                           onTap: (i) async {
                             [() async {}, () async {}][i]();
                           },
@@ -158,7 +157,7 @@ class _RecipePageState extends State<RecipePage> {
                       ),
                       Expanded(
                         child: TabBarView(
-                          //controller: _model.tabBarController,
+                     
                           children: [
                             IngredientSection(recipe: widget.recipe),
                             StepSection(recipe: widget.recipe),

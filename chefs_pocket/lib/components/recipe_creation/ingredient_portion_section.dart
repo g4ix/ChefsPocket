@@ -36,7 +36,7 @@ class _IngredientPortionSectionState extends State<IngredientPortionSection> {
         Text(
           'Ingredienti',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Color(0xFF557F9F), // Specify the desired color
+                color: Color(0xFF557F9F), 
               ),
         ),
         SizedBox(height: 5),

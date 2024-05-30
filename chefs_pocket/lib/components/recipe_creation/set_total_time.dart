@@ -16,7 +16,7 @@ class SetTotalTime extends StatelessWidget {
       children: [
         Text('Tempo totale',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Color(0xFF557F9F), // Specify the desired color
+                  color: Color(0xFF557F9F), 
                 )),
         SizedBox(width: 10),
         Expanded(

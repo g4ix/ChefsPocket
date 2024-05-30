@@ -14,7 +14,7 @@ import 'package:chefs_pocket/models/section.dart';
 import 'package:chefs_pocket/screens/recipe_page.dart';
 import 'package:chefs_pocket/manager/directory_manager.dart';
 import 'package:chefs_pocket/config.dart';
-import '../manager/recipe_manager.dart'; // Import RecipeManager
+import '../manager/recipe_manager.dart';
 import '../models/ingredient.dart';
 import '../models/directory.dart';
 
@@ -52,9 +52,9 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
 
   final Directory _recipes = savedRecipesDirectory;
 
-  final recipeManager = RecipeManager(); // Create an instance of RecipeManager
+  final recipeManager = RecipeManager(); 
   final directoryManager =
-      DirectoryManager(); // Create an instance of DirectoryManager
+      DirectoryManager(); 
 
   final ImagePicker _picker = ImagePicker();
 
@@ -96,7 +96,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               widget.recipe.steps = _steps;
               widget.recipe.tags = _selectedTags;
               recipeManager
-                  .addRecipe(widget.recipe); // Add the recipe to the list
+                  .addRecipe(widget.recipe); 
               //directoryManager.addRecipeToDirectory(_recipes, widget.recipe);
               Navigator.push(
                 context,
@@ -197,7 +197,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         Text(
           'Procedimento',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Color(0xFF557F9F), // Specify the desired color
+                color: Color(0xFF557F9F),
               ),
         ),
         ..._steps.map((step) {
@@ -282,7 +282,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                       margin: EdgeInsets.only(left: 10),
                       height: 167,
                       width: 120,
-                      // Set the desired width
+                    
                       decoration: BoxDecoration(
                         color: Color(0xFF557F9F).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(5),
@@ -363,7 +363,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
       alignment: Alignment.centerLeft,
       child: Text('Tag',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Color(0xFF557F9F), // Specifica il colore desiderato
+                color: Color(0xFF557F9F), 
               )),
     );
   }
@@ -379,9 +379,9 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             style: TextStyle(
               color: _selectedTags.contains(tag)
                   ? Colors
-                      .white // Imposta il colore del testo su bianco se selezionato
+                      .white 
                   : Color(
-                      0xFF557F9F), // Imposta il colore del testo su blu se non selezionato
+                      0xFF557F9F), 
             ),
           ),
           selected: _selectedTags.contains(tag),
@@ -477,9 +477,7 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
               onPressed: () {
                 int hours = int.tryParse(hoursController.text) ?? 0;
                 int minutes = int.tryParse(minutesController.text) ?? 0;
-                int seconds = int.tryParse(secondsController.text) ?? 0;
-                // Assuming that `timer` is a property of type Duration in your RecipeStep class
-                // And `currentStep` is an instance of RecipeStep
+                int seconds = int.tryParse(secondsController.text) ?? 0;  
                 //  _steps[i].timer = Duration(hours: hours, minutes: minutes, seconds: seconds);
                 setState(() {
                   step.timer = Duration(

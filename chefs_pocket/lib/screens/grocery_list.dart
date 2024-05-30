@@ -42,7 +42,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(
-          groceryLists[currentListIndex].title, // Modifica questa linea
+          groceryLists[currentListIndex].title,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         leading: Builder(
@@ -273,7 +273,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
                 _createNewList();
               },
             ),
-            // Aggiungi più ListTile per ogni lista che hai
+         
           ],
         ),
       ),
@@ -327,7 +327,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3), // changes position of shadow
+            offset: Offset(0, 3), 
           ),
         ],
       ),
@@ -354,9 +354,9 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
           ),
           SizedBox(
               height: MediaQuery.of(context).size.height *
-                  0.01), // Aggiungi un po' di spazio tra il titolo e la nota
+                  0.01), 
           Text(
-            groceryLists[currentListIndex].note, // Modifica questa linea
+            groceryLists[currentListIndex].note, 
             style: Theme.of(context).textTheme.bodyMedium,
           )
         ],
@@ -369,9 +369,9 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       context: context,
       builder: (BuildContext context) {
         String newNote =
-            groceryLists[currentListIndex].note; // Modifica questa linea
+            groceryLists[currentListIndex].note; 
         TextEditingController textEditingController = TextEditingController(
-            text: groceryLists[currentListIndex].note); // Modifica questa linea
+            text: groceryLists[currentListIndex].note); 
 
         return AlertDialog(
           title: Text('Modifica note'),
@@ -393,7 +393,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
               onPressed: () {
                 setState(() {
                   groceryLists[currentListIndex].note =
-                      newNote; // Modifica questa linea
+                      newNote; 
                 });
                 Navigator.of(context).pop();
               },

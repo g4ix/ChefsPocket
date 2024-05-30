@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//probabilmente da fare stateful perche cambia le ricette mostrate se premo su una delle 4
+
 class ClipOvalWithText extends StatelessWidget {
   final String text;
   final AssetImage image;
@@ -21,7 +21,7 @@ class ClipOvalWithText extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? Theme.of(context).colorScheme.tertiary
-              : Colors.transparent, // Change color if highlighted
+              : Colors.transparent, 
           boxShadow: isSelected
               ? [
                   BoxShadow(

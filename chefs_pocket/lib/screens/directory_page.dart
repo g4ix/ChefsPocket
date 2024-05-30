@@ -97,7 +97,7 @@ class _DirectoryPageState extends State<DirectoryPage> {
                       recipe: widget.directory.recipes[index],
                       modModify: modModify,
                       onRemoveRecipe: (Recipe toRemove) {
-                        // Remove recipe from directory
+                        
                         setState(() {
                           var directoryManager = Provider.of<DirectoryManager>(
                             context,

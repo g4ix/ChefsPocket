@@ -25,7 +25,7 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
 
     return GestureDetector(
       onTap: () {
-        // Open the specific recipe page
+        // apre la pagina della ricetta
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -47,7 +47,7 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: const Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), 
                   ),
                 ],
               ),
@@ -62,7 +62,7 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                       image: DecorationImage(
                         image: AssetImage(widget.recipe.imageUrl),
                         fit: BoxFit.cover,
-                      ), // Add the desired border radius value
+                      ), 
                     ),
                   ),
                   SizedBox(width: MediaQuery.of(context).size.width * 0.03),
@@ -91,7 +91,7 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                               ),
                               itemCount: 5,
                               itemSize: MediaQuery.of(context).size.width *
-                                  0.06, // Set the desired size relative to the screen width
+                                  0.06, 
                               direction: Axis.horizontal,
                             ),
                             SizedBox(
@@ -140,7 +140,7 @@ class _RecipeSavedElementState extends State<RecipeSavedElement> {
                         Theme.of(context).colorScheme.primary),
                   ),
                   onPressed: () {
-                    // Remove the recipe from the saved list
+                    
                     if (widget.onRemoveRecipe != null) {
                       widget.onRemoveRecipe!(widget.recipe);
                     }

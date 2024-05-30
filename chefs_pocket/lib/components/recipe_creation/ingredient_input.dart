@@ -34,7 +34,7 @@ class _IngredientInputState extends State<IngredientInput> {
                 focusedErrorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
                   borderRadius: BorderRadius.circular(
-                      10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                      10.0), 
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
@@ -51,7 +51,7 @@ class _IngredientInputState extends State<IngredientInput> {
                 hintText: '500',
 
                 contentPadding: EdgeInsets.symmetric(
-                    vertical: 2), // Decrease the vertical padding
+                    vertical: 2), 
               ),
               controller: widget.controller,
             ),
@@ -83,7 +83,7 @@ class _IngredientInputState extends State<IngredientInput> {
                 focusedErrorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
                   borderRadius: BorderRadius.circular(
-                      10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                      10.0), 
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
@@ -94,7 +94,7 @@ class _IngredientInputState extends State<IngredientInput> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-              isExpanded: false, // Set isExpanded to false
+              isExpanded: false, 
             ),
           ),
           SizedBox(width: 8),
@@ -114,7 +114,7 @@ class _IngredientInputState extends State<IngredientInput> {
                 focusedErrorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
                   borderRadius: BorderRadius.circular(
-                      10.0), // make this the same or smaller than the borderRadius for enabledBorder and focusedBorder
+                      10.0), 
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF557F9F), width: 1.0),
@@ -125,7 +125,7 @@ class _IngredientInputState extends State<IngredientInput> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 contentPadding: EdgeInsets.symmetric(
-                    horizontal: 10), // Decrease the vertical padding
+                    horizontal: 10), 
               ),
             ),
           ),

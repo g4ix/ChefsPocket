@@ -56,7 +56,7 @@ class _IngredientSectionState extends State<IngredientSection> {
                           
                         }
                       });
-                      // Update recipe portions
+                      // aggiorna recipe portions
                     },
                     recipe: widget.recipe),
                 Row(
@@ -100,7 +100,7 @@ class _IngredientSectionState extends State<IngredientSection> {
                       inactiveThumbColor: Colors.white,
                       thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
                         (states) {
-                          return null; // Torna al tuo codice qui
+                          return null; 
                         },
                       ),
                     ),
@@ -133,11 +133,11 @@ class _IngredientSectionState extends State<IngredientSection> {
                         ),
                         SizedBox(
                           width: 20,
-                        ), // Use a circle icon for the dot
+                        ), 
                         Text(
                           '${widget.recipe.ingredients[index].quantity} ${widget.recipe.ingredients[index].unit} ${widget.recipe.ingredients[index].name}',
                           style: Theme.of(context).textTheme.bodyMedium,
-                        ), // Display the array element
+                        ),
                       ],
                     ),
                   );
@@ -188,7 +188,7 @@ class _IngredientSectionState extends State<IngredientSection> {
 
         //lista di ingredienti della ricetta
         Positioned(
-          bottom: 30, // Distance from the bottom of the screen
+          bottom: 30, //distanza dalla parte inferiore dello schermo
           left: MediaQuery.of(context).size.width * .2,
           right: MediaQuery.of(context).size.width * .2,
           child: ElevatedButton(

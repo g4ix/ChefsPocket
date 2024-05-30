@@ -54,40 +54,36 @@ class PlannerManager extends ChangeNotifier {
     }
   }
 
-  //delete a recipe from lunch array
+  
   void deleteRecipeLunch(int index, DateTime date) {
-    //search the day with the date
+
     int indexDay = _days.indexWhere((element) => element.date == date);
     _days[indexDay].lunch.removeAt(index);
     notifyListeners();
   }
 
-  //delete a recipe fron breakfast array
+ 
   void deleteRecipeBreakfast(int index, DateTime date) {
-    //search the day with the date
+
     int indexDay = _days.indexWhere((element) => element.date == date);
     _days[indexDay].breakfast.removeAt(index);
     notifyListeners();
   }
 
-  //delete a recipe fron dinner array
   void deleteRecipeDinner(int index, DateTime date) {
-    //search the day with the date
     int indexDay = _days.indexWhere((element) => element.date == date);
     _days[indexDay].dinner.removeAt(index);
     notifyListeners();
   }
 
-  //delete a recipe fron snacks array
+
   void deleteRecipeSnacks(int index, DateTime date) {
-    //search the object day with the date variable equals to the date parameter
     int indexDay = _days.indexWhere((element) => element.date == date);
     _days[indexDay].snacks.removeAt(index);
     notifyListeners();
   }
 
   void addRecipeLunch(Recipe item, DateTime date) {
-    //search the object day with the date variable equals to the date parameter
     int indexDay = _days.indexWhere((element) => element.date == date);
     if (indexDay == -1) {
       _days.add(Day(date: date, lunch: [item]));
@@ -100,7 +96,6 @@ class PlannerManager extends ChangeNotifier {
   }
 
   void addRecipeBreakfast(Recipe item, DateTime date) {
-    //search the object day with the date variable equals to the date parameter
     int indexDay = _days.indexWhere((element) => element.date == date);
     if (indexDay == -1) {
       _days.add(Day(date: date, breakfast: [item]));
@@ -113,7 +108,6 @@ class PlannerManager extends ChangeNotifier {
   }
 
   void addRecipeDinner(Recipe item, DateTime date) {
-    //search the object day with the date variable equals to the date parameter
     int indexDay = _days.indexWhere((element) => element.date == date);
     if (indexDay == -1) {
       _days.add(Day(date: date, dinner: [item]));
@@ -126,7 +120,6 @@ class PlannerManager extends ChangeNotifier {
   }
 
   void addRecipeSnacks(Recipe item, DateTime date) {
-    //search the object day with the date variable equals to the date parameter
     int indexDay = _days.indexWhere((element) => element.date == date);
     if (indexDay == -1) {
       _days.add(Day(date: date, snacks: [item]));
@@ -139,13 +132,12 @@ class PlannerManager extends ChangeNotifier {
   }
 
   void updateNotes(String notes, DateTime date) {
-    //search the object day with the date variable equals to the date parameter
     int indexDay = _days.indexWhere((element) => element.date == date);
     _days[indexDay].notesOfDay = notes;
     notifyListeners();
   }
 
-  //non so se mancano funzioni per aggiungere o togliere direttamente date
+
   void updateItem(Day item, int index) {
     _days[index] = item;
     notifyListeners();

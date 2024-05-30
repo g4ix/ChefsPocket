@@ -214,9 +214,9 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        String newNote = selectedMeals.notesOfDay; // Modifica questa linea
+        String newNote = selectedMeals.notesOfDay;
         TextEditingController textEditingController = TextEditingController(
-            text: selectedMeals.notesOfDay); // Modifica questa linea
+            text: selectedMeals.notesOfDay); 
 
         return AlertDialog(
           title: Text('Modifica note'),
@@ -237,7 +237,7 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
               child: Text('Salva'),
               onPressed: () {
                 setState(() {
-                  selectedMeals.notesOfDay = newNote; // Modifica questa linea
+                  selectedMeals.notesOfDay = newNote; 
                 });
                 Provider.of<PlannerManager>(context)
                     .updateNotes(selectedMeals.notesOfDay, selectedMeals.date!);

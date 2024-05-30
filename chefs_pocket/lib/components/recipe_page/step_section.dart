@@ -27,10 +27,10 @@ class _StepSectionState extends State<StepSection> {
               Text(
                   "Tempo totale ${widget.recipe.totalTime.inHours}:${(widget.recipe.totalTime.inMinutes % 60).toString().padLeft(2, '0')} h",
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Color(0xFF557F9F), // Specify the desired color
+                        color: Color(0xFF557F9F),
                       )),
 
-              //for each step in the recipe, create a step_Card
+              //per ogni step della ricetta, crea un widget StepCard
               Container(
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: ListView.builder(

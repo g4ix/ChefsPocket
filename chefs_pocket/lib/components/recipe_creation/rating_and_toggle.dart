@@ -32,7 +32,7 @@ class _RatingAndToggleState extends State<RatingAndToggle> {
                   Text(
                     'Voto',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Color(0xFF557F9F), // Specify the desired color
+                          color: Color(0xFF557F9F), 
                         ),
                   ),
                   SizedBox(width: 8),
@@ -43,13 +43,13 @@ class _RatingAndToggleState extends State<RatingAndToggle> {
                       allowHalfRating: true,
                       itemCount: 5,
                       itemSize: MediaQuery.of(context).size.width /
-                          15, // Set the size of the stars
+                          15, 
                       itemPadding: EdgeInsets.symmetric(
                           horizontal:
-                              0), // Decrease the itemPadding value to make the stars closer
+                              0), 
                       itemBuilder: (context, _) => Icon(Icons.star,
                           color: Color(0xFF557F9F),
-                          size: 10), // Set the size of the stars
+                          size: 10),
                       onRatingUpdate: (value) {
                         widget.onRatingUpdate(value);
                       }),
@@ -74,7 +74,7 @@ class _RatingAndToggleState extends State<RatingAndToggle> {
               inactiveThumbColor: Colors.white,
               thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
                 (states) {
-                  return null; // Torna al tuo codice qui
+                  return null; 
                 },
               ),
             ),

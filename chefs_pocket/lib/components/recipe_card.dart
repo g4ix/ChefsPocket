@@ -45,7 +45,7 @@ class _RecipeCardState extends State<RecipeCard> {
         }
       },
       child: Container(
-        width: width * 0.6, // 80% of screen width
+        width: width * 0.6, 
         height: height * 0.5,
         decoration: BoxDecoration(
           boxShadow: [
@@ -53,7 +53,7 @@ class _RecipeCardState extends State<RecipeCard> {
               color: Colors.grey.withOpacity(0.2),
               spreadRadius: 0.1,
               blurRadius: 5,
-              offset: Offset(0, 1), // changes position of shadow
+              offset: Offset(0, 1), 
             ),
           ],
         ),
@@ -67,7 +67,7 @@ class _RecipeCardState extends State<RecipeCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: width * 0.6, // 80% of screen width
+                    width: width * 0.6, 
                     height: height * 0.15,
                     decoration: BoxDecoration(
                       color: Theme.of(context).brightness == Brightness.dark
@@ -78,8 +78,8 @@ class _RecipeCardState extends State<RecipeCard> {
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        height: height * 0.5, // 20% of screen height
-                        width: width * 0.6, // 80% of screen width
+                        height: height * 0.5, 
+                        width: width * 0.6, 
                         margin: const EdgeInsets.all(
                             8.0), // Crea un bordo di 8 pixel
                         decoration: BoxDecoration(
@@ -97,7 +97,7 @@ class _RecipeCardState extends State<RecipeCard> {
                   ),
                   SizedBox(height: 2),
                   Container(
-                    width: width * 0.59, // 80% of screen width
+                    width: width * 0.59, 
                     child: Padding(
                       padding: EdgeInsets.only(left: 8.0),
                       child: Column(
